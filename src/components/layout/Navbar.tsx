@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { ModeToggle } from "./mode-toggle"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -22,8 +23,8 @@ const navigationLinks = [
 
 export default function Component() {
   return (
-    <header className="border-b px-4 md:px-6 max-w-[1600px] mx-auto">
-      <div className="flex h-16 items-center justify-between gap-4">
+    <header className="border-b border-orange-500 shadow-sm">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -104,6 +105,7 @@ export default function Component() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
+          <ModeToggle />
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <a href="#">Sign In</a>
           </Button>

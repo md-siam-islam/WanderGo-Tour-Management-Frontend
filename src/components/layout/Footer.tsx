@@ -1,12 +1,12 @@
 export default function Footer() {
     
     return (
-       <footer className="border-t border-orange-500">
+       <footer className="border-t border-gray-500">
   <div className="container mx-auto space-y-8 px-4 py-16 ">
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div>
         <div className="w-[200px]">
-          <img  src="/src/assets/images/WanderGoLogo1.png" alt="Logo" />
+          <img  src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
         </div>
         <p className="mt-4 max-w-xs text-gray-500">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non cupiditate quae nam

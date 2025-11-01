@@ -23,7 +23,7 @@ const navigationLinks = [
 
 export default function Component() {
   return (
-    <header className="border-b border-orange-500 shadow-sm">
+    <header className="border-b border-gray-500 ">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export default function Component() {
           {/* Main nav */}
           <div className="flex items-center gap-6">
             <a href="#" className="w-[120px]">
-              <img  src="/src/assets/images/WanderGoLogo1.png" alt="Logo" />
+              <img  src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
             </a>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">

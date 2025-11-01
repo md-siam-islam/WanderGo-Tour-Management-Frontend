@@ -10,10 +10,10 @@ interface CommonLayoutProps {
 export default function CommonLayout({ children }: CommonLayoutProps) {
 
   return (
-    <>
+    <div className="max-w-[1600px]">
     <Navbar />
       {children}
     <Footer />
-    </>
+    </div>
   );
 }

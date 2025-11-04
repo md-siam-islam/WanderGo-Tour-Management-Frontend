@@ -14,6 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router"
 import Password from "@/components/ui/password"
+import { useRegisterMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 // Validation Schema
 const registerSchema = z.object({
@@ -48,7 +50,26 @@ export default function RegisterForm() {
     },
   })
 
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+  const [register] = useRegisterMutation()
+
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+
+    try {
+        const userInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password
+        }
+
+        const result = await register(userInfo).unwrap()
+        console.log("Registration successful:", result)
+        toast.success("User registration successful!.")
+
+        form.reset()
+
+    } catch (error) {
+        console.error("Registration failed:", error)
+    }
     console.log(data)
   }
 

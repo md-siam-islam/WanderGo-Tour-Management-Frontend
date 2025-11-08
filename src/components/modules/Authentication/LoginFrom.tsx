@@ -11,17 +11,13 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import Password from "@/components/ui/password"
-// import { useRegisterMutation } from "@/redux/features/auth/auth.api"
-// import { toast } from "sonner"
+import { useLoginMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 // Validation Schema
 const registerSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Name must be at least 2 characters long")
-    .max(50, "Name must be at most 50 characters long"),
   email: z
     .string()
     .email("Invalid email address"),
@@ -29,14 +25,7 @@ const registerSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters long")
     .max(100, "Password must be at most 100 characters long"),
-  confirmPassword: z
-    .string()
-    .min(6, "Confirm Password must be at least 6 characters long")
-    .max(100, "Confirm Password must be at most 100 characters long"),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  })    
+}) 
 
 export default function LoginForm() {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -47,9 +36,31 @@ export default function LoginForm() {
     },
   })
 
+  const navigate = useNavigate()
+  const [login] = useLoginMutation()
+
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
 
-    console.log(data)
+        // console.log(data)
+    try {
+        const userInfo = {
+            email: data.email,
+            password: data.password
+    }
+
+    const result = await login(userInfo).unwrap()
+        console.log("User login" , result);
+        toast.success("User Login successful!.")
+        form.reset()
+        navigate('/')
+        console.log(result)
+    } catch (error : any) {
+        console.log(error)
+        if(error.status === 500){
+            navigate("/verify")
+            toast.error("Your account is not verified. Please verify your email before login.")
+        }
+    }
   }
 
   return (
@@ -62,7 +73,6 @@ export default function LoginForm() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            {/* Name */}
 
             {/* Email */}
             <FormField

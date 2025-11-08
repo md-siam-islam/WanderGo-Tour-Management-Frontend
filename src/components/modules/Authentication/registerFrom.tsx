@@ -1,7 +1,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import Password from "@/components/ui/password"
 import { useRegisterMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
@@ -50,6 +49,7 @@ export default function RegisterForm() {
     },
   })
 
+  const navigate = useNavigate()
   const [register] = useRegisterMutation()
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
@@ -64,6 +64,7 @@ export default function RegisterForm() {
         const result = await register(userInfo).unwrap()
         console.log("Registration successful:", result)
         toast.success("User registration successful!.")
+        navigate('/verify')
 
         form.reset()
 

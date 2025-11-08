@@ -3,6 +3,7 @@ import App from "@/App";
 import About from "@/components/pages/About";
 import LoginPage from "@/components/pages/Login";
 import SignupPage from "@/components/pages/singup";
+import verify from "@/components/pages/Verify";
 
 export const router = createBrowserRouter([
   {
@@ -22,5 +23,9 @@ export const router = createBrowserRouter([
   {
     Component : SignupPage,
     path : "/signup"
+  },
+  {
+    Component : verify,
+    path : "/verify"
   }
 ]);

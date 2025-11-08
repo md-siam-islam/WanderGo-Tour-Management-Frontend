@@ -153,7 +153,7 @@ export default function RegisterForm() {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-foreground hover:underline font-medium"
+            className="text-foreground hover:underline font-medium underline"
           >
             Login
           </Link>

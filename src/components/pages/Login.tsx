@@ -1,5 +1,7 @@
 // import { LoginForm } from "@/components/login-form"
 
+import LoginForm from "../modules/Authentication/LoginFrom";
+
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -14,7 +16,7 @@ export default function LoginPage() {
 
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full ">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore aperiam dicta vel inventore veniam natus nisi eaque ducimus, nostrum itaque! Asperiores accusantium ex velit sunt, dignissimos quia consectetur. Totam, nulla!</p>
+          <LoginForm></LoginForm>
           </div>
         </div>
       </div>

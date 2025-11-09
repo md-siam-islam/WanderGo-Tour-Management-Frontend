@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form"
 import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dot } from "lucide-react"
-import { useSendotpMutation } from "@/redux/features/auth/auth.api"
+import { useSendotpMutation, useVerifyotpMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
 
 export default function Verify() {
@@ -34,7 +34,7 @@ export default function Verify() {
 
 
     const [confirm , setConfrim] = useState(false)
-    
+
     useEffect(() => {
         if (!email) {
             navigate("/")
@@ -42,6 +42,8 @@ export default function Verify() {
     }, [email])
 
     const [sendOtp] = useSendotpMutation()
+    const [verifyOtp] = useVerifyotpMutation()
+
 
     const sendOtpConfrim = async () => {
         const tostId = toast.loading("OTP Sending")
@@ -58,7 +60,6 @@ export default function Verify() {
         
     }
 
-    
 
     const FormSchema = z.object({
         pin: z.string().min(6, {
@@ -73,8 +74,21 @@ export default function Verify() {
         },
     })
 
-    const onSubmit = (data: z.infer<typeof FormSchema>) => {
-        console.log(data)
+    const onSubmit =  async (data: z.infer<typeof FormSchema>) => {
+        const userInfo = {
+            email : email,
+            otp : data.pin
+        }
+        const tostId = toast.loading("Otp Verifing....")
+         try {
+            const result =  await verifyOtp(userInfo).unwrap()
+            if(result.success){ 
+                toast.success("Your Otp Verify Successfull" , { id : tostId})
+                navigate("/")
+            }
+         } catch (error) {
+            console.log(error)
+         }
     }
 
     return (

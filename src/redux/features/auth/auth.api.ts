@@ -4,12 +4,17 @@ import baseApi from "@/redux/baseApi";
 interface Iotp {
     email : string
 }
+interface verifyOtp {
+    email : string,
+    otp : string
+}
 
 export interface IOtpResult {
   success: boolean
   message: string
   data: null
 }
+
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -33,8 +38,15 @@ const authApi = baseApi.injectEndpoints({
                 method: "POST",
                 data : userInfo
             })
+        }),
+        verifyotp : builder.mutation<IOtpResult,verifyOtp >({
+            query: (userInfo) => ({
+                url : "/otp/verify",
+                method: "POST",
+                data : userInfo
+            })
         })
     })
 })
 
-export const {useRegisterMutation , useLoginMutation , useSendotpMutation} = authApi
+export const {useRegisterMutation , useLoginMutation , useSendotpMutation , useVerifyotpMutation} = authApi

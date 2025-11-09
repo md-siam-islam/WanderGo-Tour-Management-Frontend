@@ -57,7 +57,7 @@ export default function LoginForm() {
     } catch (error : any) {
         console.log(error)
         if(error.status === 500){
-            navigate("/verify")
+            navigate("/verify" , {state : data.email})
             toast.error("Your account is not verified. Please verify your email before login.")
         }
     }

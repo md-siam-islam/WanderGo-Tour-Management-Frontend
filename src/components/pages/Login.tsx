@@ -9,7 +9,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         {/* logo part */}
         <div className="flex justify-center gap-2 md:justify-start">
-            <a href="#" className="w-[150px]">
+            <a href="/" className="w-[150px]">
               <img  src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
             </a>
         </div>

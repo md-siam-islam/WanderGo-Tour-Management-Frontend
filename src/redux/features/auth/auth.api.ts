@@ -1,22 +1,40 @@
 import baseApi from "@/redux/baseApi";
 
+
+interface Iotp {
+    email : string
+}
+
+export interface IOtpResult {
+  success: boolean
+  message: string
+  data: null
+}
+
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         register : builder.mutation({
             query: (userInfo) => ({
                  url: "/user/register",
                 method: "POST",
-                body: userInfo
+                data: userInfo
             })
         }),
         login : builder.mutation({
             query: (userInfo) => ({
                 url : "auth/login",
                 method: "POST",
-                body : userInfo
+                data : userInfo
+            })
+        }),
+        sendotp : builder.mutation<IOtpResult,Iotp >({
+            query: (userInfo) => ({
+                url : "/otp/send",
+                method: "POST",
+                data : userInfo
             })
         })
     })
 })
 
-export const {useRegisterMutation , useLoginMutation} = authApi
+export const {useRegisterMutation , useLoginMutation , useSendotpMutation} = authApi

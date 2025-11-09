@@ -46,7 +46,7 @@ export default function LoginForm() {
         const userInfo = {
             email: data.email,
             password: data.password
-    }
+          }
 
     const result = await login(userInfo).unwrap()
         console.log("User login" , result);
@@ -56,7 +56,11 @@ export default function LoginForm() {
         console.log(result)
     } catch (error : any) {
         console.log(error)
-        if(error.status === 500){
+
+        if(error.data.message === "Invalid email or password"){
+          toast.error("Invalid email or password")
+        }
+        if(error.data.message === "Your account is not verified"){
             navigate("/verify" , {state : data.email})
             toast.error("Your account is not verified. Please verify your email before login.")
         }

@@ -13,14 +13,19 @@ import {
 } from "@/components/ui/popover"
 import { ModeToggle } from "./mode-toggle"
 import { Link } from "react-router"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home"},
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
 ]
 
 export default function Component() {
+
+  const { data } = useUserInfoQuery(undefined)
+
+
   return (
     <header className="border-b border-gray-500 ">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
@@ -78,7 +83,7 @@ export default function Component() {
           {/* Main nav */}
           <div className="flex items-center gap-6">
             <a href="#" className="w-[120px]">
-              <img  src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
+              <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
             </a>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
@@ -99,9 +104,17 @@ export default function Component() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild className="text-sm">
+          {data?.data?.email && (
+            <Button asChild className="text-sm">
+            <a href="/login">Logout</a>
+          </Button>
+          )}
+          {!data?.data?.email && (
+            <Button asChild className="text-sm">
             <a href="/login">Login</a>
           </Button>
+          )}
+          
         </div>
       </div>
     </header>

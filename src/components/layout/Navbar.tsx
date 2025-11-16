@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/popover"
 import { ModeToggle } from "./mode-toggle"
 import { Link } from "react-router"
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
+import { useAppDispatch } from "@/redux/hooks"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -24,6 +26,17 @@ const navigationLinks = [
 export default function Component() {
 
   const { data } = useUserInfoQuery(undefined)
+
+  const [userLogout] = useLogoutMutation()
+  const dispatch = useAppDispatch()
+
+
+  const handleUserLogout = async() => {
+    await userLogout(undefined)
+    dispatch(authApi.util.resetApiState())
+    toast.success("User Logout Successfull")
+  }
+
 
 
   return (
@@ -105,8 +118,8 @@ export default function Component() {
         <div className="flex items-center gap-2">
           <ModeToggle />
           {data?.data?.email && (
-            <Button asChild className="text-sm">
-            <a href="/login">Logout</a>
+            <Button variant={"outline"} onClick={handleUserLogout} className="text-sm">
+            <a>Logout</a>
           </Button>
           )}
           {!data?.data?.email && (

@@ -16,7 +16,7 @@ export interface IOtpResult {
 }
 
 
-const authApi = baseApi.injectEndpoints({
+export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         register : builder.mutation({
             query: (userInfo) => ({
@@ -31,6 +31,13 @@ const authApi = baseApi.injectEndpoints({
                 method: "POST",
                 data : userInfo
             })
+        }),
+        logout : builder.mutation({
+            query: () => ({
+                url : "auth/logout",
+                method: "POST"
+            }),
+            invalidatesTags : ["USER"]
         }),
         sendotp : builder.mutation<IOtpResult,Iotp >({
             query: (userInfo) => ({
@@ -50,9 +57,10 @@ const authApi = baseApi.injectEndpoints({
             query : () => ({
                 url :"user/me",
                 method : "GET"
-            })
+            }),
+            providesTags : ["USER"]
         })
     })
 })
 
-export const {useRegisterMutation , useLoginMutation , useSendotpMutation , useVerifyotpMutation , useUserInfoQuery} = authApi
+export const {useRegisterMutation , useLoginMutation , useSendotpMutation , useVerifyotpMutation , useUserInfoQuery , useLogoutMutation} = authApi

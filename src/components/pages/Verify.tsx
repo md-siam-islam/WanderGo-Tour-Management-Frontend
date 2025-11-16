@@ -31,9 +31,26 @@ export default function Verify() {
     const navigate = useNavigate()
     const location = useLocation()
     const [email] = useState(location.state)
-
-
     const [confirm , setConfrim] = useState(false)
+    const [time , setTime] = useState(10)
+
+
+
+    useEffect(() => {
+
+        if(!email || !confirm){
+            return
+        }
+
+        const timeId = setInterval(() => {
+            if(email && confirm){
+                setTime((prev) => (prev > 0 ? prev-1 : 0) )
+            }
+        } , 1000)
+
+        return () => clearInterval(timeId)
+    }, [email , confirm])
+
 
     useEffect(() => {
         if (!email) {
@@ -48,10 +65,11 @@ export default function Verify() {
     const sendOtpConfrim = async () => {
         const tostId = toast.loading("OTP Sending")
         try {
-            const result = await sendOtp({email : email}).unwrap()
-            if(result.success){ 
-                toast.success("Your Otp  Successfull" , { id : tostId})
+                const result = await sendOtp({email : email}).unwrap()
+                if(result.success){ 
                 setConfrim(true)
+                setTime(10)
+                toast.success("Your Otp  Successfull" , { id : tostId})
             }
             
         } catch (error) {
@@ -155,12 +173,16 @@ export default function Verify() {
 
               <p className="text-sm text-foreground">
                 Didn’t get the code?{" "}
-                <button
+                <Button
+                onClick={sendOtpConfrim}
+                disabled = {time !== 0}
                   type="button"
-                  className="text-primary hover:underline font-medium"
+                  variant={"link"}
+                  className="text-primary  hover:underline font-medium pr-2"
                 >
                   Resend
-                </button>
+                </Button>
+                {time}
               </p>
 
             </form>

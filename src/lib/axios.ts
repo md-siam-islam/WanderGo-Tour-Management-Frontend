@@ -1,8 +1,9 @@
-import { config } from "@/config/env"
+
 import axios from "axios"
 
 export const axiosInstant = axios.create({
     baseURL : "http://localhost:5000/api/v1",
+    withCredentials : true
 })
 
 // Add a request interceptor

@@ -95,9 +95,9 @@ export default function Component() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="w-[120px]">
+            <Link to="/" className="w-[120px]">
               <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">

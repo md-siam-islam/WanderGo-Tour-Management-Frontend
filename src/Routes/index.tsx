@@ -5,8 +5,9 @@ import LoginPage from "@/components/pages/Login";
 import SignupPage from "@/components/pages/singup";
 import verify from "@/components/pages/Verify";
 import Dashboardlayout from "@/components/layout/Dashboardlayout";
-import analytics from "@/components/pages/Admin/analytics";
-import Booking from "@/components/pages/User/Booking";
+import { genarateSidebar } from "@/components/utlis/genarateSidebar";
+import adminSidebarItem from "./adminSidebarItem";
+import { userSidebarItem } from "./userSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -22,23 +23,14 @@ export const router = createBrowserRouter([
   {
     Component : Dashboardlayout,
     path:"/admin",
-    children : [
-
-      {
-        Component : analytics,
-        path : "analytics"
-      }
-    ]
+    children : [...genarateSidebar(adminSidebarItem)]
   },
   {
     Component : Dashboardlayout,
     path:"/user",
     children : [
 
-      {
-        Component : Booking,
-        path : "booking"
-      }
+      ...genarateSidebar(userSidebarItem)
     ]
   },
 

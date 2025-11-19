@@ -1,7 +1,4 @@
 import * as React from "react"
-
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -15,24 +12,20 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Link } from "react-router"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { getSidebaritem } from "./utlis/getSidebaritems"
 
 // This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/admin",
-      items: [
-        {
-          title: "Analytics",
-          url: "/admin/analytics",
-        },
-      ],
-    },
-  ],
-}
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+const { data: UserData} = useUserInfoQuery(undefined)
+
+const data = {
+  navMain: getSidebaritem(UserData?.data.role)
+}
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -44,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
+          <SidebarGroup key={item.title}> 
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>

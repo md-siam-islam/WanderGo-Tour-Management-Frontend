@@ -16,11 +16,14 @@ import { Link } from "react-router"
 import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
 import { useAppDispatch } from "@/redux/hooks"
+import { All_Role } from "../utlis/getSidebaritems"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home" ,role : "PUBLIC"},
+  { href: "/about", label: "About", role : "PUBLIC" },
+  { href: "/admin", label: "Dashboard" , role:All_Role.admin},
+  { href: "/user", label: "Dashboard" , role:All_Role.user},
 ]
 
 export default function Component() {
@@ -102,13 +105,30 @@ export default function Component() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
+                  <>
+                  {
+                    link.role === "PUBLIC" && (
+                      <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       className="py-1.5 font-medium text-muted-foreground hover:text-primary"
                     >
                       <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
+                    )
+                  }
+                  {
+                    link.role === data?.data?.role && (
+                      <NavigationMenuItem key={index}>
+                    <NavigationMenuLink
+                      className="py-1.5 font-medium text-muted-foreground hover:text-primary"
+                    >
+                      <Link to={link.href}>{link.label}</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                    )
+                  }
+                  </>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>

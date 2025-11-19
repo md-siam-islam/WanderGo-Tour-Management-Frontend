@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "@/App";
 import About from "@/components/pages/About";
 import LoginPage from "@/components/pages/Login";
@@ -8,6 +8,10 @@ import Dashboardlayout from "@/components/layout/Dashboardlayout";
 import { genarateSidebar } from "@/components/utlis/genarateSidebar";
 import adminSidebarItem from "./adminSidebarItem";
 import { userSidebarItem } from "./userSidebarItems";
+import { withAuth } from "@/components/utlis/withAuth";
+import Unauth from "@/components/pages/Unauth";
+import { All_Role } from "@/components/utlis/getSidebaritems";
+import type { Role } from "@/Alltypes/Type";
 
 export const router = createBrowserRouter([
   {
@@ -15,21 +19,21 @@ export const router = createBrowserRouter([
     path: "/",
     children : [
         {
-           path : "/about", 
-           element : <About />
+          Component : withAuth(About , All_Role.admin as Role) ,
+          path : "/about"
         }
     ]
   },
   {
-    Component : Dashboardlayout,
+    Component : withAuth(Dashboardlayout , All_Role.admin as Role),
     path:"/admin",
-    children : [...genarateSidebar(adminSidebarItem)]
+    children : [{index : true, element : <Navigate to={"/admin/analytics"}></Navigate>},...genarateSidebar(adminSidebarItem)]
   },
   {
-    Component : Dashboardlayout,
+    Component : withAuth(Dashboardlayout , All_Role.user as Role),
     path:"/user",
     children : [
-
+      {index : true, element : <Navigate to={'/user/booking'}></Navigate>},
       ...genarateSidebar(userSidebarItem)
     ]
   },
@@ -45,5 +49,9 @@ export const router = createBrowserRouter([
   {
     Component : verify,
     path : "/verify"
+  },
+  {
+    Component : Unauth,
+    path : "/unauth"
   }
 ]);

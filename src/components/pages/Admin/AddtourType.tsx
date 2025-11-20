@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tour.api";
 import { Trash2, Pencil, Eye } from "lucide-react";
+import { AddtourtypeModal } from "./Tour-type/AddtourtypeModal";
 
 const AddtourType = () => {
   const { data } = useGetTourtypeQuery(undefined);
@@ -18,7 +18,7 @@ const AddtourType = () => {
     <div className="flex  flex-col">
       <div className="flex justify-between my-4">
         <h1 className="text-xl font-semibold">Tour Types</h1>
-        <Button>Add Tour type</Button>
+        <AddtourtypeModal/>
       </div>
 
       <div className="border border-accent-foreground my-8 rounded-xl shadow-sm p-4 bg-white dark:bg-neutral-900">
@@ -26,9 +26,10 @@ const AddtourType = () => {
         <h2 className="text-xl font-semibold mb-4">Tour Type List</h2>
 
         <Table>
-          <TableCaption>Manage all tour types here</TableCaption>
 
+          {/* <TableCaption>Manage all tour types here</TableCaption> */}
           {/* Table Head */}
+
           <TableHeader>
             <TableRow className="bg-muted/40">
               <TableHead className="font-semibold text-left">Name</TableHead>

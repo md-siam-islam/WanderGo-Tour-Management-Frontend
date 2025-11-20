@@ -63,9 +63,8 @@ export default function RegisterForm() {
 
         const result = await register(userInfo).unwrap()
         console.log("Registration successful:", result)
+         navigate("/verify" , {state : data.email})
         toast.success("User registration successful!.")
-        navigate('/verify')
-
         form.reset()
 
     } catch (error) {

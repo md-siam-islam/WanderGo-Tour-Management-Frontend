@@ -43,8 +43,14 @@ export default function Component() {
 
 
   return (
-    <header className="border-b border-gray-500 ">
+    <header className="">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
+
+        <div className="w-[150px] h-[70px] flex items-center justify-center pt-1.5">
+          <Link to="/" className="w-100% h-100%">
+              <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
+            </Link>
+        </div>
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -98,9 +104,9 @@ export default function Component() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Link to="/" className="w-[120px]">
+            {/* <Link to="/" className="w-[120px]">
               <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
-            </Link>
+            </Link> */}
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
@@ -135,6 +141,7 @@ export default function Component() {
           </div>
         </div>
         {/* Right side */}
+
         <div className="flex items-center gap-2">
           <ModeToggle />
           {data?.data?.email && (
@@ -149,6 +156,7 @@ export default function Component() {
           )}
           
         </div>
+
       </div>
     </header>
   )

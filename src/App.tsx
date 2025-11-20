@@ -5,7 +5,7 @@ import adminSidebarItem from "./Routes/adminSidebarItem"
 
 function App() {
 
-  console.log(genarateSidebar(adminSidebarItem))
+  // console.log(genarateSidebar(adminSidebarItem))
   return (
     <>
       <CommonLayout>

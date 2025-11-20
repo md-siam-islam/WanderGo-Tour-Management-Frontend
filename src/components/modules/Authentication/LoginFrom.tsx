@@ -13,8 +13,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router"
 import Password from "@/components/ui/password"
-import { useLoginMutation } from "@/redux/features/auth/auth.api"
+import { authApi, useLoginMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
+import { useAppDispatch } from "@/redux/hooks"
 
 // Validation Schema
 const registerSchema = z.object({
@@ -53,10 +54,8 @@ export default function LoginForm() {
         toast.success("User Login successful!.")
         form.reset()
         navigate('/')
-        console.log(result)
     } catch (error : any) {
         console.log(error)
-
         if(error.data.message === "Invalid email or password"){
           toast.error("Invalid email or password")
         }

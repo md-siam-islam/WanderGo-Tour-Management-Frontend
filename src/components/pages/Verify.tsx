@@ -34,7 +34,11 @@ export default function Verify() {
     const [confirm , setConfrim] = useState(false)
     const [time , setTime] = useState(10)
 
-
+   useEffect(() => {
+        if (!email) {
+            navigate("/")
+        }
+    }, [email])
 
     useEffect(() => {
 
@@ -52,11 +56,7 @@ export default function Verify() {
     }, [email , confirm])
 
 
-    useEffect(() => {
-        if (!email) {
-            navigate("/")
-        }
-    }, [email])
+
 
     const [sendOtp] = useSendotpMutation()
     const [verifyOtp] = useVerifyotpMutation()

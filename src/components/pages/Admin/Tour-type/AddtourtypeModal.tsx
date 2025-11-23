@@ -30,6 +30,7 @@ import z from "zod"
 export function AddtourtypeModal() {
     
 const [isOpen, setIsOpen] = useState(false);
+
   const tourTypeSchema = z.object({
     name: z.string().max(50, "Name must be at most 50 characters long")
   })

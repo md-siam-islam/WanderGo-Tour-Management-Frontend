@@ -21,9 +21,11 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useAddDivisionMutation } from "@/redux/features/Division/division.api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import z from "zod"
 
 export function Adddivision() {
@@ -43,10 +45,29 @@ console.log("Selected image file from division: ", image);
     defaultValues: { name: ""  , description: ""}
   })
 
+  const [addDivision] = useAddDivisionMutation()
+
 
   const onsubmitHandle = async (data: z.infer<typeof tourTypeSchema>) => {
-    
-    
+
+    const toastId = toast.loading("Adding division...");
+
+        try {
+            const fromData = new FormData();
+            fromData.append("data" , JSON.stringify(data));
+            fromData.append("file" , image as File);
+            const result = await addDivision(fromData).unwrap();
+            if(result.success){
+
+                toast.success("Division added successfully!" , { id: toastId });
+            }
+            setIsOpen(false);
+            form.reset();
+        } catch (error) {
+            toast.error("Failed to add division. Please try again.");
+            console.error("Error adding division: ", error);
+            return; 
+        }
   }
 
   return (

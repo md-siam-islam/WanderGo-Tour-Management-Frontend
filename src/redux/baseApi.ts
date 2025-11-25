@@ -4,7 +4,7 @@ import { axiosBaseQuery } from './axiosBaseQuery'
 const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: axiosBaseQuery(),
-    tagTypes : ["USER" ,"TOUR-TYPE"],
+    tagTypes : ["USER" ,"TOUR-TYPE" , "DIVISION"],
     endpoints: (builder) => ({})
 })
 

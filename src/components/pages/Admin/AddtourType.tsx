@@ -88,6 +88,10 @@ const AddtourType = () => {
             )}
           </TableBody>
         </Table>
+
+
+
+        
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { useGetTourtypeQuery, useRemoveTourtypeMutation } from "@/redux/features/tour/tour.api";
 import { Trash2, Pencil, Eye } from "lucide-react";
-import { AddtourtypeModal } from "./Tour-type/AddtourtypeModal";
+import { AddtourtypeModal } from "./All-Modal/AddtourtypeModal";
 import { Deleteconfrimation } from "@/components/modules/All-Confrim-File/deleteconfrimation";
 import { toast } from "sonner";
 

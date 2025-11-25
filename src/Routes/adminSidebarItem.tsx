@@ -2,6 +2,7 @@ import type { ISidebaritema } from "@/Alltypes/Type";
 import Addtour from "@/components/pages/Admin/Addtour";
 import AddtourType from "@/components/pages/Admin/AddtourType";
 import analytics from "@/components/pages/Admin/analytics";
+import Division from "@/components/pages/Admin/Division";
 
  export const adminSidebarItem : ISidebaritema[] = [
     {
@@ -21,6 +22,11 @@ import analytics from "@/components/pages/Admin/analytics";
           title: "Add Tour Type",
           url: "/admin/add-tour-type",
           Component : AddtourType
+        },
+        {
+          title: "Add Division",
+          url: "/admin/division",
+          Component : Division
         },
       ],
     },

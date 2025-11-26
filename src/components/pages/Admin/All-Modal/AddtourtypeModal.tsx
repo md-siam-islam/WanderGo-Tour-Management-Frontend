@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form"
 
 import { Input } from "@/components/ui/input"
-import { useAddTourtypeMutation } from "@/redux/features/tour/tour.api"
+import { useAddTourtypeMutation } from "@/redux/features/tour/tourType.api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"

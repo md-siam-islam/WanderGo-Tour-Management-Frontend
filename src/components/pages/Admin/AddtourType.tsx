@@ -7,27 +7,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTourtypeQuery, useRemoveTourtypeMutation } from "@/redux/features/tour/tour.api";
+import { useGetSingleTourtypeMutation, useGetTourtypeQuery, useRemoveTourtypeMutation } from "@/redux/features/tour/tourType.api";
 import { Trash2, Pencil, Eye } from "lucide-react";
 import { AddtourtypeModal } from "./All-Modal/AddtourtypeModal";
 import { Deleteconfrimation } from "@/components/modules/All-Confrim-File/deleteconfrimation";
 import { toast } from "sonner";
+import { useState } from "react";
+import { AllTourTypeviewModal } from "./Tour-type/AllTour-typeViewModal";
 
 const AddtourType = () => {
+
+  const [selectedTourType, setSelectedTourType] = useState<any>(null);
+  const [isViewOpen, setIsViewOpen] = useState(false);
+
   const { data } = useGetTourtypeQuery(undefined);
-
   const [deleteTourtype] = useRemoveTourtypeMutation();
+  const [getSingleTourtype] = useGetSingleTourtypeMutation();
 
-  const handaleTourtypeDelete = async(tourId: string) => {
-      const tostId = toast.loading("Deleting tour type...");
-      try {
-        const result = await deleteTourtype(tourId).unwrap();
-        if(result.success){
-          toast.success("Tour type deleted successfully", { id: tostId });
-        }
-      } catch (error) {
-        toast.error("Failed to delete tour type", { id: tostId });
+  const handaleTourtypeDelete = async (tourId: string) => {
+    const tostId = toast.loading("Deleting tour type...");
+    try {
+      const result = await deleteTourtype(tourId).unwrap();
+      if (result.success) {
+        toast.success("Tour type deleted successfully", { id: tostId });
       }
+    } catch (error) {
+      toast.error("Failed to delete tour type", { id: tostId });
+    }
+  }
+
+
+  const handleSingleTourTypeView = async(tourTypeID: string) => {
+    const result = await getSingleTourtype(tourTypeID)
+   setSelectedTourType(result.data.data);
+   setIsViewOpen(true);
   }
 
   return (
@@ -70,17 +83,17 @@ const AddtourType = () => {
                       <Pencil size={16} />
                       Edit
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-1">
+                    <Button onClick={() => handleSingleTourTypeView(item._id as string)} variant="outline" size="sm" className="gap-1">
                       <Eye size={16} />
                       View
                     </Button>
 
                     {/* Delete Button */}
-                    <Deleteconfrimation onConfirm={() => handaleTourtypeDelete(item._id)}>  
+                    <Deleteconfrimation onConfirm={() => handaleTourtypeDelete(item._id)}>
                       <Button variant="destructive" size="sm" className="gap-1">
-                      <Trash2 size={16} />
-                      Delete
-                    </Button>
+                        <Trash2 size={16} />
+                        Delete
+                      </Button>
                     </Deleteconfrimation>
                   </TableCell>
                 </TableRow>
@@ -90,8 +103,9 @@ const AddtourType = () => {
         </Table>
 
 
+            <AllTourTypeviewModal open={isViewOpen} onOpenChange={setIsViewOpen} tourType={selectedTourType}/>
 
-        
+
       </div>
     </div>
   );

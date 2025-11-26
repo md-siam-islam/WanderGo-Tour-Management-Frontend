@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Adddivision } from "./All-Modal/AdddivisionModal";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useGetDivisionsQuery, useGetsingleDivisionsMutation } from "@/redux/features/Division/division.api";
+import { useGetDivisionsQuery, useGetsingleDivisionsMutation, useRemoveDivisionsMutation } from "@/redux/features/Division/division.api";
 import { Deleteconfrimation } from "@/components/modules/All-Confrim-File/deleteconfrimation";
 import { AlldivisionView } from "./Division/AlldivisionViewModal";
 import { useState } from "react";
@@ -21,14 +21,20 @@ const Division = () => {
 
   const [selectedDivision, setSelectedDivision] = useState<any>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
-
-
   const { data } = useGetDivisionsQuery(undefined);
-
   const [singleData] = useGetsingleDivisionsMutation();
+  const [removeDivision] = useRemoveDivisionsMutation()
 
-  const handleDelete = (divisionId: string) => {
-    console.log("Delete division with ID: ", divisionId);
+  const handleDelete = async(divisionId: string) => {
+    const tostId = toast.loading("Deleting division...");
+     try {
+         const result = await removeDivision(divisionId).unwrap();
+         if(result.success){
+          toast.success("Division deleted successfully", { id: tostId });
+         }
+     } catch (error) {
+        toast.error("Failed to delete division", { id: tostId });
+     }
 
   }
 

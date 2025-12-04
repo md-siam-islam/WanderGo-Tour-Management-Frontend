@@ -9,11 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import type { FileMetadata } from "@/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
+import { useCreateTourMutation } from "@/redux/features/tour/tour.api";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { format, formatISO } from "date-fns";
 import { Calendar1Icon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
 
 
 const Addtour = () => {
@@ -32,48 +36,84 @@ const Addtour = () => {
     leable: item.name
   }))
 
-  console.log("divisiondata", divisionData)
+const [addTour] = useCreateTourMutation();
 
-  const handlesubmit = (data: any) => {
+const tourSchema = z.object({
 
-    const tourData = {
-      ...data,
-      startDate: formatISO(data.startDate),
-      endDate: formatISO(data.endDate),
-    }
+  title: z.string().min(1, "Title is required"),
+  location: z.string().min(1, "Location is required"),
+  costFrom: z.coerce.number().min(1, "Cost must be a positive number"),
+  maxGests: z.coerce.number().min(1, "Max guests must be a number"),
+  minAge: z.coerce.number().min(1, "Min age is required"),
+  division: z.string().min(1, "Division is required"),
+  tourType: z.string().min(1, "Tour type is required"),
+
+  startDate: z.date( "Start date is required" ),
+  endDate: z.date("End date is required" ),
+
+  departureLocation: z.string().min(1, "Departure location required"),
+  arrivalLocation: z.string().min(1, "Arrival location required"),
+
+  description: z.string().min(10, "Description must be at least 10 characters"),
+
+});
+
+
+const form = useForm({
+  resolver: zodResolver(tourSchema),
+  defaultValues: {
+    title: "",
+    location: "",
+    costFrom: 0,
+    maxGests: 0,
+    minAge: 0,
+    division: "",
+    tourType: "",
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
+    departureLocation: "",
+    arrivalLocation: "",
+    description: ""
+  }
+});
+
+
+  const handlesubmit = async(data: z.infer<typeof tourSchema>) => {
+  const tostId = toast.loading("Adding tour....")
+
+  const tourData = {
+    ...data,
+    costFrom: Number(data.costFrom),
+    maxGests: Number(data.maxGests),
+    minAge: Number(data.minAge),
+    startDate: data.startDate ? formatISO(data.startDate) : undefined,
+    endDate: data.endDate ? formatISO(data.endDate) : undefined,
+  };
      
-    const formData = new FormData();
+  const formData = new FormData();
 
   image.forEach((img) => {
   if (img instanceof File) {
     formData.append("files", img);
   }
+})
 
   formData.append("data", JSON.stringify(tourData));
-
-
-});
-
-    console.log("tourData", tourData)
-    console.log("Image from create", image)
+  try {
+  const result = await addTour(formData).unwrap()
+  if(result.success){
+    toast.success("Tour added successfully!" , { id: tostId });
+  }
+  form.reset()
+  console.log(result)
+    
+  } catch (error) {
+    toast.error("Failed to add tour." , { id: tostId });
+    console.log(error)
   }
 
-  const form = useForm({
-    defaultValues: {
-      title: "",
-      location: "",
-      costFrom: "",
-      maxGests: "",
-      minAge: "",
-      division: "",
-      tourType: "",
-      startDate: undefined,
-      endDate: undefined,
-      departureLocation: "",
-      arrivalLocation: "",
-      description: ""
-    }
-  })
+};
+
   return (
     <div className=" flex justify-center items-center border border-accent-foregroundrounded rounded-2xl mt-5">
 

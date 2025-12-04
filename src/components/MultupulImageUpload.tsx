@@ -67,6 +67,7 @@ export default function MultupulImageUpload({ onChange }: { onChange: Dispatch<R
                 Uploaded Files ({files.length})
               </h3>
               <Button
+              type="button"
                 disabled={files.length >= maxFiles}
                 onClick={openFileDialog}
                 size="sm"
@@ -92,6 +93,7 @@ export default function MultupulImageUpload({ onChange }: { onChange: Dispatch<R
                     src={file.preview}
                   />
                   <Button
+                  type="button"
                     aria-label="Remove image"
                     className="-top-2 -right-2 absolute size-6 rounded-full border-2 border-background shadow-none focus-visible:border-background"
                     onClick={() => removeFile(file.id)}
@@ -115,7 +117,7 @@ export default function MultupulImageUpload({ onChange }: { onChange: Dispatch<R
             <p className="text-muted-foreground text-xs">
               SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
             </p>
-            <Button className="mt-4" onClick={openFileDialog} variant="outline">
+            <Button type="button" className="mt-4" onClick={openFileDialog} variant="outline">
               <UploadIcon aria-hidden="true" className="-ms-1 opacity-60" />
               Select images
             </Button>

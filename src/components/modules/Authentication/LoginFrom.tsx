@@ -13,9 +13,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router"
 import Password from "@/components/ui/password"
-import { authApi, useLoginMutation } from "@/redux/features/auth/auth.api"
+import { useLoginMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
-import { useAppDispatch } from "@/redux/hooks"
+
 
 // Validation Schema
 const registerSchema = z.object({

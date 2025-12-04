@@ -57,7 +57,7 @@ const Division = () => {
           <TableHeader>
             <TableRow className="bg-muted/40">
               <TableHead className="font-semibold text-left">Name</TableHead>
-              <TableHead className="font-semibold text-left">Description</TableHead>
+              {/* <TableHead className="font-semibold text-left">Description</TableHead> */}
               <TableHead className="font-semibold text-center">Slug</TableHead>
               <TableHead className="font-semibold text-center w-[180px]">Action</TableHead>
             </TableRow>
@@ -71,9 +71,9 @@ const Division = () => {
               >
                 <TableCell className="font-medium">{item.name}</TableCell>
 
-                <TableCell className="text-gray-600 line-clamp-2">
+                {/* <TableCell className="text-gray-600 line-clamp-2">
                   {item.description || "—"}
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell className="text-center text-gray-700">
                   {item.slug}

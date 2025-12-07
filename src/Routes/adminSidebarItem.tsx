@@ -1,6 +1,7 @@
 import type { ISidebaritema } from "@/Alltypes/Type";
 import Addtour from "@/components/pages/Admin/Addtour";
 import AddtourType from "@/components/pages/Admin/AddtourType";
+import AllTour from "@/components/pages/Admin/AllTour";
 import analytics from "@/components/pages/Admin/analytics";
 import Division from "@/components/pages/Admin/Division";
 
@@ -12,6 +13,16 @@ import Division from "@/components/pages/Admin/Division";
           title: "Analytics",
           url: "/admin/analytics",
           Component : analytics
+        },
+        {
+          title: "Add Tour",
+          url: "/admin/add-tour",
+          Component : Addtour
+        },
+        {
+          title: "All Tour",
+          url: "/admin/all-tour",
+          Component : AllTour
         },
         {
           title: "Add Tour",

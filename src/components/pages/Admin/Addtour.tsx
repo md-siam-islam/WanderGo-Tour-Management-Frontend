@@ -97,7 +97,8 @@ const Addtour = () => {
       minAge: Number(data.minAge),
       startDate: data.startDate ? formatISO(data.startDate) : undefined,
       endDate: data.endDate ? formatISO(data.endDate) : undefined,
-      // includes : data.included.map((item: {value : string}) => item.value),
+      included : data.included.map((item: {value : string}) => item.value),
+      excluded : data.excluded.map((item: {value : string}) => item.value),
     };
 
     console.log("Tour Data", tourData);
@@ -433,7 +434,7 @@ const Addtour = () => {
             </div>
             {/* Image Upload Section */}
 
-            {/* Included part start  */}
+             {/* Included part start  */}
             <div className="flex items-center gap-3">
               <p className="flex-1">Append Included </p>
               <Button variant="outline" type="button" onClick={() => append({ value: "" })}>
@@ -460,7 +461,7 @@ const Addtour = () => {
                       )}
                     />
 
-                    <Button type="button" onClick={() => remove(index)} >
+                    <Button type="button" onClick={ () => remove(index) } >
                       <Trash2 size={15} />
                     </Button>
                   </div>
@@ -471,7 +472,7 @@ const Addtour = () => {
             {/* Included part end  */}
 
 
-            {/* Excluded part start */}
+             {/* Excluded part start */}
             <div className="flex items-center gap-3">
               <p className="flex-1">Append Excluded </p>
               <Button variant="outline" type="button" onClick={() => appendExcluded({ value: "" })}>
@@ -498,7 +499,7 @@ const Addtour = () => {
                       )}
                     />
 
-                    <Button type="button" onClick={() => removeExcluded(index)} >
+                    <Button type="button" onClick={ () => removeExcluded(index) } >
                       <Trash2 size={15} />
                     </Button>
                   </div>

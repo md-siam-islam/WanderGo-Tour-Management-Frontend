@@ -19,7 +19,6 @@ export  const axiosBaseQuery = (): BaseQueryFn<{ url: string
         data,
         params,
         headers,
-
       })
       return { data: result.data }
     } catch (axiosError) {

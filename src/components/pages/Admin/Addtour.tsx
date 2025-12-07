@@ -13,9 +13,9 @@ import { useCreateTourMutation } from "@/redux/features/tour/tour.api";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, formatISO } from "date-fns";
-import { Calendar1Icon } from "lucide-react";
+import { Calendar1Icon, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -36,83 +36,95 @@ const Addtour = () => {
     leable: item.name
   }))
 
-const [addTour] = useCreateTourMutation();
+  const [addTour] = useCreateTourMutation();
 
-const tourSchema = z.object({
+  const tourSchema = z.object({
 
-  title: z.string().min(1, "Title is required"),
-  location: z.string().min(1, "Location is required"),
-  costFrom: z.coerce.number().min(1, "Cost must be a positive number"),
-  maxGests: z.coerce.number().min(1, "Max guests must be a number"),
-  minAge: z.coerce.number().min(1, "Min age is required"),
-  division: z.string().min(1, "Division is required"),
-  tourType: z.string().min(1, "Tour type is required"),
-
-  startDate: z.date( "Start date is required" ),
-  endDate: z.date("End date is required" ),
-
-  departureLocation: z.string().min(1, "Departure location required"),
-  arrivalLocation: z.string().min(1, "Arrival location required"),
-
-  description: z.string().min(10, "Description must be at least 10 characters"),
-
-});
+    title: z.string().min(1, "Title is required"),
+    location: z.string().min(1, "Location is required"),
+    costFrom: z.coerce.number().min(1, "Cost must be a positive number"),
+    maxGests: z.coerce.number().min(1, "Max guests must be a number"),
+    minAge: z.coerce.number().min(1, "Min age is required"),
+    division: z.string().min(1, "Division is required"),
+    tourType: z.string().min(1, "Tour type is required"),
+    startDate: z.date("Start date is required").optional(),
+    endDate: z.date("End date is required").optional(),
+    departureLocation: z.string().min(1, "Departure location required"),
+    arrivalLocation: z.string().min(1, "Arrival location required"),
+    description: z.string().min(10, "Description must be at least 10 characters"),
+    included: z.array(z.object({ value: z.string().min(1, "Included item is required") })),
+    excluded: z.array(z.object({ value: z.string().min(1, "Excluded item is required") })),
+  });
 
 
-const form = useForm({
-  resolver: zodResolver(tourSchema),
-  defaultValues: {
-    title: "",
-    location: "",
-    costFrom: 0,
-    maxGests: 0,
-    minAge: 0,
-    division: "",
-    tourType: "",
-    startDate: undefined as Date | undefined,
-    endDate: undefined as Date | undefined,
-    departureLocation: "",
-    arrivalLocation: "",
-    description: ""
-  }
-});
+  const form = useForm({
+    resolver: zodResolver(tourSchema),
+    defaultValues: {
+      title: "",
+      location: "",
+      costFrom: 0,
+      maxGests: 0,
+      minAge: 0,
+      division: "",
+      tourType: "",
+      startDate: undefined as Date | undefined,
+      endDate: undefined as Date | undefined,
+      departureLocation: "",
+      arrivalLocation: "",
+      description: "",
+      included: [{ value: "" }],
+      excluded: [{ value: "" }]
+    }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "included"
+  })
+  const { fields: excludedFields, append: appendExcluded, remove: removeExcluded } = useFieldArray({
+    control: form.control,
+    name: "excluded"
+  })
 
 
-  const handlesubmit = async(data: z.infer<typeof tourSchema>) => {
-  const tostId = toast.loading("Adding tour....")
+  const handlesubmit = async (data: z.infer<typeof tourSchema>) => {
+    const tostId = toast.loading("Adding tour....")
 
-  const tourData = {
-    ...data,
-    costFrom: Number(data.costFrom),
-    maxGests: Number(data.maxGests),
-    minAge: Number(data.minAge),
-    startDate: data.startDate ? formatISO(data.startDate) : undefined,
-    endDate: data.endDate ? formatISO(data.endDate) : undefined,
+    const tourData = {
+      ...data,
+      costFrom: Number(data.costFrom),
+      maxGests: Number(data.maxGests),
+      minAge: Number(data.minAge),
+      startDate: data.startDate ? formatISO(data.startDate) : undefined,
+      endDate: data.endDate ? formatISO(data.endDate) : undefined,
+      // includes : data.included.map((item: {value : string}) => item.value),
+    };
+
+    console.log("Tour Data", tourData);
+
+    const formData = new FormData();
+
+    image.forEach((img) => {
+      if (img instanceof File) {
+        formData.append("files", img);
+      }
+    })
+
+    formData.append("data", JSON.stringify(tourData));
+    try {
+      const result = await addTour(formData).unwrap()
+      if (result.success) {
+        toast.success("Tour added successfully!", { id: tostId });
+      }
+      form.reset()
+      console.log(result)
+
+    } catch (error) {
+      toast.error("Failed to add tour.", { id: tostId });
+      console.log(error)
+    }
+
   };
-     
-  const formData = new FormData();
-
-  image.forEach((img) => {
-  if (img instanceof File) {
-    formData.append("files", img);
-  }
-})
-
-  formData.append("data", JSON.stringify(tourData));
-  try {
-  const result = await addTour(formData).unwrap()
-  if(result.success){
-    toast.success("Tour added successfully!" , { id: tostId });
-  }
-  form.reset()
-  console.log(result)
-    
-  } catch (error) {
-    toast.error("Failed to add tour." , { id: tostId });
-    console.log(error)
-  }
-
-};
 
   return (
     <div className=" flex justify-center items-center border border-accent-foregroundrounded rounded-2xl mt-5">
@@ -158,12 +170,13 @@ const form = useForm({
                   <FormItem className="flex-1">
                     <FormLabel>CostFrom</FormLabel>
                     <FormControl>
-                      <Input className="w-full" placeholder="Enter Tour CostFrom" {...field} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour CostFrom" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
             </div>
 
             <div className="flex gap-5">
@@ -176,7 +189,7 @@ const form = useForm({
                   <FormItem className="flex-1">
                     <FormLabel>Max Gests</FormLabel>
                     <FormControl>
-                      <Input className="w-full" placeholder="Enter Tour Max Gests" {...field} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour Max Gests" {...field} value={field.value ?? ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -186,11 +199,12 @@ const form = useForm({
               <FormField
                 control={form.control}
                 name="minAge"
+
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel>Min Gests</FormLabel>
                     <FormControl>
-                      <Input className="w-full" placeholder="Enter Tour Min Gests" {...field} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour Min Gests" {...field} value={field.value ?? ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -417,6 +431,83 @@ const form = useForm({
                 </div>
               </div>
             </div>
+            {/* Image Upload Section */}
+
+            {/* Included part start  */}
+            <div className="flex items-center gap-3">
+              <p className="flex-1">Append Included </p>
+              <Button variant="outline" type="button" onClick={() => append({ value: "" })}>
+                <Plus size={15} />
+              </Button>
+            </div>
+
+            <div>
+              {
+                fields.map((item, index) => (
+
+                  <div className="flex items-center justify-center gap-2 mt-3">
+                    <FormField
+                      control={form.control}
+                      name={`included.${index}.value`}
+                      key={item.id}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <Input type="text" className="w-full" placeholder="Enter Included Item" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button type="button" onClick={() => remove(index)} >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
+
+                ))
+              }
+            </div>
+            {/* Included part end  */}
+
+
+            {/* Excluded part start */}
+            <div className="flex items-center gap-3">
+              <p className="flex-1">Append Excluded </p>
+              <Button variant="outline" type="button" onClick={() => appendExcluded({ value: "" })}>
+                <Plus size={15} />
+              </Button>
+            </div>
+
+            <div>
+              {
+                excludedFields.map((item, index) => (
+
+                  <div className="flex items-center justify-center gap-2 mt-3">
+                    <FormField
+                      control={form.control}
+                      name={`excluded.${index}.value`}
+                      key={item.id}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <Input type="text" className="w-full" placeholder="Enter Excluded Item" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button type="button" onClick={() => removeExcluded(index)} >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
+
+                ))
+              }
+            </div>
+
+            {/* Excluded part end  */}
 
 
             <Button type="submit" className="w-full">

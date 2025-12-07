@@ -6,11 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
+import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 
 const AllTour = () => {
   const { data, isLoading } = useGetAlltourQuery(undefined);
+  const {data : DivisionData} = useGetDivisionsQuery(undefined);
+  const {data : tourTypeData} = useGetTourtypeQuery(undefined);
 
-  // ট্যুর টাইপ অনুযায়ী ইমেজ/আইকন ম্যাপিং
   const tourTypeImages = {
     'adventure': {
       image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -62,7 +65,6 @@ const AllTour = () => {
     }
   };
 
-  // ডিফল্ট ইমেজ/আইকন
   const defaultTourType = {
     image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     icon: FileText,
@@ -162,12 +164,19 @@ const AllTour = () => {
                 </div>
                 
                 {/* Tour Type Badge */}
-                <div className="absolute top-4 left-4">
+
+                {
+                    tourTypeData?.data?.data?.map((item : any) => item._id === tour.tourType &&(
+                        <div className="absolute top-4 left-4">
                   <Badge className={`${tourConfig.bgColor} backdrop-blur-sm border-0 text-gray-800 hover:${tourConfig.bgColor}/80 gap-1`}>
-                    <TourIcon className="h-3 w-3" />
-                    {tour.tourType || "General"}
+                  
+                    <TourIcon className="h-8 w-8" />
+                    {item.name || "General"}
                   </Badge>
                 </div>
+                    ))
+                }
+                
                 
                 {/* Price Overlay */}
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
@@ -217,14 +226,14 @@ const AllTour = () => {
                   {/* Locations */}
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
-                      <Navigation className="h-4 w-4 text-amber-600 mt-0.5" />
+                      <Navigation className="h-6 w-6 text-amber-600 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium">Departure</p>
                         <p className="text-sm text-muted-foreground">{tour.departureLocation || "Not specified"}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-green-600 mt-0.5" />
+                      <MapPin className="h-6 w-6 text-green-600 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium">Arrival</p>
                         <p className="text-sm text-muted-foreground">{tour.arrivalLocation || "Not specified"}</p>
@@ -235,7 +244,7 @@ const AllTour = () => {
                   {/* Division */}
                   {tour.division && (
                     <div className="flex items-center gap-2">
-                      <Building className="h-4 w-4 text-purple-600" />
+                      <Building className="h-6 w-6 text-purple-600" />
                       <div>
                         <p className="text-sm font-medium">Region</p>
                         <Badge variant="outline" className="text-xs">
@@ -248,14 +257,14 @@ const AllTour = () => {
                   {/* Included/Excluded Summary */}
                   <div className="grid grid-cols-2 gap-4 pt-2">
                     <div className={`p-2 rounded-lg ${tourConfig.bgColor} flex items-center gap-2 border-foreground-primary border`}>
-                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <CheckCircle className="h-6 w-6 text-green-600" />
                       <div>
                         <p className="text-xs text-gray-600">Included</p>
                         <p className="text-sm font-semibold text-green-600">{tour.included?.length || 0} items</p>
                       </div>
                     </div>
                     <div className="p-2 rounded-lg bg-gray-50 flex items-center gap-2 border-foreground-primary border">
-                      <XCircle className="h-4 w-4 text-red-600" />
+                      <XCircle className="h-6 w-6 text-red-600" />
                       <div>
                         <p className="text-xs text-gray-600">Excluded</p>
                         <p className="text-sm font-semibold text-red-600">{tour.excluded?.length || 0} items</p>

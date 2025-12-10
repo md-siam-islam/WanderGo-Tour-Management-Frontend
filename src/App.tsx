@@ -1,7 +1,7 @@
 import { Outlet } from "react-router"
 import CommonLayout from "./components/layout/ComonLayout"
-import { genarateSidebar } from "./components/utlis/genarateSidebar"
-import adminSidebarItem from "./Routes/adminSidebarItem"
+// import { genarateSidebar } from "./components/utlis/genarateSidebar"
+// import adminSidebarItem from "./Routes/adminSidebarItem"
 
 function App() {
 

@@ -46,7 +46,7 @@ export default function Component() {
     <header className="">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
 
-        <div className="w-[150px] h-[70px] flex items-center justify-center pt-1.5">
+        <div className="w-[150px] h-[60px] flex items-center justify-center pt-1.5 mb-1">
           <Link to="/" className="w-100% h-100%">
               <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
             </Link>

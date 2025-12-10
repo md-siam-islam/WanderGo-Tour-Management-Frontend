@@ -12,12 +12,17 @@ import { withAuth } from "@/components/utlis/withAuth";
 import Unauth from "@/components/pages/Unauth";
 import { All_Role } from "@/components/utlis/getSidebaritems";
 import type { Role } from "@/Alltypes/Type";
+import Home from "@/components/pages/Home";
 
 export const router = createBrowserRouter([
   {
     Component: App,
     path: "/",
     children : [
+      {
+        Component : Home ,
+        index : true
+      },
         {
           Component : withAuth(About , All_Role.admin as Role) ,
           path : "/about"

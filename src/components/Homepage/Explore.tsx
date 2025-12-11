@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 const Explore = () => {
     return (
-        <div className=" my-20 px-4 flex items-center justify-between max-w-full gap-10 lg:flex-row flex-col ">
+        <div className=" my-20  flex items-center justify-between max-w-full gap-10 lg:flex-row flex-col ">
             <div className=" bg-[#FBF9F6]  w-1/2 p-10 rounded-4xl h-full">
                 <div className="w-full flex items-center justify-between gap-3">
                     <div className="w-1/2">
@@ -33,7 +33,7 @@ const Explore = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                     {/* card 1 */}
-                    <div className=" border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"
@@ -45,7 +45,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Happy campers</p>
                     </div>
 
-                    <div className=" border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"
@@ -57,7 +57,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Trips sold</p>
                     </div>
 
-                    <div className=" border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"
@@ -69,7 +69,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Destinations</p>
                     </div>
 
-                    <div className=" border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"

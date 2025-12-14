@@ -59,7 +59,7 @@ export const Hero = ({
 }: Hero7Props) => {
     return (
         <section
-            className="py-32 bg-cover bg-center bg-no-repeat mt-0.5 relative min-h-screen flex flex-col justify-center items-center"
+            className="py-32 bg-cover bg-center bg-no-repeat mt-3 relative min-h-screen flex flex-col justify-center items-center"
             style={{ backgroundImage: "url('/src/assets/BannerImage/bannerimage.jpg')" }}
         >
             <div className="container text-center mx-auto  ">

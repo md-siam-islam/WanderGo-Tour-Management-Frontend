@@ -25,9 +25,16 @@ export const TourApi = baseApi.injectEndpoints({
                 method : "GET",
             }),
             providesTags : ["TOUR"],
+        }),
+        getsingleTour : builder.mutation ({
+            query : (id) => ({
+                url : `/tour/${id}`,
+                method : "GET"
+
+            }),
         })
     })
 })
 
 
-export const { useCreateTourMutation , useGetAlltourQuery } = TourApi;
+export const { useCreateTourMutation , useGetAlltourQuery , useGetsingleTourMutation} = TourApi;

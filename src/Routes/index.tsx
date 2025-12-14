@@ -14,54 +14,59 @@ import { All_Role } from "@/components/utlis/getSidebaritems";
 import type { Role } from "@/Alltypes/Type";
 import Home from "@/components/pages/Home";
 import Tours from "@/components/pages/Tours";
+import SingleTourDetails from "@/components/pages/SingleTourDetails";
 
 export const router = createBrowserRouter([
   {
     Component: App,
     path: "/",
-    children : [
+    children: [
       {
-        Component : Home ,
-        index : true
+        Component: Home,
+        index: true
       },
       {
-        Component : Tours ,
+        Component: Tours,
         path: '/tour'
       },
-        {
-          Component : withAuth(About , All_Role.admin as Role) ,
-          path : "/about"
-        }
+      {
+        Component: withAuth(About, All_Role.admin as Role),
+        path: "/about"
+      },
+      {
+        Component: SingleTourDetails,
+        path: "/tour-details/:id"
+      }
     ]
   },
   {
-    Component : withAuth(Dashboardlayout , All_Role.admin as Role),
-    path:"/admin",
-    children : [{index : true, element : <Navigate to={"/admin/analytics"}></Navigate>},...genarateSidebar(adminSidebarItem)]
+    Component: withAuth(Dashboardlayout, All_Role.admin as Role),
+    path: "/admin",
+    children: [{ index: true, element: <Navigate to={"/admin/analytics"}></Navigate> }, ...genarateSidebar(adminSidebarItem)]
   },
   {
-    Component : withAuth(Dashboardlayout , All_Role.user as Role),
-    path:"/user",
-    children : [
-      {index : true, element : <Navigate to={'/user/booking'}></Navigate>},
+    Component: withAuth(Dashboardlayout, All_Role.user as Role),
+    path: "/user",
+    children: [
+      { index: true, element: <Navigate to={'/user/booking'}></Navigate> },
       ...genarateSidebar(userSidebarItem)
     ]
   },
 
   {
-    Component : LoginPage,
-    path : "/login"
+    Component: LoginPage,
+    path: "/login"
   },
   {
-    Component : SignupPage,
-    path : "/signup"
+    Component: SignupPage,
+    path: "/signup"
   },
   {
-    Component : verify,
-    path : "/verify"
+    Component: verify,
+    path: "/verify"
   },
   {
-    Component : Unauth,
-    path : "/unauth"
+    Component: Unauth,
+    path: "/unauth"
   }
 ]);

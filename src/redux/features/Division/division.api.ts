@@ -20,12 +20,14 @@ export const divisionApi = baseApi.injectEndpoints({
             }),
             providesTags : ["DIVISION"]
         }),
+        
         getsingleDivisions : builder.mutation({
             query : (slug) => ({
                 url : `/division/${slug}`,
                 method :"GET",
             }),
         }),
+
         removeDivisions : builder.mutation({
             query : (divisionId) => ({
                 url : `/division/${divisionId}`,

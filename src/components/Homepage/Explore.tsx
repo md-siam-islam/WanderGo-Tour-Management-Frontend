@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 const Explore = () => {
     return (
-        <div className=" my-20  flex items-center justify-between max-w-full gap-10 lg:flex-row flex-col ">
+        <div className=" my-20  flex items-center justify-between max-w-full gap-10 lg:flex-row flex-col px-5 ">
             <div className=" bg-[#FBF9F6]  w-1/2 p-10 rounded-4xl h-full">
                 <div className="w-full flex items-center justify-between gap-3">
                     <div className="w-1/2">

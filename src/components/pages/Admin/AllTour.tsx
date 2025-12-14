@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import type { ITourresponse } from "@/Alltypes/tour.type";
+import { Link } from "react-router";
 
 const AllTour = () => {
   const { data:toursData, isLoading: tourLoading } = useGetAlltourQuery(undefined);
@@ -149,10 +150,6 @@ const AllTour = () => {
             )
           }
 
-          <Button className="gap-2">
-            <Edit className="h-4 w-4" />
-            Add New Tour
-          </Button>
         </div>
       </div>
 

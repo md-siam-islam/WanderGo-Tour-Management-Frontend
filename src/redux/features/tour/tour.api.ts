@@ -1,5 +1,12 @@
+import type { IPaginatedResponse, IResponse } from "@/Alltypes/Response.type";
+import type { ITourresponse } from "@/Alltypes/tour.type";
 import baseApi from "@/redux/baseApi";
 
+export interface ITourApiResponse {
+  data: ITourresponse[];
+  meta: any; 
+
+}
 
 export const TourApi = baseApi.injectEndpoints({
     endpoints : (builder) => ({
@@ -12,12 +19,12 @@ export const TourApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["TOUR"]
         }),
-        getAlltour : builder.query({
+        getAlltour : builder.query<IResponse<ITourApiResponse>, void>({
             query : () => ({
                 url : "/tour",
                 method : "GET",
             }),
-            providesTags : ["TOUR"]
+            providesTags : ["TOUR"],
         })
     })
 })

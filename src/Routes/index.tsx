@@ -13,6 +13,7 @@ import Unauth from "@/components/pages/Unauth";
 import { All_Role } from "@/components/utlis/getSidebaritems";
 import type { Role } from "@/Alltypes/Type";
 import Home from "@/components/pages/Home";
+import Tours from "@/components/pages/Tours";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         Component : Home ,
         index : true
+      },
+      {
+        Component : Tours ,
+        path: '/tour'
       },
         {
           Component : withAuth(About , All_Role.admin as Role) ,

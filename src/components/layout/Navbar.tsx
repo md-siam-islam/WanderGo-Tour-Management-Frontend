@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ModeToggle } from "./mode-toggle"
-import { Link } from "react-router"
+import { href, Link } from "react-router"
 import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
 import { useAppDispatch } from "@/redux/hooks"
@@ -20,7 +20,10 @@ import { All_Role } from "../utlis/getSidebaritems"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" ,role : "PUBLIC"},
+  { href: "/", label: "Home" ,role : "PUBLIC"}
+  ,{
+    href : "/tour" , label: "Tour", role: "PUBLIC"
+  },
   { href: "/about", label: "About", role : "PUBLIC" },
   { href: "/admin", label: "Dashboard" , role:All_Role.admin},
   { href: "/user", label: "Dashboard" , role:All_Role.user},
@@ -44,7 +47,7 @@ export default function Component() {
 
   return (
     <header className="">
-      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4 ">
 
         <div className="w-[150px] h-[60px] flex items-center justify-center pt-1.5 mb-1">
           <Link to="/" className="w-100% h-100%">

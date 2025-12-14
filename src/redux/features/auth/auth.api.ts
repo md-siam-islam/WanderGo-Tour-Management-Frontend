@@ -1,6 +1,4 @@
 import baseApi from "@/redux/baseApi";
-
-
 interface Iotp {
     email : string
 }

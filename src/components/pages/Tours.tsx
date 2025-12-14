@@ -67,9 +67,6 @@ const Tours = () => {
                     </div>
                   ))
                 }
-
-
-
               </div>
 
               {/* Tour Content */}

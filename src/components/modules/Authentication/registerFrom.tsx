@@ -25,6 +25,14 @@ const registerSchema = z.object({
   email: z
     .string()
     .email("Invalid email address"),
+  address: z.string().min(2, "Address Must be 1 characters long").max(50, "Address must be at most 50 characters long"),
+  phone: z
+  .string()
+  .regex(
+    /^01[3-9]\d{8}$/,
+    "Invalid Bangladeshi phone number"
+  ).min(11, "Phone number must be exactly 11 digits")
+  .max(11, "Phone number must be exactly 11 digits"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters long")
@@ -44,6 +52,8 @@ export default function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
+      address : "",
       password: "",
       confirmPassword: "",
     },
@@ -111,6 +121,38 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+
+            <div className="flex items-center gap-5">
+
+               {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your Phone Number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+               {/* Phone */}
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your Address" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            </div>
 
             {/* Password */}
             <FormField

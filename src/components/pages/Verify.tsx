@@ -30,6 +30,7 @@ import { toast } from "sonner"
 export default function Verify() {
     const navigate = useNavigate()
     const location = useLocation()
+
     const [email] = useState(location.state)
     const [confirm , setConfrim] = useState(false)
     const [time , setTime] = useState(10)
@@ -69,7 +70,7 @@ export default function Verify() {
                 if(result.success){ 
                 setConfrim(true)
                 setTime(10)
-                toast.success("Your Otp  Successfull" , { id : tostId})
+                toast.success("Your Otp Send Successfull" , { id : tostId})
             }
             
         } catch (error) {

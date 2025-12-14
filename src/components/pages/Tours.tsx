@@ -8,8 +8,8 @@ import { Link } from 'react-router';
 const Tours = () => {
   const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery(undefined);
   const { data: tourTypeData } = useGetTourtypeQuery(undefined)
-  const tours = toursData?.data?.data;
-  const tourType = tourTypeData?.data?.data;
+  const tours = toursData?.data?.data ?? [];
+  const tourType = tourTypeData?.data?.data ?? [];
 
 
   return (

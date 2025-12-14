@@ -54,6 +54,7 @@ const Addtour = () => {
     description: z.string().min(10, "Description must be at least 10 characters"),
     included: z.array(z.object({ value: z.string().min(1, "Included item is required") })),
     excluded: z.array(z.object({ value: z.string().min(1, "Excluded item is required") })),
+    amenities: z.array(z.object({ value: z.string().min(1, "Excluded item is required") })),
   });
 
 
@@ -73,7 +74,8 @@ const Addtour = () => {
       arrivalLocation: "",
       description: "",
       included: [{ value: "" }],
-      excluded: [{ value: "" }]
+      excluded: [{ value: "" }],
+      amenities: [{ value: "" }]
     }
   });
 
@@ -84,6 +86,10 @@ const Addtour = () => {
   const { fields: excludedFields, append: appendExcluded, remove: removeExcluded } = useFieldArray({
     control: form.control,
     name: "excluded"
+  })
+  const { fields: amenitiesFields, append: appendamenities, remove: removeamenities } = useFieldArray({
+    control: form.control,
+    name: "amenities"
   })
 
 
@@ -99,6 +105,7 @@ const Addtour = () => {
       endDate: data.endDate ? formatISO(data.endDate) : undefined,
       included : data.included.map((item: {value : string}) => item.value),
       excluded : data.excluded.map((item: {value : string}) => item.value),
+      amenities : data.excluded.map((item: {value : string}) => item.value),
     };
 
     console.log("Tour Data", tourData);
@@ -509,6 +516,41 @@ const Addtour = () => {
             </div>
 
             {/* Excluded part end  */}
+
+            <div className="flex items-center gap-3">
+              <p className="flex-1">Append Excluded </p>
+              <Button variant="outline" type="button" onClick={() => appendamenities({ value: "" })}>
+                <Plus size={15} />
+              </Button>
+            </div>
+
+              <div>
+              {
+                amenitiesFields.map((item:any, index) => (
+
+                  <div className="flex items-center justify-center gap-2 mt-3">
+                    <FormField
+                      control={form.control}
+                      name={`amenities.${index}.value`}
+                      key={item.id}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <Input type="text" className="w-full" placeholder="Enter Excluded Item" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button type="button" onClick={ () => removeamenities(index) } >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
+
+                ))
+              }
+            </div>
 
 
             <Button type="submit" className="w-full">

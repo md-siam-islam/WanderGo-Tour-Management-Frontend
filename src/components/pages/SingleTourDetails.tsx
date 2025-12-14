@@ -22,6 +22,15 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+
+
+
+
+
+
 
 const SingleTourDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -32,10 +41,10 @@ const SingleTourDetails = () => {
 
   const { data: tourTypeData } = useGetTourtypeQuery(undefined)
   const { data: DivisionData } = useGetDivisionsQuery(undefined)
-
   const tourType = tourTypeData?.data?.data;
-
   const division = DivisionData?.data?.data;
+
+
 
   useEffect(() => {
     if (id) {
@@ -176,9 +185,9 @@ const SingleTourDetails = () => {
                 thumbnail: String
               }) => item._id === tour.division && (
                 <Badge variant="outline" className="flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
-              {item.name}
-            </Badge>
+                  <MapPin className="w-3 h-3" />
+                  {item.name}
+                </Badge>
               ))
             }
 
@@ -214,8 +223,33 @@ const SingleTourDetails = () => {
           </div>
         </div>
 
+        {/* <Carousel showArrows
+          showThumbs={false}
+          infiniteLoop
+          autoPlay
+          interval={4000}>
+
+          {
+            tour.images.map((image: any, index: any) => (
+              <div key={index}>
+                <img
+                  src={image}
+                  alt={`tour-${index}`}
+                />
+              </div>
+            ))
+          }
+
+        </Carousel> */}
+
+
+
+
+
+
         {/* Image Gallery */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
           <div className="lg:col-span-3">
             <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
               <img
@@ -231,7 +265,7 @@ const SingleTourDetails = () => {
 
           {/* Thumbnail Gallery */}
           <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
-            {tour.images?.slice(0, 4).map((image : any, index : any) => (
+            {tour.images?.slice(0, 4).map((image: any, index: any) => (
               <button
                 key={index}
                 onClick={() => setActiveImageIndex(index)}
@@ -245,7 +279,8 @@ const SingleTourDetails = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> 
+        
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
@@ -286,7 +321,7 @@ const SingleTourDetails = () => {
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold mb-4">Tour Plan</h3>
                   <div className="space-y-4">
-                    {tour.tourPlan?.map((plan : any, index: any) => (
+                    {tour.tourPlan?.map((plan: any, index: any) => (
                       <div key={index} className="flex gap-4">
                         <div className="flex flex-col items-center">
                           <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
@@ -394,7 +429,7 @@ const SingleTourDetails = () => {
 
               <div className="space-y-4">
                 <Button
-               
+
                   className="w-full py-6 text-lg font-semibold"
                   size="lg"
                 >

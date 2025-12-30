@@ -15,6 +15,7 @@ import type { Role } from "@/Alltypes/Type";
 import Home from "@/components/pages/Home";
 import Tours from "@/components/pages/Tours";
 import SingleTourDetails from "@/components/pages/SingleTourDetails";
+import TourBooking from "@/components/pages/TourBooking";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         Component: SingleTourDetails,
         path: "/tour-details/:id"
+      },
+      {
+        Component: TourBooking,
+        path: "/tour-booking/:id"
       }
     ]
   },

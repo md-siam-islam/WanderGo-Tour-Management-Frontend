@@ -26,12 +26,6 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
-
-
-
-
-
-
 const SingleTourDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -43,8 +37,6 @@ const SingleTourDetails = () => {
   const { data: DivisionData } = useGetDivisionsQuery(undefined)
   const tourType = tourTypeData?.data?.data;
   const division = DivisionData?.data?.data;
-
-
 
   useEffect(() => {
     if (id) {
@@ -222,34 +214,9 @@ const SingleTourDetails = () => {
             </div>
           </div>
         </div>
-
-        {/* <Carousel showArrows
-          showThumbs={false}
-          infiniteLoop
-          autoPlay
-          interval={4000}>
-
-          {
-            tour.images.map((image: any, index: any) => (
-              <div key={index}>
-                <img
-                  src={image}
-                  alt={`tour-${index}`}
-                />
-              </div>
-            ))
-          }
-
-        </Carousel> */}
-
-
-
-
-
-
         {/* Image Gallery */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
           <div className="lg:col-span-3">
             <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
               <img
@@ -279,8 +246,8 @@ const SingleTourDetails = () => {
               </button>
             ))}
           </div>
-        </div> 
-        
+        </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
@@ -428,6 +395,7 @@ const SingleTourDetails = () => {
               </div>
 
               <div className="space-y-4">
+                <Link className="mb-3" to={`/tour-booking/${tour._id}`}>
                 <Button
 
                   className="w-full py-6 text-lg font-semibold"
@@ -436,14 +404,8 @@ const SingleTourDetails = () => {
                   <DollarSign className="w-5 h-5 mr-2" />
                   Book Now
                 </Button>
+                </Link>
 
-                <Button
-                  variant="outline"
-                  className="w-full py-6 text-lg"
-                  size="lg"
-                >
-                  Contact Tour Guide
-                </Button>
 
                 <div className="pt-4 border-t">
                   <p className="text-sm text-gray-500 text-center">

@@ -16,6 +16,7 @@ import Home from "@/components/pages/Home";
 import Tours from "@/components/pages/Tours";
 import SingleTourDetails from "@/components/pages/SingleTourDetails";
 import TourBooking from "@/components/pages/TourBooking";
+import Meprofile from "@/components/User-Profile/Meprofile";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
         Component: withAuth(About, All_Role.admin as Role),
         path: "/about"
       },
+      // {
+      //   Component: withAuth(About, All_Role.admin as Role),
+      //   path: "/about"
+      // },
       {
         Component: SingleTourDetails,
         path: "/tour-details/:id"
@@ -73,5 +78,9 @@ export const router = createBrowserRouter([
   {
     Component: Unauth,
     path: "/unauth"
+  },
+  {
+    Component: Meprofile,
+    path: "/profile"
   }
 ]);

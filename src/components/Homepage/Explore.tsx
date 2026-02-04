@@ -45,7 +45,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Happy campers</p>
                     </div>
 
-                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 shadow-card rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"
@@ -57,7 +57,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Trips sold</p>
                     </div>
 
-                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 shadow-card  rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"
@@ -69,7 +69,7 @@ const Explore = () => {
                         <p className="text-xl font-medium">Destinations</p>
                     </div>
 
-                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 rounded-4xl p-6 flex flex-col items-center">
+                    <div className="transition-all duration-500 hover:shadow-xl hover:scale-105 hover:border-none border-[#EF1A53] border-2 shadow-card  rounded-4xl p-6 flex flex-col items-center">
                         <div className="bg-[#FBF9F6] rounded-full p-4 mb-4">
                             <img
                                 className="w-14 h-14"

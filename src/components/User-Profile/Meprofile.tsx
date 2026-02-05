@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { Backpack, MoveLeftIcon } from "lucide-react";
 
 const Meprofile = () => {
+    
   const { data: UserData, isLoading, isError } = useUserInfoQuery(undefined);
 
   if (isLoading) {
@@ -70,10 +71,10 @@ const Meprofile = () => {
         <Link to="/">
         <h3 className="text-xl md:text-3xl font-bold text-gray-800"><MoveLeftIcon className="inline mr-2" />Home</h3>
         </Link>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <Link to="/update-profile" className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-blue-700 transition-colors">
           <FaEdit />
           Edit Profile
-        </button>
+        </Link>
       </div>
 
       {/* Profile Card */}

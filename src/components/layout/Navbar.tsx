@@ -20,13 +20,13 @@ import { All_Role } from "../utlis/getSidebaritems"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" ,role : "PUBLIC"}
-  ,{
-    href : "/tour" , label: "Tour", role: "PUBLIC"
+  { href: "/", label: "Home", role: "PUBLIC" }
+  , {
+    href: "/tour", label: "Tour", role: "PUBLIC"
   },
-  { href: "/about", label: "About", role : "PUBLIC" },
-  { href: "/admin", label: "Dashboard" , role:All_Role.admin},
-  { href: "/user", label: "Dashboard" , role:All_Role.user},
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: All_Role.admin },
+  { href: "/user", label: "Dashboard", role: All_Role.user },
 ]
 
 export default function Component() {
@@ -37,7 +37,7 @@ export default function Component() {
   const dispatch = useAppDispatch()
 
 
-  const handleUserLogout = async() => {
+  const handleUserLogout = async () => {
     await userLogout(undefined)
     dispatch(authApi.util.resetApiState())
     toast.success("User Logout Successfull")
@@ -51,8 +51,8 @@ export default function Component() {
 
         <div className="w-[150px] h-[60px] flex items-center justify-center pt-1.5 mb-1">
           <Link to="/" className="w-100% h-100%">
-              <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
-            </Link>
+            <img src="/src/assets/images/WanderGoLOgo2.png" alt="Logo" />
+          </Link>
         </div>
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -115,49 +115,61 @@ export default function Component() {
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
                   <>
-                  {
-                    link.role === "PUBLIC" && (
-                      <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      className="py-1.5 font-medium text-muted-foreground hover:text-primary"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                    )
-                  }
-                  {
-                    link.role === data?.data?.role && (
-                      <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      className="py-1.5 font-medium text-muted-foreground hover:text-primary"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                    )
-                  }
+                    {
+                      link.role === "PUBLIC" && (
+                        <NavigationMenuItem key={index}>
+                          <NavigationMenuLink
+                            className="py-1.5 font-medium text-muted-foreground hover:text-primary"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )
+                    }
+                    {
+                      link.role === data?.data?.role && (
+                        <NavigationMenuItem key={index}>
+                          <NavigationMenuLink
+                            className="py-1.5 font-medium text-muted-foreground hover:text-primary"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )
+                    }
                   </>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
         </div>
+
         {/* Right side */}
 
         <div className="flex items-center gap-2">
           <ModeToggle />
           {data?.data?.email && (
-            <Button variant={"outline"} onClick={handleUserLogout} className="text-sm">
-            <a>Logout</a>
-          </Button>
+
+            <>
+              <Link to="/profile">
+                <img
+                  src="https://i.ibb.co.com/vCCn6jRj/mr-bean-900-x-900-picture-d5u9ys0cjecowzri.jpg"
+                  alt="profile"
+                  className="w-9 h-9 rounded-full object-cover cursor-pointer border"
+                />
+              </Link>
+
+              <Button variant={"outline"} onClick={handleUserLogout} className="text-sm">
+                <a>Logout</a>
+              </Button>
+            </>
           )}
           {!data?.data?.email && (
             <Button asChild className="text-sm">
-            <a href="/login">Login</a>
-          </Button>
+              <a href="/login">Login</a>
+            </Button>
           )}
-          
+
         </div>
 
       </div>

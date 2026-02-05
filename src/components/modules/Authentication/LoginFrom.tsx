@@ -29,6 +29,7 @@ const registerSchema = z.object({
 }) 
 
 export default function LoginForm() {
+  
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {

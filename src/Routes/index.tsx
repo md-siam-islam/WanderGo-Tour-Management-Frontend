@@ -17,6 +17,7 @@ import Tours from "@/components/pages/Tours";
 import SingleTourDetails from "@/components/pages/SingleTourDetails";
 import TourBooking from "@/components/pages/TourBooking";
 import Meprofile from "@/components/User-Profile/Meprofile";
+import Userupdate from "@/components/User-Profile/Userupdate";
 
 export const router = createBrowserRouter([
   {
@@ -82,5 +83,8 @@ export const router = createBrowserRouter([
   {
     Component: Meprofile,
     path: "/profile"
+  },{
+    Component:Userupdate,
+    path:"/update-profile"
   }
 ]);

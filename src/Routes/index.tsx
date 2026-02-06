@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
         path: "/tour-details/:id"
       },
       {
-        Component: TourBooking,
+        Component: withAuth(TourBooking),
         path: "/tour-booking/:id"
       }
     ]

@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router"
 import Password from "@/components/ui/password"
 import { useRegisterMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
+import { Phone } from "lucide-react"
 
 // Validation Schema
 const registerSchema = z.object({
@@ -68,7 +69,9 @@ export default function RegisterForm() {
         const userInfo = {
             name: data.name,
             email: data.email,
-            password: data.password
+            password: data.password,
+            phone: data.phone,
+            address: data.address
         }
 
         const result = await register(userInfo).unwrap()
@@ -77,9 +80,11 @@ export default function RegisterForm() {
         toast.success("User registration successful!.")
         form.reset()
 
-    } catch (error) {
+    } catch (error : any) {
         console.error("Registration failed:", error)
+        toast.error(error.data.message || "Registration failed. Please try again.")
     }
+
     console.log(data)
   }
 

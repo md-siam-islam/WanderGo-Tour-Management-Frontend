@@ -23,17 +23,22 @@ import {
     Navigation
 } from "lucide-react";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useCreateBookingMutation } from "@/redux/features/Booking/booking.api";
 // import { format } from "date-fns";
 
 const TourBooking = () => {
 
     const [guests, setGuests] = useState(1);
-    
     const [totalAmount, setTotalAmount] = useState(0);
-    // const [selectedImage, setSelectedImage] = useState(0);
+
+    const [selectedImage, setSelectedImage] = useState(0);
+
     const [isFavorite, setIsFavorite] = useState(false);
 
     const [getSingleTour, { data, isLoading, isError }] = useGetsingleTourMutation();
+
+    const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation()
+
     const { id } = useParams();
 
     useEffect(() => {
@@ -70,6 +75,29 @@ const TourBooking = () => {
     //     if (!date) return "Not specified";
     //     return format(new Date(date), "PPP");
     // };
+
+    const CreateBooking = async () => {
+
+        
+        const bookingData = {
+            tour: id,
+            guestCount: guests
+        }
+        
+        // console.log(bookingData)
+
+        try {
+
+            const result = await createBooking(bookingData).unwrap()
+            toast.success("Booking created successfully!")
+            console.log("Booking result:", result);
+
+        }catch (error : any) {
+            toast.error(error?.data?.message || "Failed to create booking. Please try again.")
+            console.error("Booking error:", error);
+        }
+
+    };
 
     if (isLoading) {
         return (
@@ -161,7 +189,7 @@ const TourBooking = () => {
                         </div>
 
                         {/* Image Gallery */}
-                        {/* {tour.images && tour.images.length > 0 && (
+                        {tour.images && tour.images.length > 0 && (
                         <div className="bg-white rounded-2xl shadow-lg p-6">
                             <div className="flex gap-2 mb-4">
                                 {tour.images.slice(0, 4).map((img : any, index : any) => (
@@ -188,7 +216,7 @@ const TourBooking = () => {
                                 />
                             </div>
                         </div>
-                    )} */}
+                    )}
 
                         {/* Description */}
                         <div className="bg-white rounded-2xl shadow-md p-6">
@@ -393,7 +421,7 @@ const TourBooking = () => {
                                     </div>
 
                                     {/* Booking Button */}
-                                    <Button
+                                    <Button onClick={CreateBooking}
                                         className="w-full py-6 text-lg font-semibold "
                                         size="lg"
                                     >

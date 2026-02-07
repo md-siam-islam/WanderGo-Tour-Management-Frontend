@@ -11,14 +11,16 @@ export const withAuth = (Component: ComponentType , requerdRole?: Role) => {
 
         const {data , isLoading} = useUserInfoQuery(undefined)
 
-        if(!isLoading && !data?.data?.email){
-           toast.error("You need to login to access this page.")
-            return <Navigate to="/login"/>
+        if (isLoading) return <p>Loading...</p>
+
+        if (!data?.data?.email) {
+            toast.error("You need to login to access this page.")
+            return <Navigate to="/login" />
         }
 
-        if(!isLoading && data?.data?.role !== requerdRole){
+         if (requerdRole && data?.data?.role !== requerdRole) {
             toast.error("You are not authorized to access this page.")
-            return <Navigate to={"/unauth"}></Navigate>
+            return <Navigate to="/unauth" />
         }
 
         return <Component />

@@ -89,7 +89,11 @@ const TourBooking = () => {
         try {
 
             const result = await createBooking(bookingData).unwrap()
-            toast.success("Booking created successfully!")
+            
+            if(result?.success){
+                window.open(result?.data?.paymentUrl, "_blank")
+                toast.success("Booking created successfully!")
+            }
             console.log("Booking result:", result);
 
         }catch (error : any) {

@@ -8,6 +8,16 @@ export interface ITourApiResponse {
 
 }
 
+type TourQueryParams = {
+  division?: string;
+  tourType?: string;
+  searchTerm?: string;
+  sort?: string;
+  page?: number;
+  limit?: number;
+};
+
+
 export const TourApi = baseApi.injectEndpoints({
     endpoints : (builder) => ({
 
@@ -19,10 +29,11 @@ export const TourApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["TOUR"]
         }),
-        getAlltour : builder.query<IResponse<ITourApiResponse>, void>({
-            query : () => ({
+        getAlltour : builder.query<IResponse<ITourApiResponse>, TourQueryParams | void>({
+            query : (params) => ({
                 url : "/tour",
                 method : "GET",
+                params
             }),
             providesTags : ["TOUR"],
         }),

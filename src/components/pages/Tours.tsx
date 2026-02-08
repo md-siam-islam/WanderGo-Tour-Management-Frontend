@@ -4,12 +4,42 @@ import { Button } from '../ui/button';
 import { MapPin, Users, Calendar, DollarSign, Star } from 'lucide-react';
 import { useGetTourtypeQuery } from '@/redux/features/tour/tourType.api';
 import { Link } from 'react-router';
+import { useGetDivisionsQuery } from '@/redux/features/Division/division.api';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from '../ui/select';
+import { SelectValue } from '@radix-ui/react-select';
+import { useState } from 'react';
 
 const Tours = () => {
-  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery(undefined);
-  const { data: tourTypeData } = useGetTourtypeQuery(undefined)
+
+  const [selectedDivision , setSelectedDivision] = useState<string | undefined>("");
+  const [selectedtourType , setSelectedTourType] = useState<string | undefined>("");
+
+  console.log("selectedDivision",selectedDivision);
+  console.log("selectedtourType",selectedtourType);
+
+  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({division : selectedDivision || undefined, tourType : selectedtourType || undefined});
+
+  const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourtypeQuery(undefined);
+  const { data: DivisionData , isLoading: divisionLoading} = useGetDivisionsQuery(undefined);
+
+
+
   const tours = toursData?.data?.data ?? [];
+
   const tourType = tourTypeData?.data?.data ?? [];
+
+  const tourtypeOptions = tourTypeData?.data?.data?.map((type: { _id: string, name: string }) => {
+
+    return { value: type._id, label: type.name }
+
+  })
+
+  const divisionypeOptions = DivisionData?.data?.data?.map((type: { _id: string, name: string }) => {
+
+    return { value: type._id, label: type.name }
+
+  })
 
 
   return (
@@ -22,6 +52,69 @@ const Tours = () => {
         <p className="text-lg text-white max-w-2xl mx-auto">
           Discover unforgettable experiences and immersive adventures, carefully crafted to match your interests, passions, and travel dreams. From breathtaking destinations to unique cultural journeys, we bring you personalized tours that turn every moment into a lifelong memory.
         </p>
+
+      </div>
+
+      <div className='container mx-auto flex flex-row items-center justify-center gap-4 px-4'>
+
+        {/* division filter */}
+        <div className='w-full'>
+          <Label className='mb-2'> Division to visit</Label>
+
+          <Select value={selectedDivision} onValueChange={ (value) => setSelectedDivision(value)} disabled={divisionLoading}>
+
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder="Select a division" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+
+                <SelectLabel>Division</SelectLabel>
+                {
+                  divisionypeOptions?.map(
+                    (item : {value : string , label : string}) => (
+
+                      <SelectItem key={item.value} value={item.value}>{item.label} </SelectItem>
+                    ))
+                }
+              </SelectGroup>
+            </SelectContent>
+
+          </Select>
+
+        </div>
+
+        {/* tour type filter */}
+        <div className='w-full'>
+          <Label className='mb-2'> Tour Type</Label>
+
+          <Select value={selectedtourType} onValueChange={ (value) => setSelectedTourType(value)} disabled={tourTypeLoading}>
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder="Select a tour type" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+
+                <SelectLabel>Tour Type</SelectLabel>
+                {
+                  tourtypeOptions?.map(
+                    (item : {value : string , label : string}) => (
+
+                      <SelectItem key={item.value} value={item.value}>{item.label} </SelectItem>
+                    ))
+                }
+              </SelectGroup>
+            </SelectContent>
+
+          </Select>
+
+        </div>
+
+        <div>
+          <Button onClick={() => { setSelectedDivision(""); setSelectedTourType(""); }} className='mt-6 px-6 py-3'>Reset</Button>
+        </div>
 
       </div>
 
@@ -174,24 +267,11 @@ const Tours = () => {
                     </Button>
                   </Link>
                 </div>
+
               </div>
             </div >
           ))}
         </div >
-
-        {/* Load More Button (Optional) */}
-        {
-          tours && tours.length > 0 && (
-            <div className="text-center mt-12">
-              <Button
-                variant="outline"
-                className="px-8 py-3 text-lg border-2 border-blue-#FF2056 text-blue-600 hover:bg-blue-50"
-              >
-                Load More Tours
-              </Button>
-            </div>
-          )
-        }
 
         {/* Empty State */}
         {
@@ -202,7 +282,7 @@ const Tours = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-700 mb-3">No Tours Available</h3>
               <p className="text-gray-500 mb-8">Check back later for exciting tour packages!</p>
-              <Button className="px-6 py-3">Refresh</Button>
+              <Button onClick={() => window.location.reload()} className="px-6 py-3">Refresh</Button>
             </div>
           )
         }

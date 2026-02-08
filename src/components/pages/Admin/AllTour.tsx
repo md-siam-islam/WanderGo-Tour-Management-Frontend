@@ -15,7 +15,6 @@ const AllTour = () => {
   const { data:toursData, isLoading: tourLoading } = useGetAlltourQuery(undefined);
   const tours = toursData?.data?.data;
 
-
   const { data: DivisionData } = useGetDivisionsQuery(undefined);
   const { data: tourTypeData } = useGetTourtypeQuery(undefined);
 
@@ -76,8 +75,6 @@ const AllTour = () => {
     color: 'from-gray-400 to-gray-600',
     bgColor: 'bg-gray-50'
   };
-
-
 
   const getTourTypeConfig = (tourType: string) => {
     if (!tourType) return defaultTourType;

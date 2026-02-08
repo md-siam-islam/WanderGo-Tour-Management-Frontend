@@ -1,29 +1,36 @@
+import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
 import { Check, Download, Mail, Printer, Home, ArrowRight } from 'lucide-react';
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router';
 
 const PaymentSuccess = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const [isAnimating, setIsAnimating] = useState(true);
+
+  const {data} = useUserInfoQuery(undefined)
+
+  const location = useLocation()
+
+  const searchParams = new URLSearchParams(location.search);
+    const transactionId = searchParams.get('transactionId');
+    const amount = searchParams.get('amount');
+    const status = searchParams.get('status');
   
   // Sample transaction data
   const transactionData = {
-    id: 'TX-7890-4567-1234',
-    amount: '$149.99',
-    date: 'Nov 15, 2023',
-    time: '14:30 PM',
-    method: 'Visa ending in 4567',
-    customer: 'John Smith',
-    email: 'john.smith@example.com',
-    items: [
-      { name: 'Premium Plan (Monthly)', price: '$49.99' },
-      { name: 'Additional Storage (50GB)', price: '$20.00' },
-      { name: 'Priority Support', price: '$80.00' },
-    ]
+    id: transactionId || 'TXN123456789',
+    amount: amount || '$149.99',
+    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    method: 'SSLCommerz',
+    customer: data?.data?.name || 'John Smith',
+    email: data?.data?.email || 'john.smith@example.com',
+    
   };
 
   // Calculate total
-  const subtotal = 149.99;
-  const tax = 12.50;
+  const subtotal = parseFloat(amount?.replace('$', '') || '149.99');
+  const tax = subtotal * 0.0825; // Assuming 8.25% tax rate
   const total = subtotal + tax;
 
   const handleCopyTransactionId = () => {
@@ -68,7 +75,7 @@ const PaymentSuccess = () => {
               <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
                 <p className="text-sm text-gray-600 mb-1">Transaction ID</p>
                 <div className="flex items-center justify-center">
-                  <p className="text-lg font-mono text-gray-800 mr-2">{transactionData.id}</p>
+                  <p className="text-sm font-mono text-gray-800 mr-2">{transactionData.id}</p>
                   <button 
                     onClick={handleCopyTransactionId}
                     className="text-blue-500 hover:text-blue-700 transition"
@@ -89,18 +96,6 @@ const PaymentSuccess = () => {
             {/* Receipt Details */}
             <div className="border border-gray-200 rounded-xl p-6 mb-8">
               <h2 className="text-xl font-bold text-gray-800 mb-4 pb-3 border-b">Receipt Details</h2>
-              
-              <div className="mb-6">
-                <h3 className="font-medium text-gray-700 mb-3">Items Purchased</h3>
-                <div className="space-y-3">
-                  {transactionData.items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-700">{item.name}</span>
-                      <span className="font-semibold">{item.price}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
               
               <div className="pt-4 border-t border-gray-200">
                 <div className="flex justify-between mb-2">
@@ -199,15 +194,15 @@ const PaymentSuccess = () => {
 
         {/* Final CTA */}
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <button className="flex items-center justify-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
+          <Link to="/" className="flex items-center justify-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
             <Home size={18} className="mr-2" />
             Return to Homepage
-          </button>
+          </Link>
           
-          <button className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
+          <Link to="/" className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
             Go to Dashboard
             <ArrowRight size={18} className="ml-2" />
-          </button>
+          </Link>
         </div>
         
         {/* Help Text */}

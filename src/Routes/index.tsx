@@ -18,6 +18,9 @@ import SingleTourDetails from "@/components/pages/SingleTourDetails";
 import TourBooking from "@/components/pages/TourBooking";
 import Meprofile from "@/components/User-Profile/Meprofile";
 import Userupdate from "@/components/User-Profile/Userupdate";
+import paymentSuccess from "@/components/pages/Payment-Related-Page/paymentSuccess";
+import paymentCancel from "@/components/pages/Payment-Related-Page/paymentCancel";
+import paymentFail from "@/components/pages/Payment-Related-Page/paymentFail";
 
 export const router = createBrowserRouter([
   {
@@ -86,5 +89,17 @@ export const router = createBrowserRouter([
   },{
     Component:Userupdate,
     path:"/update-profile"
+  },
+  {
+    Component : paymentSuccess,
+    path : "/payment/success"
+  },
+  {
+    Component : paymentCancel,
+    path : "/payment/cancel"
+  },
+  {
+    Component : paymentFail,
+    path : "/payment/fail"
   }
 ]);

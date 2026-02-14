@@ -14,6 +14,15 @@ import { useForm } from 'react-hook-form';
 import { Input } from '../ui/input';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 
 const Tours = () => {
@@ -25,8 +34,11 @@ const Tours = () => {
 
   const [selectedDivision, setSelectedDivision] = useState<string | undefined>("");
   const [selectedtourType, setSelectedTourType] = useState<string | undefined>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-const form = useForm<z.infer<typeof priceRangeSchema>>({
+  console.log(currentPage);
+
+  const form = useForm<z.infer<typeof priceRangeSchema>>({
     resolver: zodResolver(priceRangeSchema),
     defaultValues: {
       minPrice: "",
@@ -41,7 +53,7 @@ const form = useForm<z.infer<typeof priceRangeSchema>>({
     });
   }
 
-  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({ division: selectedDivision || undefined, tourType: selectedtourType || undefined  , minPrice: form.watch("minPrice") || undefined, maxPrice: form.watch("maxPrice") || undefined });
+  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({ division: selectedDivision || undefined, tourType: selectedtourType || undefined, minPrice: form.watch("minPrice") || undefined, maxPrice: form.watch("maxPrice") || undefined });
 
   const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourtypeQuery(undefined);
   const { data: DivisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined);
@@ -49,6 +61,8 @@ const form = useForm<z.infer<typeof priceRangeSchema>>({
 
 
   const tours = toursData?.data?.data ?? [];
+
+  const TotalPages = toursData?.data?.meta?.totalPage || 1;
 
   const tourType = tourTypeData?.data?.data ?? [];
 
@@ -64,7 +78,7 @@ const form = useForm<z.infer<typeof priceRangeSchema>>({
 
   })
 
-  
+
 
 
   return (
@@ -357,6 +371,38 @@ const form = useForm<z.infer<typeof priceRangeSchema>>({
             </div>
           )
         }
+
+      </div>
+
+      {/* Pagination */}
+      <div className='my-8'>
+
+        <Pagination>
+          <PaginationContent>
+            
+            <PaginationItem>
+              <PaginationPrevious className={
+                currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+              } onClick={() => setCurrentPage((prev) => prev - 1)}/>
+            </PaginationItem>
+
+            <PaginationItem>
+              <PaginationLink href="#" isActive>{currentPage}</PaginationLink>
+            </PaginationItem>
+            
+
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+
+            <PaginationItem>
+              <PaginationNext className={
+                currentPage === TotalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
+              } onClick={() => setCurrentPage((prev) => prev + 1)}/>
+            </PaginationItem>
+
+          </PaginationContent>
+        </Pagination>
 
       </div>
 

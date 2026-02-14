@@ -21,4 +21,10 @@ export interface ITourresponse {
   endDate: string;        
   createdAt: string;
   updatedAt: string;
+  meta: {
+    total: number;
+    totalPag: number;
+    currentPage: number;
+    perPage: number;
+  };
 }

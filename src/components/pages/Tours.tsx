@@ -53,7 +53,7 @@ const Tours = () => {
     });
   }
 
-  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({ division: selectedDivision || undefined, tourType: selectedtourType || undefined, minPrice: form.watch("minPrice") || undefined, maxPrice: form.watch("maxPrice") || undefined });
+  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({ division: selectedDivision || undefined, tourType: selectedtourType || undefined, minPrice: form.watch("minPrice") || undefined, maxPrice: form.watch("maxPrice") || undefined, page: currentPage, limit: 9 });
 
   const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourtypeQuery(undefined);
   const { data: DivisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined);
@@ -77,7 +77,6 @@ const Tours = () => {
     return { value: type._id, label: type.name }
 
   })
-
 
 
 
@@ -379,17 +378,21 @@ const Tours = () => {
 
         <Pagination>
           <PaginationContent>
-            
+
             <PaginationItem>
               <PaginationPrevious className={
                 currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
-              } onClick={() => setCurrentPage((prev) => prev - 1)}/>
+              } onClick={() => setCurrentPage((prev) => prev - 1)} />
             </PaginationItem>
 
-            <PaginationItem>
-              <PaginationLink href="#" isActive>{currentPage}</PaginationLink>
-            </PaginationItem>
-            
+            {Array.from({ length: TotalPages }, (_, i) => i + 1).map((page) => (
+
+              <PaginationItem>
+                <PaginationLink isActive={page === currentPage} onClick={() => setCurrentPage(page)}>{page}</PaginationLink>
+              </PaginationItem>
+
+            ))}
+
 
             <PaginationItem>
               <PaginationEllipsis />
@@ -398,7 +401,7 @@ const Tours = () => {
             <PaginationItem>
               <PaginationNext className={
                 currentPage === TotalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
-              } onClick={() => setCurrentPage((prev) => prev + 1)}/>
+              } onClick={() => setCurrentPage((prev) => prev + 1)} />
             </PaginationItem>
 
           </PaginationContent>

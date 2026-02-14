@@ -15,6 +15,8 @@ type TourQueryParams = {
   sort?: string;
   page?: number;
   limit?: number;
+  minPrice?: string;
+  maxPrice?: string;
 };
 
 

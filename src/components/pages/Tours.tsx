@@ -9,19 +9,42 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from '../ui/select';
 import { SelectValue } from '@radix-ui/react-select';
 import { useState } from 'react';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { Input } from '../ui/input';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 
 const Tours = () => {
 
-  const [selectedDivision , setSelectedDivision] = useState<string | undefined>("");
-  const [selectedtourType , setSelectedTourType] = useState<string | undefined>("");
+  const priceRangeSchema = z.object({
+    minPrice: z.string().optional(),
+    maxPrice: z.string().optional(),
+  })
 
-  console.log("selectedDivision",selectedDivision);
-  console.log("selectedtourType",selectedtourType);
+  const [selectedDivision, setSelectedDivision] = useState<string | undefined>("");
+  const [selectedtourType, setSelectedTourType] = useState<string | undefined>("");
 
-  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({division : selectedDivision || undefined, tourType : selectedtourType || undefined});
+const form = useForm<z.infer<typeof priceRangeSchema>>({
+    resolver: zodResolver(priceRangeSchema),
+    defaultValues: {
+      minPrice: "",
+      maxPrice: "",
+    },
+  })
+
+  const priceRangeHandle = (data: z.infer<typeof priceRangeSchema>) => {
+    console.log({
+      minPrice: data.minPrice,
+      maxPrice: data.maxPrice,
+    });
+  }
+
+  const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery({ division: selectedDivision || undefined, tourType: selectedtourType || undefined  , minPrice: form.watch("minPrice") || undefined, maxPrice: form.watch("maxPrice") || undefined });
 
   const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourtypeQuery(undefined);
-  const { data: DivisionData , isLoading: divisionLoading} = useGetDivisionsQuery(undefined);
+  const { data: DivisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined);
 
 
 
@@ -40,6 +63,8 @@ const Tours = () => {
     return { value: type._id, label: type.name }
 
   })
+
+  
 
 
   return (
@@ -61,7 +86,7 @@ const Tours = () => {
         <div className='w-full'>
           <Label className='mb-2'> Division to visit</Label>
 
-          <Select value={selectedDivision} onValueChange={ (value) => setSelectedDivision(value)} disabled={divisionLoading}>
+          <Select value={selectedDivision} onValueChange={(value) => setSelectedDivision(value)} disabled={divisionLoading}>
 
             <SelectTrigger className='w-full'>
               <SelectValue placeholder="Select a division" />
@@ -73,7 +98,7 @@ const Tours = () => {
                 <SelectLabel>Division</SelectLabel>
                 {
                   divisionypeOptions?.map(
-                    (item : {value : string , label : string}) => (
+                    (item: { value: string, label: string }) => (
 
                       <SelectItem key={item.value} value={item.value}>{item.label} </SelectItem>
                     ))
@@ -85,11 +110,13 @@ const Tours = () => {
 
         </div>
 
+
+
         {/* tour type filter */}
         <div className='w-full'>
           <Label className='mb-2'> Tour Type</Label>
 
-          <Select value={selectedtourType} onValueChange={ (value) => setSelectedTourType(value)} disabled={tourTypeLoading}>
+          <Select value={selectedtourType} onValueChange={(value) => setSelectedTourType(value)} disabled={tourTypeLoading}>
             <SelectTrigger className='w-full'>
               <SelectValue placeholder="Select a tour type" />
             </SelectTrigger>
@@ -100,7 +127,7 @@ const Tours = () => {
                 <SelectLabel>Tour Type</SelectLabel>
                 {
                   tourtypeOptions?.map(
-                    (item : {value : string , label : string}) => (
+                    (item: { value: string, label: string }) => (
 
                       <SelectItem key={item.value} value={item.value}>{item.label} </SelectItem>
                     ))
@@ -117,6 +144,50 @@ const Tours = () => {
         </div>
 
       </div>
+
+      {/* division price range */}
+      <div className=' container mx-auto mt-10'>
+
+        <Form {...form}>
+
+          <form className='flex flex-row items-center justify-center gap-4 px-4' onSubmit={form.handleSubmit(priceRangeHandle)}>
+            <FormField
+              control={form.control}
+              name="minPrice"
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <Label className='mb-2'>Min Price</Label>
+                  <FormControl>
+                    <Input className='w-full' type="number" placeholder="Enter Your minPrice " {...field} />
+                  </FormControl>
+                </FormItem>
+
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="maxPrice"
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <Label className='mb-2'>Max Price</Label>
+                  <FormControl>
+                    <Input className='w-full' type="number" placeholder="Enter Your maxPrice " {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <Button onClick={() => form.reset()} type="button" className="flex-initial w-auto px-6 mt-6">
+              Reset
+            </Button>
+
+          </form>
+        </Form>
+
+      </div>
+
+
 
       <div className="container mx-auto my-10 px-4">
 

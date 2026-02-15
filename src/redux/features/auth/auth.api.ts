@@ -64,7 +64,8 @@ export const authApi = baseApi.injectEndpoints({
                 url : `user/${id}`,
                 method : "PATCH",
                 data : userinfo
-            })
+            }),
+            invalidatesTags : ["USER"]
         })
 
     })

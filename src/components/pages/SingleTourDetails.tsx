@@ -46,7 +46,7 @@ const SingleTourDetails = () => {
 
   const tour = data?.data;
 
-  const formatDate = (dateString: string) => {
+  const formatDate : any = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -428,6 +428,7 @@ const SingleTourDetails = () => {
                   Terms & Conditions
                 </Button>
               </div>
+              
             </div>
           </div>
         </div>

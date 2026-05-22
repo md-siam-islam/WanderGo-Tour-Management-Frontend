@@ -84,10 +84,10 @@ export const router = createBrowserRouter([
     path: "/unauth"
   },
   {
-    Component: Meprofile,
+    Component: withAuth(Meprofile),  // ✅
     path: "/profile"
-  },{
-    Component:Userupdate,
+},{
+    Component: withAuth(Userupdate),
     path:"/update-profile"
   },
   {

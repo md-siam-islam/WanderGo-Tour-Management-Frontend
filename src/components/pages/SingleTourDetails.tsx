@@ -22,8 +22,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
-import { Carousel } from "react-responsive-carousel";
+// import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 
 const SingleTourDetails = () => {
@@ -32,6 +34,8 @@ const SingleTourDetails = () => {
   const [getSingleTour, { data, isLoading }] = useGetsingleTourMutation();
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { data: userData } = useUserInfoQuery(undefined);
 
   const { data: tourTypeData } = useGetTourtypeQuery(undefined)
   const { data: DivisionData } = useGetDivisionsQuery(undefined)
@@ -46,7 +50,7 @@ const SingleTourDetails = () => {
 
   const tour = data?.data;
 
-  const formatDate : any = (dateString: string) => {
+  const formatDate: any = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -67,6 +71,15 @@ const SingleTourDetails = () => {
       }
     }
   };
+
+  const handleBookNow = () => {
+    if (!userData?.data?.email) {
+      toast.error("You need to login to book this tour.")
+      navigate('/login', { state: { from: `/tour-booking/${tour._id}` } })
+      return;
+    }
+    navigate(`/tour-booking/${tour._id}`);
+  }
 
   // loading thakle 
   if (isLoading) {
@@ -395,17 +408,15 @@ const SingleTourDetails = () => {
               </div>
 
               <div className="space-y-4">
-                <Link className="mb-3" to={`/tour-booking/${tour._id}`}>
-                <Button
-
-                  className="w-full py-6 text-lg font-semibold"
-                  size="lg"
-                >
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  Book Now
-                </Button>
-                </Link>
-
+                
+                  <Button
+                    className="w-full py-6 text-lg font-semibold"
+                    size="lg"
+                    onClick={handleBookNow}
+                  >
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Book Now
+                  </Button>
 
                 <div className="pt-4 border-t">
                   <p className="text-sm text-gray-500 text-center">
@@ -428,7 +439,7 @@ const SingleTourDetails = () => {
                   Terms & Conditions
                 </Button>
               </div>
-              
+
             </div>
           </div>
         </div>

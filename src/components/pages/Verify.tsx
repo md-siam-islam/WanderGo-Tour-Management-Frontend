@@ -31,7 +31,8 @@ export default function Verify() {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const [email] = useState(location.state)
+    const [email] = useState(location.state?.email || location.state)
+    const from = location.state?.from || "/";
     const [confirm , setConfrim] = useState(false)
     const [time , setTime] = useState(10)
 
@@ -92,6 +93,7 @@ export default function Verify() {
             pin: "",
         },
     })
+    
 
     const onSubmit =  async (data: z.infer<typeof FormSchema>) => {
         const userInfo = {
@@ -103,7 +105,7 @@ export default function Verify() {
             const result =  await verifyOtp(userInfo).unwrap()
             if(result.success){ 
                 toast.success("Your Otp Verify Successfull" , { id : tostId})
-                navigate("/")
+                navigate("/login", { state: { from } })
             }
          } catch (error) {
             console.log(error)

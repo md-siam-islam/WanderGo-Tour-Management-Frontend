@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import { Link, useNavigate } from "react-router"
+import { Link, useNavigate, useLocation } from "react-router"
 import Password from "@/components/ui/password"
 import { useLoginMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
@@ -26,10 +26,12 @@ const registerSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters long")
     .max(100, "Password must be at most 100 characters long"),
-}) 
+})
+
+
 
 export default function LoginForm() {
-  
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -41,29 +43,34 @@ export default function LoginForm() {
   const navigate = useNavigate()
   const [login] = useLoginMutation()
 
+  const location = useLocation();
+  const from = location.state?.from || "/";
+
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
 
-        // console.log(data)
+    // console.log(data)
     try {
-        const userInfo = {
-            email: data.email,
-            password: data.password
-          }
+      const userInfo = {
+        email: data.email,
+        password: data.password
+      }
 
-    const result = await login(userInfo).unwrap()
-        console.log("User login" , result);
-        toast.success("User Login successful!.")
-        form.reset()
-        navigate('/')
-    } catch (error : any) {
-        console.log(error)
-        if(error.data.message === "Invalid email or password"){
-          toast.error("Invalid email or password")
-        }
-        if(error.data.message === "Your account is not verified"){
-            navigate("/verify" , {state : data.email})
-            toast.error("Your account is not verified. Please verify your email before login.")
-        }
+      const result = await login(userInfo).unwrap()
+      console.log("User login", result);
+      toast.success("User Login successful!.")
+      form.reset()
+      navigate(from, { replace: true });
+    } catch (error: any) {
+      console.log(error)
+      if (error.data.message === "Invalid email or password") {
+        toast.error("Invalid email or password")
+      }
+      if (error.data.message === "Your account is not verified") {
+        navigate("/verify", {
+          state: { email: data.email, from } 
+        })
+        toast.error("Your account is not verified. Please verify your email before login.")
+      }
     }
   }
 

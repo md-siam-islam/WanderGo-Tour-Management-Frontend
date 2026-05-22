@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import { Link, useNavigate } from "react-router"
+import { Link, useNavigate ,useLocation} from "react-router"
 import Password from "@/components/ui/password"
 import { useRegisterMutation } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
@@ -62,6 +62,8 @@ export default function RegisterForm() {
 
   const navigate = useNavigate()
   const [register] = useRegisterMutation()
+  const location = useLocation();
+  const from = location.state?.from || "/"; // Get the intended path or default to home
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
 
@@ -76,7 +78,7 @@ export default function RegisterForm() {
 
         const result = await register(userInfo).unwrap()
         console.log("Registration successful:", result)
-         navigate("/verify" , {state : data.email})
+         navigate("/verify", { state: { email: data.email, from } })
         toast.success("User registration successful!.")
         form.reset()
 

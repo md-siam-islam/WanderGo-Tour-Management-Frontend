@@ -128,13 +128,13 @@ const Userupdate = () => {
                     <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-amber-50">
                         <div className="flex items-center justify-between">
                             <Link
-                                to="/"
+                                to="/profile"
                                 className="group flex items-center text-blue-600 hover:text-blue-800 transition-all duration-300 font-medium"
                             >
                                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white group-hover:bg-blue-50 border border-blue-100 mr-3 transition-all group-hover:scale-105">
                                     <FaTimesCircle className="text-blue-400 group-hover:text-blue-600 transition-colors" />
                                 </div>
-                                <span>Return to Home</span>
+                                <span>Return to Profile</span>
                             </Link>
 
                             <div className="flex items-center space-x-3">

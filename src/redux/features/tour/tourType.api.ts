@@ -31,7 +31,7 @@ export const tourApi = baseApi.injectEndpoints({
             invalidatesTags : ["TOUR-TYPE"],
         }),
         editTourtype : builder.mutation({
-            query : ( {id, tourTypeData} : { id: string; tourTypeData: ITourtype }) => ({
+            query : ( {id, tourTypeData}) => ({
                 
               url : `/tour/tour-types/${id}`,
               method :"PATCH",

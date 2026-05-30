@@ -66,6 +66,7 @@ const Userupdate = () => {
             toast.success("User updated successfully!")
         } catch (error) {
             console.log(error)
+            toast.error("Failed to update user");
         }
 
     }

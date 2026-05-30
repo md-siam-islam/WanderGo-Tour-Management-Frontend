@@ -1,5 +1,9 @@
 import baseApi from "@/redux/baseApi";
 
+interface ITourtype {
+    name : string;
+}
+
 export const tourApi = baseApi.injectEndpoints({
     endpoints : (builder) => ({
 
@@ -26,6 +30,15 @@ export const tourApi = baseApi.injectEndpoints({
             }),
             invalidatesTags : ["TOUR-TYPE"],
         }),
+        editTourtype : builder.mutation({
+            query : ( {id, tourTypeData} : { id: string; tourTypeData: ITourtype }) => ({
+                
+              url : `/tour/tour-types/${id}`,
+              method :"PATCH",
+              data : tourTypeData 
+            }),
+            invalidatesTags : ["TOUR-TYPE"],
+        }),
         getTourtype : builder.query({
             query : () => ({
                 url : "/tour/tour-types",
@@ -36,4 +49,4 @@ export const tourApi = baseApi.injectEndpoints({
     })
 })
 
-export const {useAddTourtypeMutation , useGetTourtypeQuery , useRemoveTourtypeMutation , useGetSingleTourtypeMutation} = tourApi
+export const {useAddTourtypeMutation , useGetTourtypeQuery , useRemoveTourtypeMutation , useGetSingleTourtypeMutation , useEditTourtypeMutation} = tourApi

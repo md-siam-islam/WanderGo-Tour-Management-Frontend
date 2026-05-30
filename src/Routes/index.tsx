@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
         path: '/tour'
       },
       {
-        Component: withAuth(About, All_Role.admin as Role),
+        Component: About,
         path: "/about"
       },
       // {
@@ -54,12 +54,12 @@ export const router = createBrowserRouter([
     ]
   },
   {
-    Component: withAuth(Dashboardlayout, All_Role.admin as Role),
+    Component: withAuth(Dashboardlayout, [All_Role.admin, All_Role.superAdmin] as Role[]),
     path: "/admin",
     children: [{ index: true, element: <Navigate to={"/admin/analytics"}></Navigate> }, ...genarateSidebar(adminSidebarItem)]
   },
   {
-    Component: withAuth(Dashboardlayout, All_Role.user as Role),
+    Component: withAuth(Dashboardlayout, [All_Role.user] as Role[]),
     path: "/user",
     children: [
       { index: true, element: <Navigate to={'/user/booking'}></Navigate> },
@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
     path: "/unauth"
   },
   {
-    Component: withAuth(Meprofile),  // ✅
+    Component: withAuth(Meprofile),
     path: "/profile"
 },{
     Component: withAuth(Userupdate),

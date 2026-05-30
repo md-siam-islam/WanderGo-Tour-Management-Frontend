@@ -4,7 +4,7 @@ import type { ComponentType } from "react";
 import { Navigate, useLocation } from "react-router";
 import { toast } from "sonner";
 
-export const withAuth = (Component: ComponentType, requerdRole?: Role) => {
+export const withAuth = (Component: ComponentType, requerdRole?: Role[]) => {
 
     return function WrapWithAuth() {
 
@@ -18,7 +18,7 @@ export const withAuth = (Component: ComponentType, requerdRole?: Role) => {
             return <Navigate to="/login" state={{ from: location.pathname }} replace />
         }
 
-        if (requerdRole && data?.data?.role !== requerdRole) {
+        if (requerdRole && !requerdRole.includes(data?.data?.role)) {
             toast.error("You are not authorized to access this page.")
             return <Navigate to="/unauth" replace />
         }

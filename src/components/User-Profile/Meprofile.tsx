@@ -71,7 +71,7 @@ const Meprofile = () => {
         <Link to="/">
         <h3 className="text-xl md:text-3xl font-bold text-gray-800"><MoveLeftIcon className="inline mr-2" />Home</h3>
         </Link>
-        <Link to="/update-profile" className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <Link to="/update-profile" className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-pink-600 transition-colors">
           <FaEdit />
           Edit Profile
         </Link>

@@ -25,7 +25,7 @@ const navigationLinks = [
     href: "/tour", label: "Tour", role: "PUBLIC"
   },
   { href: "/about", label: "About", role: "PUBLIC" },
-  { href: "/admin", label: "Dashboard", role: All_Role.admin },
+  { href: "/admin", label: "Dashboard", role: All_Role.superAdmin },
   { href: "/user", label: "Dashboard", role: All_Role.user },
 ]
 

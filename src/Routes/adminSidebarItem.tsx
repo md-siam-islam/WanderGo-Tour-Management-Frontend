@@ -10,32 +10,27 @@ import Division from "@/components/pages/Admin/Division";
       title: "Dashboard",
       items: [
         {
-          title: "Analytics",
+          title: "📊 Analytics",
           url: "/admin/analytics",
           Component : analytics
         },
         {
-          title: "Add Tour",
+          title: "➕ Add Tour",
           url: "/admin/add-tour",
           Component : Addtour
         },
         {
-          title: "All Tour",
+          title: "🗺️ All Tour",
           url: "/admin/all-tour",
           Component : AllTour
         },
         {
-          title: "Add Tour",
-          url: "/admin/add-tour",
-          Component : Addtour
-        },
-        {
-          title: "Add Tour Type",
+          title: "➕ Add Tour Type",
           url: "/admin/add-tour-type",
           Component : AddtourType
         },
         {
-          title: "Add Division",
+          title: "🗺️ Add Division",
           url: "/admin/division",
           Component : Division
         },

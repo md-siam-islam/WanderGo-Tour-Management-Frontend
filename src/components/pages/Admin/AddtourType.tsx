@@ -14,11 +14,15 @@ import { Deleteconfrimation } from "@/components/modules/All-Confrim-File/delete
 import { toast } from "sonner";
 import { useState } from "react";
 import { AllTourTypeviewModal } from "./Tour-type/AllTour-typeViewModal";
+import { TourTypeEdit } from "./Tour-type/TourTypeEdit";
 
 const AddtourType = () => {
 
   const [selectedTourType, setSelectedTourType] = useState<any>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
+
+  const [selectedTourTypeForEdit, setSelectedTourTypeForEdit] = useState<any>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const { data } = useGetTourtypeQuery(undefined);
   const [deleteTourtype] = useRemoveTourtypeMutation();
@@ -41,6 +45,14 @@ const AddtourType = () => {
     const result = await getSingleTourtype(tourTypeID)
    setSelectedTourType(result.data.data);
    setIsViewOpen(true);
+  }
+
+  const handleTourTypeEdit = async (tourTypeID: string) => {
+    const result = await getSingleTourtype(tourTypeID)
+    console.log(result?.data?.data);
+
+    setSelectedTourTypeForEdit(result.data.data);
+    setIsEditOpen(true);
   }
 
   return (
@@ -79,10 +91,11 @@ const AddtourType = () => {
                   <TableCell className="text-right space-x-2">
 
                     {/* Edit Button */}
-                    <Button variant="outline" size="sm" className="gap-1">
+                    <Button onClick={ () => handleTourTypeEdit(item._id as string)} variant="outline" size="sm" className="gap-1">
                       <Pencil size={16} />
                       Edit
                     </Button>
+
                     <Button onClick={() => handleSingleTourTypeView(item._id as string)} variant="outline" size="sm" className="gap-1">
                       <Eye size={16} />
                       View
@@ -104,7 +117,7 @@ const AddtourType = () => {
 
 
             <AllTourTypeviewModal open={isViewOpen} onOpenChange={setIsViewOpen} tourType={selectedTourType}/>
-
+            <TourTypeEdit open={isEditOpen} onOpenChange={setIsEditOpen} tourType={selectedTourTypeForEdit}/>
 
       </div>
     </div>

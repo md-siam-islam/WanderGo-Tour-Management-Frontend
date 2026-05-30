@@ -1,5 +1,7 @@
 
-import axios from "axios"
+import axios, { type AxiosRequestConfig } from "axios"
+import { el, is } from "date-fns/locale";
+import { promise } from "zod";
 
 export const axiosInstant = axios.create({
   baseURL: "http://localhost:5000/api/v1",
@@ -17,6 +19,24 @@ axiosInstant.interceptors.request.use(function (config) {
 },
 );
 
+let isRefreshing = false;
+
+let pendingQueue: {
+  resolve: (value: unknown) => void;
+  reject: (reason: unknown) => void;
+}[] = []
+
+const processQueue = (error: unknown) => {
+  pendingQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error)
+    } else {
+      promise.resolve(null)
+    }
+  })
+  pendingQueue = []
+}
+
 // Add a response interceptor
 axiosInstant.interceptors.response.use(
   (response) => {
@@ -24,15 +44,30 @@ axiosInstant.interceptors.response.use(
   },
   async (error) => {
 
+    const originalRequest = error.config as AxiosRequestConfig;
+
     if (error.response.status === 500 && error.response.data.message === "jwt expired") {
 
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          pendingQueue.push({ resolve, reject })
+        })
+          .then(() => axiosInstant(originalRequest))
+          .catch((err) => Promise.reject(err))
+      }
+
+      isRefreshing = true;
       try {
         const result = await axiosInstant.post("/auth/refresh-token")
-
         console.log("New Token is ready :", result);
+        processQueue(null)
+        return axiosInstant(originalRequest);
       } catch (error) {
-
-        console.log("Error From Refresh Token", error)
+        processQueue(error)
+        return Promise.reject(error);
+      } finally {
+        isRefreshing = false;
       }
 
     }

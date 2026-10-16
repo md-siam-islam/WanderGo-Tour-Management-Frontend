@@ -4,38 +4,44 @@ import AddtourType from "@/components/pages/Admin/AddtourType";
 import AllTour from "@/components/pages/Admin/AllTour";
 import analytics from "@/components/pages/Admin/analytics";
 import Division from "@/components/pages/Admin/Division";
+import AdminCoupons from "@/components/pages/Admin/Coupons";
 
- export const adminSidebarItem : ISidebaritema[] = [
-    {
-      title: "Dashboard",
-      items: [
-        {
-          title: "📊 Analytics",
-          url: "/admin/analytics",
-          Component : analytics
-        },
-        {
-          title: "➕ Add Tour",
-          url: "/admin/add-tour",
-          Component : Addtour
-        },
-        {
-          title: "🗺️ All Tour",
-          url: "/admin/all-tour",
-          Component : AllTour
-        },
-        {
-          title: "➕ Add Tour Type",
-          url: "/admin/add-tour-type",
-          Component : AddtourType
-        },
-        {
-          title: "🗺️ Add Division",
-          url: "/admin/division",
-          Component : Division
-        },
-      ],
-    },
-  ]
+export const adminSidebarItem: ISidebaritema[] = [
+  {
+    title: "Dashboard",
+    items: [
+      {
+        title: "📊 Analytics",
+        url: "/admin/analytics",
+        Component: analytics,
+      },
+      {
+        title: "➕ Add Tour",
+        url: "/admin/add-tour",
+        Component: Addtour,
+      },
+      {
+        title: "🗺️ All Tour",
+        url: "/admin/all-tour",
+        Component: AllTour,
+      },
+      {
+        title: "➕ Add Tour Type",
+        url: "/admin/add-tour-type",
+        Component: AddtourType,
+      },
+      {
+        title: "🗺️ Add Division",
+        url: "/admin/division",
+        Component: Division,
+      },
+      {
+        title: "🎟️ Promo Coupons",
+        url: "/admin/coupons",
+        Component: AdminCoupons,
+      },
+    ],
+  },
+];
 
-  export default adminSidebarItem;
+export default adminSidebarItem;

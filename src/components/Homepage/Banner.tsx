@@ -1,6 +1,5 @@
 import { Star } from "lucide-react";
 import { Compass } from "lucide-react";
-import React from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";   
@@ -53,7 +52,7 @@ export const Hero = ({
         {/* Heading */}
         <div className="mx-auto max-w-4xl mb-3">
           <h1 className="text-4xl lg:text-6xl font-bold text-white font-nunito leading-tight drop-shadow-lg">
-            Explore The World With{" "}
+            {heading}{" "}
             <em className="not-italic text-[#EC003F]">Confidence</em>
           </h1>
         </div>

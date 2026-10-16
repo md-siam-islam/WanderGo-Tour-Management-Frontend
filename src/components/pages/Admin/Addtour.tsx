@@ -178,7 +178,7 @@ const Addtour = () => {
                   <FormItem className="flex-1">
                     <FormLabel>CostFrom</FormLabel>
                     <FormControl>
-                      <Input type="number" className="w-full" placeholder="Enter Tour CostFrom" {...field} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour CostFrom" {...field} value={(field.value as number | string) ?? ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,7 +197,7 @@ const Addtour = () => {
                   <FormItem className="flex-1">
                     <FormLabel>Max Gests</FormLabel>
                     <FormControl>
-                      <Input type="number" className="w-full" placeholder="Enter Tour Max Gests" {...field} value={field.value ?? ""} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour Max Gests" {...field} value={(field.value as number | string) ?? ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -212,7 +212,7 @@ const Addtour = () => {
                   <FormItem className="flex-1">
                     <FormLabel>Min Gests</FormLabel>
                     <FormControl>
-                      <Input type="number" className="w-full" placeholder="Enter Tour Min Gests" {...field} value={field.value ?? ""} />
+                      <Input type="number" className="w-full" placeholder="Enter Tour Min Gests" {...field} value={(field.value as number | string) ?? ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

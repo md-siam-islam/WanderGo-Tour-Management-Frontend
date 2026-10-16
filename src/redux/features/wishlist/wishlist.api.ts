@@ -1,28 +1,35 @@
 import baseApi from "@/redux/baseApi";
+import type { ITourresponse } from "@/Alltypes/tour.type";
+
+export interface IWishlistItem {
+  _id: string;
+  user: string;
+  tour: ITourresponse;
+  createdAt: string;
+}
 
 export const wishlistApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMyWishlist: builder.query({
+    getMyWishlist: builder.query<{ success: boolean; data: IWishlistItem[] }, void>({
       query: () => ({
-        url: "/wishlist",
+        url: "/wishlist/my-wishlist",
         method: "GET",
       }),
       providesTags: ["WISHLIST"],
     }),
 
-    addToWishlist: builder.mutation({
+    checkWishlistStatus: builder.query<{ success: boolean; data: { isWishlisted: boolean } }, string>({
       query: (tourId: string) => ({
-        url: "/wishlist",
-        method: "POST",
-        data: { tour: tourId },
+        url: `/wishlist/check/${tourId}`,
+        method: "GET",
       }),
-      invalidatesTags: ["WISHLIST"],
+      providesTags: ["WISHLIST"],
     }),
 
-    removeFromWishlist: builder.mutation({
+    toggleWishlist: builder.mutation({
       query: (tourId: string) => ({
-        url: `/wishlist/${tourId}`,
-        method: "DELETE",
+        url: `/wishlist/toggle/${tourId}`,
+        method: "POST",
       }),
       invalidatesTags: ["WISHLIST"],
     }),
@@ -31,6 +38,6 @@ export const wishlistApi = baseApi.injectEndpoints({
 
 export const {
   useGetMyWishlistQuery,
-  useAddToWishlistMutation,
-  useRemoveFromWishlistMutation,
+  useCheckWishlistStatusQuery,
+  useToggleWishlistMutation,
 } = wishlistApi;

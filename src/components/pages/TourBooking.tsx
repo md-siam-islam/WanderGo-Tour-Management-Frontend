@@ -1,6 +1,6 @@
 import { useGetsingleTourMutation } from "@/redux/features/tour/tour.api";
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import {
@@ -20,16 +20,21 @@ import {
     Award,
     Shield,
     Star,
-    Navigation
+    Navigation,
+    Ticket,
+    CheckCircle2
 } from "lucide-react";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useCreateBookingMutation } from "@/redux/features/Booking/booking.api";
+import { useApplyCouponMutation } from "@/redux/features/coupon/coupon.api";
 // import { format } from "date-fns";
 
 const TourBooking = () => {
 
     const [guests, setGuests] = useState(1);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [couponCode, setCouponCode] = useState("");
+    const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+    const [discountAmount, setDiscountAmount] = useState(0);
 
     const [selectedImage, setSelectedImage] = useState(0);
 
@@ -37,7 +42,8 @@ const TourBooking = () => {
 
     const [getSingleTour, { data, isLoading, isError }] = useGetsingleTourMutation();
 
-    const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation()
+    const [createBooking, { isLoading: isBookingLoading }] = useCreateBookingMutation();
+    const [applyCoupon, { isLoading: isApplyingCoupon }] = useApplyCouponMutation();
 
     const { id } = useParams();
 
@@ -67,9 +73,37 @@ const TourBooking = () => {
 
     useEffect(() => {
         if (!isLoading && !isError && tour?.costFrom) {
-            setTotalAmount(guests * tour.costFrom);
+            const baseTotal = guests * tour.costFrom;
+            setTotalAmount(Math.max(0, baseTotal - discountAmount));
         }
-    }, [isLoading, isError, guests, tour?.costFrom]);
+    }, [isLoading, isError, guests, tour?.costFrom, discountAmount]);
+
+    const handleApplyCoupon = async () => {
+        if (!couponCode.trim()) {
+            toast.error("Please enter a coupon code");
+            return;
+        }
+        try {
+            const res = await applyCoupon({
+                code: couponCode.trim().toUpperCase(),
+                amount: (tour?.costFrom || 0) * guests,
+            }).unwrap();
+            if (res?.success) {
+                setAppliedCoupon(res.data.code);
+                setDiscountAmount(res.data.discountAmount);
+                toast.success(`Coupon "${res.data.code}" applied! Discount: ৳${res.data.discountAmount}`);
+            }
+        } catch (err: any) {
+            toast.error(err?.data?.message || "Invalid or expired coupon code");
+        }
+    };
+
+    const handleRemoveCoupon = () => {
+        setAppliedCoupon(null);
+        setDiscountAmount(0);
+        setCouponCode("");
+        toast.info("Coupon removed");
+    };
 
     // const formatDate = (date : any) => {
     //     if (!date) return "Not specified";
@@ -79,9 +113,10 @@ const TourBooking = () => {
     const CreateBooking = async () => {
 
         
-        const bookingData = {
+        const bookingData: { tour?: string; guestCount: number; couponCode?: string } = {
             tour: id,
-            guestCount: guests
+            guestCount: guests,
+            couponCode: appliedCoupon || undefined,
         }
         
         // console.log(bookingData)
@@ -402,22 +437,66 @@ const TourBooking = () => {
                                             )}
                                         </div>
 
+                                        {/* Coupon Section */}
+                                        <div className="border-t border-gray-200 pt-4">
+                                            <h3 className="font-medium text-gray-700 mb-2 flex items-center gap-1.5 text-sm">
+                                                <Ticket size={16} className="text-[#EF1A53]" /> Have a Promo Coupon?
+                                            </h3>
+                                            {appliedCoupon ? (
+                                                <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-sm">
+                                                    <div className="flex items-center gap-2 text-emerald-800 font-medium">
+                                                        <CheckCircle2 size={16} className="text-emerald-600" />
+                                                        <span>Code: <strong>{appliedCoupon}</strong> (-৳{discountAmount})</span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleRemoveCoupon}
+                                                        className="text-xs text-rose-600 font-semibold hover:underline"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Enter code (e.g. SUMMER2026)"
+                                                        value={couponCode}
+                                                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                                                        className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#EF1A53] uppercase font-mono"
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        onClick={handleApplyCoupon}
+                                                        disabled={isApplyingCoupon}
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="border-[#EF1A53] text-[#EF1A53] hover:bg-[#EF1A53] hover:text-white"
+                                                    >
+                                                        {isApplyingCoupon ? "Applying..." : "Apply"}
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </div>
+
                                         {/* Price Breakdown */}
                                         <div className="border-t border-gray-200 pt-4">
                                             <h3 className="font-medium text-gray-700 mb-3">Price Breakdown</h3>
                                             <div className="space-y-2">
                                                 <div className="flex justify-between text-gray-600">
-                                                    <span>${tour.costFrom} × {guests} guests</span>
-                                                    <span>${tour.costFrom * guests}</span>
+                                                    <span>৳{tour.costFrom} × {guests} guests</span>
+                                                    <span>৳{tour.costFrom * guests}</span>
                                                 </div>
-                                                <div className="flex justify-between text-gray-600">
-                                                    <span>Service fee</span>
-                                                    <span>$100</span>
-                                                </div>
+                                                {discountAmount > 0 && (
+                                                    <div className="flex justify-between text-emerald-600 font-medium">
+                                                        <span>Coupon Discount ({appliedCoupon})</span>
+                                                        <span>-৳{discountAmount}</span>
+                                                    </div>
+                                                )}
                                                 <div className="border-t border-gray-300 pt-2 mt-2">
                                                     <div className="flex justify-between text-lg font-bold text-gray-900">
                                                         <span>Total Amount</span>
-                                                        <span className="text-[#EF1A53]">${totalAmount}</span>
+                                                        <span className="text-[#EF1A53]">৳{totalAmount.toLocaleString()}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -426,11 +505,12 @@ const TourBooking = () => {
 
                                     {/* Booking Button */}
                                     <Button onClick={CreateBooking}
-                                        className="w-full py-6 text-lg font-semibold "
+                                        disabled={isBookingLoading}
+                                        className="w-full py-6 text-lg font-semibold bg-[#EF1A53] hover:bg-[#d01344] text-white"
                                         size="lg"
                                     >
                                         <Navigation size={22} className="mr-2" />
-                                        Book Now - ${totalAmount}
+                                        {isBookingLoading ? "Processing Booking..." : `Book & Pay Now - ৳${totalAmount.toLocaleString()}`}
                                     </Button>
 
                                     {/* Additional Info */}

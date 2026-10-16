@@ -26,16 +26,44 @@ import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { TourReviews } from "../modules/Tour/TourReviews";
+import {
+  useCheckWishlistStatusQuery,
+  useToggleWishlistMutation,
+} from "@/redux/features/wishlist/wishlist.api";
 
 
 const SingleTourDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [getSingleTour, { data, isLoading }] = useGetsingleTourMutation();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: userData } = useUserInfoQuery(undefined);
+
+  const { data: wishlistData, refetch: refetchWishlist } = useCheckWishlistStatusQuery(
+    id as string,
+    { skip: !id || !userData?.data?.email }
+  );
+  const [toggleWishlist, { isLoading: isTogglingWishlist }] = useToggleWishlistMutation();
+  const isFavorite = wishlistData?.data?.isWishlisted || false;
+
+  const handleToggleFavorite = async () => {
+    if (!userData?.data?.email) {
+      toast.error("Please login to save this tour to your favorites");
+      navigate("/login", { state: { from: `/tour-details/${id}` } });
+      return;
+    }
+    try {
+      const res = await toggleWishlist(id as string).unwrap();
+      if (res?.success) {
+        toast.success(res?.message || "Wishlist updated");
+        refetchWishlist();
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update wishlist");
+    }
+  };
 
   const { data: tourTypeData } = useGetTourtypeQuery(undefined)
   const { data: DivisionData } = useGetDivisionsQuery(undefined)
@@ -143,11 +171,13 @@ const SingleTourDetails = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsFavorite(!isFavorite)}
+                onClick={handleToggleFavorite}
+                disabled={isTogglingWishlist}
                 className="rounded-full"
+                title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
-                  className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
+                  className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-[#EC003F] text-[#EC003F]' : 'text-gray-400'}`}
                 />
               </Button>
 
@@ -267,11 +297,12 @@ const SingleTourDetails = () => {
           <div className="lg:col-span-2">
             {/* Tour Tabs */}
             <Tabs defaultValue="overview" className="mb-8">
-              <TabsList className="grid grid-cols-4 mb-6">
+              <TabsList className="grid grid-cols-5 mb-6">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
                 <TabsTrigger value="included">Inclusions</TabsTrigger>
                 <TabsTrigger value="amenities">Amenities</TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview">
@@ -369,6 +400,10 @@ const SingleTourDetails = () => {
                     ))}
                   </div>
                 </div>
+              </TabsContent>
+
+              <TabsContent value="reviews">
+                <TourReviews tourId={id as string} currentUser={userData?.data} />
               </TabsContent>
             </Tabs>
           </div>

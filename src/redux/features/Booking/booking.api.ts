@@ -13,7 +13,7 @@ export const bookingApi = baseApi.injectEndpoints({
 
     getMyBookings: builder.query({
       query: () => ({
-        url: "/booking/my-booking",
+        url: "/booking/myBooking",
         method: "GET",
       }),
       providesTags: ["BOOKING"],
@@ -35,6 +35,14 @@ export const bookingApi = baseApi.injectEndpoints({
       providesTags: ["BOOKING"],
     }),
 
+    cancelBooking: builder.mutation({
+      query: (bookingId: string) => ({
+        url: `/booking/cancel/${bookingId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["BOOKING"],
+    }),
+
     initPayment: builder.mutation({
       query: (bookingId: string) => ({
         url: "/payment/init-payment",
@@ -51,5 +59,6 @@ export const {
   useGetMyBookingsQuery,
   useGetAllBookingsQuery,
   useGetSingleBookingQuery,
+  useCancelBookingMutation,
   useInitPaymentMutation,
 } = bookingApi;

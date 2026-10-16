@@ -10,4 +10,4 @@ export interface ISidebaritema  {
 }
 
 
-export type  Role  = "user" | "admin" | "super_admin"
+export type Role = "USER" | "ADMIN" | "SUPER_ADMIN" | "GUIDE" | "user" | "admin" | "super_admin";

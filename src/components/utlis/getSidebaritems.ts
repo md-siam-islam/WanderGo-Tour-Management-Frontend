@@ -6,6 +6,7 @@ export const All_Role = {
     superAdmin : "SUPER_ADMIN",
     admin : "ADMIN",
     user : "USER",
+    guide : "GUIDE",
 }
 
 export const getSidebaritem = (userRole : Role) => {

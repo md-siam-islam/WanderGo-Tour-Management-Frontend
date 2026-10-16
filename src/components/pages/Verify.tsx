@@ -34,7 +34,7 @@ export default function Verify() {
     const [email] = useState(location.state?.email || location.state)
     const from = location.state?.from || "/";
     const [confirm , setConfrim] = useState(false)
-    const [time , setTime] = useState(10)
+    const [time , setTime] = useState(60)
 
    useEffect(() => {
         if (!email) {
@@ -207,7 +207,7 @@ export default function Verify() {
                         className="w-3/4 py-3 text-base font-semibold rounded-xl items-center"
                         type="submit"
                     >
-                        Verify Now
+                        Send Verification Code
                     </Button>
                 </CardHeader>
             </Card>

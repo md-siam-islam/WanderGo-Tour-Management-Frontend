@@ -3,7 +3,7 @@ import App from "@/App";
 import About from "@/components/pages/About";
 import LoginPage from "@/components/pages/Login";
 import SignupPage from "@/components/pages/singup";
-import verify from "@/components/pages/Verify";
+import Verify from "@/components/pages/Verify";
 import Dashboardlayout from "@/components/layout/Dashboardlayout";
 import { genarateSidebar } from "@/components/utlis/genarateSidebar";
 import adminSidebarItem from "./adminSidebarItem";
@@ -18,9 +18,9 @@ import SingleTourDetails from "@/components/pages/SingleTourDetails";
 import TourBooking from "@/components/pages/TourBooking";
 import Meprofile from "@/components/User-Profile/Meprofile";
 import Userupdate from "@/components/User-Profile/Userupdate";
-import paymentSuccess from "@/components/pages/Payment-Related-Page/paymentSuccess";
-import paymentCancel from "@/components/pages/Payment-Related-Page/paymentCancel";
-import paymentFail from "@/components/pages/Payment-Related-Page/paymentFail";
+import PaymentSuccess from "@/components/pages/Payment-Related-Page/paymentSuccess";
+import PaymentCancel from "@/components/pages/Payment-Related-Page/paymentCancel";
+import PaymentFail from "@/components/pages/Payment-Related-Page/paymentFail";
 
 export const router = createBrowserRouter([
   {
@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
     path: "/signup"
   },
   {
-    Component: verify,
+    Component: Verify,
     path: "/verify"
   },
   {
@@ -91,15 +91,15 @@ export const router = createBrowserRouter([
     path:"/update-profile"
   },
   {
-    Component : paymentSuccess,
+    Component : PaymentSuccess,
     path : "/payment/success"
   },
   {
-    Component : paymentCancel,
+    Component : PaymentCancel,
     path : "/payment/cancel"
   },
   {
-    Component : paymentFail,
+    Component : PaymentFail,
     path : "/payment/fail"
   }
 ]);

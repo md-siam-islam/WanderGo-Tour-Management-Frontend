@@ -1,12 +1,10 @@
-
-import axios, { type AxiosRequestConfig } from "axios"
-import { el, is } from "date-fns/locale";
-import { promise } from "zod";
+import axios, { type AxiosRequestConfig } from "axios";
+import { config } from "@/config/env";
 
 export const axiosInstant = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
-  withCredentials: true
-})
+  baseURL: config.baseUrl,
+  withCredentials: true,
+});
 
 // Add a request interceptor
 axiosInstant.interceptors.request.use(function (config) {

@@ -43,11 +43,38 @@ export const TourApi = baseApi.injectEndpoints({
             query : (id) => ({
                 url : `/tour/${id}`,
                 method : "GET"
-
             }),
+        }),
+        getsingleTourQuery : builder.query ({
+            query : (id) => ({
+                url : `/tour/${id}`,
+                method : "GET"
+            }),
+            providesTags: ["TOUR"]
+        }),
+        updateTour : builder.mutation({
+            query : ({ id, tourData }) => ({
+                url : `/tour/update/${id}`,
+                method : "PATCH",
+                data : tourData
+            }),
+            invalidatesTags: ["TOUR"]
+        }),
+        deleteTour : builder.mutation({
+            query : (id) => ({
+                url : `/tour/${id}`,
+                method : "DELETE"
+            }),
+            invalidatesTags: ["TOUR"]
         })
     })
 })
 
-
-export const { useCreateTourMutation , useGetAlltourQuery , useGetsingleTourMutation} = TourApi;
+export const { 
+    useCreateTourMutation, 
+    useGetAlltourQuery, 
+    useGetsingleTourMutation,
+    useGetsingleTourQueryQuery,
+    useUpdateTourMutation,
+    useDeleteTourMutation
+} = TourApi;

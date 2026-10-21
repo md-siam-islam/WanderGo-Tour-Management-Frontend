@@ -184,9 +184,10 @@ const TourBooking = () => {
           toast.success("Booking created! Redirecting to secure payment...");
           window.location.href = paymentUrl;
         } else {
+          const reason = result?.data?.sslFailedReason;
           toast.warning(
-            paymentUrl && paymentUrl !== "Payment URL not found"
-              ? `Payment notice: ${paymentUrl}`
+            reason
+              ? `Booking created! Payment notice: ${reason}. Please proceed from My Bookings.`
               : "Booking was created! You can review or complete payment in My Bookings."
           );
           navigate("/user/booking");

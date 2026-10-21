@@ -45,7 +45,7 @@ export const bookingApi = baseApi.injectEndpoints({
 
     initPayment: builder.mutation({
       query: (bookingId: string) => ({
-        url: "/payment/init-payment",
+        url: `/payment/init-payment/${bookingId}`,
         method: "POST",
         data: { bookingId },
       }),

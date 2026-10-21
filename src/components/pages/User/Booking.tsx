@@ -78,13 +78,12 @@ const Booking = () => {
         window.location.href = paymentUrl;
       } else {
         toast.error(
-          paymentUrl && paymentUrl !== "Payment URL not found"
-            ? `Payment error: ${paymentUrl}`
-            : "Payment initialization failed: Valid payment URL not generated. Please check SSLCommerz credentials."
+          res?.message ||
+          "Payment initialization failed: Payment gateway URL could not be generated. Please try again."
         );
       }
     } catch (err: any) {
-      toast.error(err?.data?.message || "Payment initiation failed");
+      toast.error(err?.data?.message || err?.message || "Payment initiation failed");
     }
   };
 

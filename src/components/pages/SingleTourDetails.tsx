@@ -229,11 +229,10 @@ const SingleTourDetails = () => {
                 title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
-                  className={`w-4 h-4 transition-transform active:scale-125 ${
-                    isFavorite
+                  className={`w-4 h-4 transition-transform active:scale-125 ${isFavorite
                       ? "fill-[#EC003F] text-[#EC003F]"
                       : "text-muted-foreground"
-                  }`}
+                    }`}
                 />
               </Button>
 
@@ -252,7 +251,7 @@ const SingleTourDetails = () => {
       </div>
 
       {/* Main Tour Details Content */}
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl mt-12 ">
         {/* Tour Meta & Title Header */}
         <div className="mb-6 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -295,17 +294,16 @@ const SingleTourDetails = () => {
             {tour.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground ">
             <div className="flex items-center gap-1.5">
               <div className="flex items-center text-amber-500">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${
-                      i < 4
+                    className={`w-4 h-4 ${i < 4
                         ? "fill-amber-400 text-amber-400"
                         : "fill-amber-200/50 text-amber-200/50"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -315,7 +313,7 @@ const SingleTourDetails = () => {
 
             <span className="text-muted-foreground/40">•</span>
 
-            <div className="flex items-center gap-1.5 text-primary font-medium">
+            <div className="flex items-center gap-1.5 text-primary font-medium ">
               <Navigation className="w-4 h-4" />
               <span>{tour.location}</span>
             </div>
@@ -326,7 +324,7 @@ const SingleTourDetails = () => {
         <TourImageGallery images={tour.images} title={tour.title} />
 
         {/* Main Grid: Details (Left) + Booking Sticky Card (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mt-8">
           {/* Left Column: Comprehensive Tour Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Quick Highlights Bar */}

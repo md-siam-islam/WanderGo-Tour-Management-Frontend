@@ -9,6 +9,7 @@ import {
 import { useGetAlltourQuery } from "@/redux/features/tour/tour.api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { getTourFallbackImage, handleTourImageError } from "@/lib/tourImages";
 
 export const FeaturedTours = () => {
   const { data, isLoading } = useGetAlltourQuery({ limit: 6 });
@@ -46,12 +47,14 @@ export const FeaturedTours = () => {
             ))}
           </div>
         ) : tours.length === 0 ? (
-          <div className="text-center py-16 text-muted-foreground">
+          <div className="text-center py-12 text-muted-foreground">
             No tours available at the moment. Please check back soon!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tours.slice(0, 6).map((tour) => (
+            {tours.slice(0, 6).map((tour, idx) => {
+              const fallback = getTourFallbackImage(tour.title, idx);
+              return (
               <div
                 key={tour._id}
                 className="group rounded-3xl border bg-card text-card-foreground overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
@@ -59,8 +62,9 @@ export const FeaturedTours = () => {
                 {/* Image Cover */}
                 <div className="relative aspect-4/3 w-full overflow-hidden bg-muted">
                   <img
-                    src={tour.images?.[0] || "/placeholder.jpg"}
+                    src={tour.images?.[0] || fallback}
                     alt={tour.title}
+                    onError={(e) => handleTourImageError(e, fallback)}
                     className="size-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
@@ -114,7 +118,7 @@ export const FeaturedTours = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            );})}
           </div>
         )}
       </div>

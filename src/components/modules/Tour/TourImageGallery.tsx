@@ -8,6 +8,7 @@ import {
   Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getTourFallbackImage, handleTourImageError } from "@/lib/tourImages";
 
 interface TourImageGalleryProps {
   images?: string[];
@@ -15,16 +16,16 @@ interface TourImageGalleryProps {
   className?: string;
 }
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80";
-
 export const TourImageGallery: React.FC<TourImageGalleryProps> = ({
   images,
   title = "Tour Image",
   className = "",
 }) => {
+  const fallback = getTourFallbackImage(title);
   const validImages =
-    Array.isArray(images) && images.length > 0 ? images : [FALLBACK_IMAGE];
+    Array.isArray(images) && images.length > 0
+      ? images.map((img) => img || fallback)
+      : [fallback];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -79,6 +80,7 @@ export const TourImageGallery: React.FC<TourImageGalleryProps> = ({
         <img
           src={validImages[currentIndex]}
           alt={`${title} - Photo ${currentIndex + 1}`}
+          onError={(e) => handleTourImageError(e, fallback)}
           className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain cursor-pointer transition-transform duration-500 ease-out group-hover:scale-[1.01] drop-shadow-2xl"
           onClick={() => setIsLightboxOpen(true)}
         />
@@ -166,6 +168,7 @@ export const TourImageGallery: React.FC<TourImageGalleryProps> = ({
                 <img
                   src={img}
                   alt={`${title} - Thumbnail ${idx + 1}`}
+                  onError={(e) => handleTourImageError(e, fallback)}
                   className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain p-1"
                 />
 
@@ -230,6 +233,7 @@ export const TourImageGallery: React.FC<TourImageGalleryProps> = ({
             <img
               src={validImages[currentIndex]}
               alt={`${title} - Preview ${currentIndex + 1}`}
+              onError={(e) => handleTourImageError(e, fallback)}
               className="max-h-[70vh] sm:max-h-[78vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl transition-all duration-300"
             />
 

@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { getTourFallbackImage, handleTourImageError } from "@/lib/tourImages";
 
 const MyWishlist = () => {
   const { data, isLoading, refetch } = useGetMyWishlistQuery(undefined);
@@ -78,10 +79,11 @@ const MyWishlist = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlistItems.map((item) => {
+          {wishlistItems.map((item, idx) => {
             const tour = item.tour;
             if (!tour) return null;
 
+            const fallback = getTourFallbackImage(tour.title, idx);
             return (
               <div
                 key={item._id}
@@ -90,8 +92,9 @@ const MyWishlist = () => {
                 {/* Image Cover */}
                 <div className="relative aspect-video w-full overflow-hidden bg-muted">
                   <img
-                    src={tour.images?.[0] || "/placeholder.jpg"}
+                    src={tour.images?.[0] || fallback}
                     alt={tour.title}
+                    onError={(e) => handleTourImageError(e, fallback)}
                     className="size-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <button

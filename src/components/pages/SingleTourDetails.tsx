@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import {
   MapPin,
@@ -12,7 +12,18 @@ import {
   ChevronLeft,
   Share2,
   Heart,
-  Navigation
+  Navigation,
+  Compass,
+  CalendarDays,
+  CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  Info,
+  HelpCircle,
+  PlaneTakeoff,
+  PlaneLanding,
+  ShieldAlert,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetsingleTourMutation } from "@/redux/features/tour/tour.api";
@@ -22,8 +33,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
-// import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { TourReviews } from "../modules/Tour/TourReviews";
@@ -31,21 +40,21 @@ import {
   useCheckWishlistStatusQuery,
   useToggleWishlistMutation,
 } from "@/redux/features/wishlist/wishlist.api";
-
+import TourImageGallery from "../modules/Tour/TourImageGallery";
 
 const SingleTourDetails = () => {
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [getSingleTour, { data, isLoading }] = useGetsingleTourMutation();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: userData } = useUserInfoQuery(undefined);
 
-  const { data: wishlistData, refetch: refetchWishlist } = useCheckWishlistStatusQuery(
-    id as string,
-    { skip: !id || !userData?.data?.email }
-  );
-  const [toggleWishlist, { isLoading: isTogglingWishlist }] = useToggleWishlistMutation();
+  const { data: wishlistData, refetch: refetchWishlist } =
+    useCheckWishlistStatusQuery(id as string, {
+      skip: !id || !userData?.data?.email,
+    });
+  const [toggleWishlist, { isLoading: isTogglingWishlist }] =
+    useToggleWishlistMutation();
   const isFavorite = wishlistData?.data?.isWishlisted || false;
 
   const handleToggleFavorite = async () => {
@@ -65,8 +74,8 @@ const SingleTourDetails = () => {
     }
   };
 
-  const { data: tourTypeData } = useGetTourtypeQuery(undefined)
-  const { data: DivisionData } = useGetDivisionsQuery(undefined)
+  const { data: tourTypeData } = useGetTourtypeQuery(undefined);
+  const { data: DivisionData } = useGetDivisionsQuery(undefined);
   const tourType = tourTypeData?.data?.data;
   const division = DivisionData?.data?.data;
 
@@ -74,16 +83,24 @@ const SingleTourDetails = () => {
     if (id) {
       getSingleTour(id);
     }
-  }, [id]);
+  }, [id, getSingleTour]);
 
   const tour = data?.data;
 
-  const formatDate: any = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "Flexible";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
+  };
+
+  const calculateDuration = (start?: string, end?: string) => {
+    if (!start || !end) return 1;
+    const diff = new Date(end).getTime() - new Date(start).getTime();
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return days > 0 ? days : 1;
   };
 
   const handleShare = async () => {
@@ -94,411 +111,646 @@ const SingleTourDetails = () => {
           text: tour.description,
           url: window.location.href,
         });
+        return;
       } catch (error) {
-        console.error('Error sharing:', error);
+        // Fallback to copy if user cancelled or not allowed
       }
+    }
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Tour link copied to clipboard!");
+    } catch {
+      toast.info("Link: " + window.location.href);
     }
   };
 
   const handleBookNow = () => {
     if (!userData?.data?.email) {
-      toast.error("You need to login to book this tour.")
-      navigate('/login', { state: { from: `/tour-booking/${tour._id}` } })
+      toast.error("You need to login to book this tour.");
+      navigate("/login", { state: { from: `/tour-booking/${tour?._id}` } });
       return;
     }
-    navigate(`/tour-booking/${tour._id}`);
-  }
+    navigate(`/tour-booking/${tour?._id}`);
+  };
 
-  // loading thakle 
+  // Loading Skeleton State
   if (isLoading) {
     return (
-      <div className="container mx-auto py-10">
-        <div className="mb-8">
-          <Skeleton className="h-10 w-3/4 mb-4" />
-          <Skeleton className="h-4 w-1/2" />
+      <div className="container mx-auto px-4 py-10 max-w-7xl">
+        <div className="flex items-center justify-between mb-6">
+          <Skeleton className="h-10 w-36 rounded-lg" />
+          <Skeleton className="h-10 w-28 rounded-lg" />
         </div>
-        <Skeleton className="h-96 w-full rounded-xl mb-6" />
+        <div className="mb-8 space-y-3">
+          <div className="flex gap-2">
+            <Skeleton className="h-6 w-24 rounded-full" />
+            <Skeleton className="h-6 w-28 rounded-full" />
+          </div>
+          <Skeleton className="h-12 w-3/4 rounded-lg" />
+          <Skeleton className="h-5 w-1/3 rounded-lg" />
+        </div>
+        <Skeleton className="h-[480px] w-full rounded-3xl mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <Skeleton className="h-6 w-1/3 mb-4" />
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-2/3 mb-6" />
+          <div className="lg:col-span-2 space-y-4">
+            <Skeleton className="h-12 w-full rounded-xl" />
+            <Skeleton className="h-48 w-full rounded-2xl" />
           </div>
           <div>
-            <Skeleton className="h-80 w-full rounded-lg" />
+            <Skeleton className="h-96 w-full rounded-3xl" />
           </div>
         </div>
       </div>
     );
   }
 
-  // tour jodi na thake
+  // Not Found State
   if (!tour) {
     return (
-      <div className="container mx-auto py-20 text-center">
-        <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-          <X className="w-12 h-12 text-gray-400" />
+      <div className="container mx-auto px-4 py-24 text-center max-w-md">
+        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center">
+          <X className="w-10 h-10 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-700 mb-3">Tour Not Found</h2>
-        <p className="text-gray-500 mb-8">The tour you're looking for doesn't exist or has been removed.</p>
-        <Button onClick={() => navigate('/tours')}>
-          <ChevronLeft className="w-4 h-4 mr-2" />
-          Back to Tours
+        <h2 className="text-2xl font-bold text-foreground mb-2">Tour Not Found</h2>
+        <p className="text-muted-foreground mb-6 text-sm">
+          The tour you are looking for does not exist or may have been removed.
+        </p>
+        <Button asChild>
+          <Link to="/tour">
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Back to All Tours
+          </Link>
         </Button>
       </div>
     );
   }
 
+  const durationDays = calculateDuration(tour.startDate, tour.endDate);
+  const matchedDivision = division?.find(
+    (item: any) => item._id === tour.division
+  );
+  const matchedTourType = tourType?.find(
+    (item: any) => item._id === tour.tourType
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with Back Button */}
-      <div className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to={'/tour'}>
+    <div className="min-h-screen bg-background">
+      {/* Top Header / Actions Bar */}
+      <div className="border-b bg-card/60 backdrop-blur-md sticky top-16 z-30">
+        <div className="container mx-auto px-4 py-3 max-w-7xl">
+          <div className="flex items-center justify-between gap-4">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1.5 rounded-full hover:bg-muted"
+            >
+              <Link to="/tour">
+                <ChevronLeft className="w-4 h-4" />
+                <span>All Tours</span>
+              </Link>
+            </Button>
+
+            <div className="flex items-center gap-2 sm:gap-3">
+              {matchedTourType && (
+                <Badge
+                  variant="secondary"
+                  className="bg-primary/10 text-primary border-primary/20 font-medium px-3 py-1 rounded-full text-xs hidden sm:inline-flex"
+                >
+                  {matchedTourType.name}
+                </Badge>
+              )}
+
               <Button
                 variant="outline"
-                onClick={() => navigate('/tours')}
-                className="flex items-center gap-2"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Back to Tours
-              </Button>
-            </Link>
-
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
                 size="icon"
                 onClick={handleToggleFavorite}
                 disabled={isTogglingWishlist}
-                className="rounded-full"
+                className="rounded-full h-9 w-9 border-muted-foreground/20 hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                 title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
-                  className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-[#EC003F] text-[#EC003F]' : 'text-gray-400'}`}
+                  className={`w-4 h-4 transition-transform active:scale-125 ${
+                    isFavorite
+                      ? "fill-[#EC003F] text-[#EC003F]"
+                      : "text-muted-foreground"
+                  }`}
                 />
               </Button>
 
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 onClick={handleShare}
-                className="rounded-full"
+                className="rounded-full h-9 w-9 border-muted-foreground/20 hover:bg-muted"
+                title="Share this tour"
               >
-                <Share2 className="w-5 h-5 text-gray-600" />
+                <Share2 className="w-4 h-4 text-muted-foreground" />
               </Button>
-
-              {/* Tour type */}
-              {
-                tourType.map((item: { _id: string, name: string }) => item._id === tour.tourType && (
-                  <Badge className="bg-blue-100 text-blue-800 border-0">
-                    {item.name}
-                  </Badge>
-                ))
-              }
-              {/* Tour type */}
-
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Tour Header */}
-        <div className="mb-8">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            {/* division  */}
-            {
-              division.map((item: {
-                _id: String,
-                name: String,
-                description: String,
-                slug: String,
-                thumbnail: String
-              }) => item._id === tour.division && (
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  {item.name}
-                </Badge>
-              ))
-            }
+      {/* Main Tour Details Content */}
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Tour Meta & Title Header */}
+        <div className="mb-6 space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            {matchedDivision && (
+              <Badge
+                variant="outline"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border-primary/30 text-primary bg-primary/5"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                {matchedDivision.name}
+              </Badge>
+            )}
 
-            <Badge variant="outline" className="flex items-center gap-1">
-              <Users className="w-3 h-3" />
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium"
+            >
+              <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+              {durationDays} {durationDays === 1 ? "Day" : "Days"}
+            </Badge>
+
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium"
+            >
+              <Users className="w-3.5 h-3.5 text-muted-foreground" />
               Max {tour.maxGests || 8} guests
             </Badge>
-            <Badge variant="outline" className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-muted-foreground" />
               Age {tour.minAge || 5}+
             </Badge>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
             {tour.title}
           </h1>
 
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-5 h-5 ${i < 4 ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200'}`}
-                />
-              ))}
-              <span className="ml-2 text-gray-600 font-medium">4.8 (128 reviews)</span>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <div className="flex items-center text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < 4
+                        ? "fill-amber-400 text-amber-400"
+                        : "fill-amber-200/50 text-amber-200/50"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="font-semibold text-foreground">4.8</span>
+              <span>(128 reviews)</span>
             </div>
 
-            <div className="flex items-center text-blue-600 font-semibold">
-              <Navigation className="w-4 h-4 mr-1" />
-              {tour.location}
+            <span className="text-muted-foreground/40">•</span>
+
+            <div className="flex items-center gap-1.5 text-primary font-medium">
+              <Navigation className="w-4 h-4" />
+              <span>{tour.location}</span>
             </div>
           </div>
         </div>
-        {/* Image Gallery */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-          <div className="lg:col-span-3">
-            <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
-              <img
-                src={tour.images?.[activeImageIndex] || "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
-                alt={tour.title}
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-              />
-              <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm">
-                {activeImageIndex + 1} / {tour.images?.length || 1}
+        {/* Professional Image Gallery & Slider */}
+        <TourImageGallery images={tour.images} title={tour.title} />
+
+        {/* Main Grid: Details (Left) + Booking Sticky Card (Right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          {/* Left Column: Comprehensive Tour Content */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Quick Highlights Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-muted/40 border border-border/50">
+              <div className="flex items-center gap-3 p-2">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Duration</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {durationDays} Days
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-2">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Group Size</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    Max {tour.maxGests || 8}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-2">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <PlaneTakeoff className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Departure</p>
+                  <p className="text-sm font-semibold text-foreground truncate max-w-[110px]" title={tour.departureLocation}>
+                    {tour.departureLocation || "City Center"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-2">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
+                  <PlaneLanding className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Arrival</p>
+                  <p className="text-sm font-semibold text-foreground truncate max-w-[110px]" title={tour.arrivalLocation}>
+                    {tour.arrivalLocation || "Destination"}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Thumbnail Gallery */}
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
-            {tour.images?.slice(0, 4).map((image: any, index: any) => (
-              <button
-                key={index}
-                onClick={() => setActiveImageIndex(index)}
-                className={`relative h-24 rounded-lg overflow-hidden ${activeImageIndex === index ? 'ring-2 ring-blue-500 ring-offset-2' : ''}`}
-              >
-                <img
-                  src={image}
-                  alt={`${tour.title} - ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Main Content */}
-          <div className="lg:col-span-2">
-            {/* Tour Tabs */}
-            <Tabs defaultValue="overview" className="mb-8">
-              <TabsList className="grid grid-cols-5 mb-6">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
-                <TabsTrigger value="included">Inclusions</TabsTrigger>
-                <TabsTrigger value="amenities">Amenities</TabsTrigger>
-                <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            {/* Tour Tabs Navigation */}
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid grid-cols-3 sm:grid-cols-5 p-1 bg-muted/60 rounded-xl h-auto gap-1">
+                <TabsTrigger
+                  value="overview"
+                  className="rounded-lg py-2.5 data-[state=active]:bg-card data-[state=active]:shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium"
+                >
+                  <Compass className="w-4 h-4" />
+                  <span>Overview</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="itinerary"
+                  className="rounded-lg py-2.5 data-[state=active]:bg-card data-[state=active]:shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium"
+                >
+                  <CalendarDays className="w-4 h-4" />
+                  <span>Itinerary</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="included"
+                  className="rounded-lg py-2.5 data-[state=active]:bg-card data-[state=active]:shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Inclusions</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="amenities"
+                  className="rounded-lg py-2.5 data-[state=active]:bg-card data-[state=active]:shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Amenities</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="reviews"
+                  className="rounded-lg py-2.5 data-[state=active]:bg-card data-[state=active]:shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium col-span-3 sm:col-span-1"
+                >
+                  <Star className="w-4 h-4" />
+                  <span>Reviews</span>
+                </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="overview">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-4">Tour Description</h3>
-                    <p className="text-gray-700 leading-relaxed">{tour.description}</p>
-                  </div>
+              {/* Tab 1: Overview */}
+              <TabsContent value="overview" className="mt-6 space-y-8">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-foreground">
+                    About This Tour
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-line">
+                    {tour.description}
+                  </p>
+                </div>
 
-                  <div>
-                    <h3 className="text-2xl font-bold mb-4">Location Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-gray-900 mb-2">Departure</h4>
-                        <p className="text-gray-600">{tour.departureLocation}</p>
+                {/* Location Details Route Cards */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-foreground">
+                    Route & Travel Points
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-5 rounded-2xl bg-card border border-border/70 shadow-sm flex items-start gap-4">
+                      <div className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <PlaneTakeoff className="w-5 h-5" />
                       </div>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-gray-900 mb-2">Arrival</h4>
-                        <p className="text-gray-600">{tour.arrivalLocation}</p>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground mb-1">
+                          Departure Location
+                        </h4>
+                        <p className="text-base font-bold text-foreground">
+                          {tour.departureLocation || "Not specified"}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Meeting point instructions will be provided upon booking.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-card border border-border/70 shadow-sm flex items-start gap-4">
+                      <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <PlaneLanding className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground mb-1">
+                          Arrival / Destination
+                        </h4>
+                        <p className="text-base font-bold text-foreground">
+                          {tour.arrivalLocation || "Not specified"}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Primary tour base and activity center.
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="itinerary">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold mb-4">Tour Plan</h3>
-                  <div className="space-y-4">
-                    {tour.tourPlan?.map((plan: any, index: any) => (
-                      <div key={index} className="flex gap-4">
-                        <div className="flex flex-col items-center">
-                          <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                            {index + 1}
-                          </div>
-                          {index < tour.tourPlan.length - 1 && (
-                            <div className="w-0.5 h-full bg-gray-300 my-2"></div>
-                          )}
+              {/* Tab 2: Itinerary */}
+              <TabsContent value="itinerary" className="mt-6 space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-1">
+                    Daily Itinerary
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Carefully planned day-by-day experience crafted by our travel experts.
+                  </p>
+                </div>
+
+                {tour.tourPlan && tour.tourPlan.length > 0 ? (
+                  <div className="relative pl-6 sm:pl-8 space-y-8 before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-border">
+                    {tour.tourPlan.map((plan: string, index: number) => (
+                      <div key={index} className="relative group">
+                        {/* Step Marker */}
+                        <div className="absolute -left-6 sm:-left-8 top-0.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-md ring-4 ring-background">
+                          {index + 1}
                         </div>
-                        <div className="pb-4 flex-1">
-                          <h4 className="font-semibold text-lg mb-2">Day {index + 1}</h4>
-                          <p className="text-gray-600">{plan}</p>
+
+                        {/* Step Card */}
+                        <div className="p-5 rounded-2xl bg-card border border-border/60 shadow-sm transition-all duration-200 group-hover:border-primary/40 group-hover:shadow-md">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-bold tracking-wider uppercase text-primary">
+                              Day {index + 1}
+                            </span>
+                            <Badge variant="outline" className="text-xs">
+                              Planned Activity
+                            </Badge>
+                          </div>
+                          <p className="text-foreground text-sm sm:text-base leading-relaxed">
+                            {plan}
+                          </p>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
+                ) : (
+                  <div className="p-8 text-center bg-muted/40 rounded-2xl border border-dashed text-muted-foreground text-sm">
+                    Detailed itinerary will be sent to your email after booking confirmation.
+                  </div>
+                )}
               </TabsContent>
 
-              <TabsContent value="included">
+              {/* Tab 3: Included & Excluded */}
+              <TabsContent value="included" className="mt-6 space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-1">
+                    What's Included & Excluded
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Clear breakdown of everything provided during the tour with no hidden fees.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-green-700">
-                      <Check className="w-5 h-5" />
+                  {/* Included Card */}
+                  <div className="p-6 rounded-2xl bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/20 shadow-sm space-y-4">
+                    <h4 className="text-base font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       What's Included
                     </h4>
                     <ul className="space-y-3">
-                      {tour.included?.map((item: any, index: any) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">{item}</span>
+                      {tour.included && tour.included.length > 0 ? (
+                        tour.included.map((item: string, index: number) => (
+                          <li
+                            key={index}
+                            className="flex items-start gap-2.5 text-sm text-foreground/90"
+                          >
+                            <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-sm text-muted-foreground italic">
+                          Standard tour guide & transport included.
                         </li>
-                      ))}
+                      )}
                     </ul>
                   </div>
 
-                  <div>
-                    <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-red-700">
-                      <X className="w-5 h-5" />
+                  {/* Excluded Card */}
+                  <div className="p-6 rounded-2xl bg-rose-500/5 dark:bg-rose-950/20 border border-rose-500/20 shadow-sm space-y-4">
+                    <h4 className="text-base font-bold text-rose-700 dark:text-rose-400 flex items-center gap-2">
+                      <X className="w-5 h-5 text-rose-600 dark:text-rose-400" />
                       What's Excluded
                     </h4>
                     <ul className="space-y-3">
-                      {tour.excluded?.map((item: any, index: any) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <X className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700">{item}</span>
+                      {tour.excluded && tour.excluded.length > 0 ? (
+                        tour.excluded.map((item: string, index: number) => (
+                          <li
+                            key={index}
+                            className="flex items-start gap-2.5 text-sm text-foreground/90"
+                          >
+                            <X className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-sm text-muted-foreground italic">
+                          Personal expenses & optional activities.
                         </li>
-                      ))}
+                      )}
                     </ul>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="amenities">
+              {/* Tab 4: Amenities */}
+              <TabsContent value="amenities" className="mt-6 space-y-6">
                 <div>
-                  <h3 className="text-2xl font-bold mb-6">Amenities & Facilities</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {tour.amenities?.map((amenity: any, index: any) => (
-                      <div key={index} className="bg-gray-50 p-4 rounded-lg text-center">
-                        <div className="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Check className="w-6 h-6 text-blue-600" />
+                  <h3 className="text-xl font-bold text-foreground mb-1">
+                    Amenities & Services
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Complimentary facilities available during this tour package.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+                  {tour.amenities && tour.amenities.length > 0 ? (
+                    tour.amenities.map((amenity: string, index: number) => (
+                      <div
+                        key={index}
+                        className="p-4 rounded-2xl bg-card border border-border/70 hover:border-primary/40 shadow-sm text-center flex flex-col items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                          <Sparkles className="w-5 h-5" />
                         </div>
-                        <p className="font-medium text-gray-800">{amenity}</p>
+                        <span className="font-semibold text-xs sm:text-sm text-foreground">
+                          {amenity}
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full p-8 text-center text-muted-foreground text-sm bg-muted/40 rounded-2xl border border-dashed">
+                      Standard tour amenities provided.
+                    </div>
+                  )}
                 </div>
               </TabsContent>
 
-              <TabsContent value="reviews">
+              {/* Tab 5: Reviews */}
+              <TabsContent value="reviews" className="mt-6">
                 <TourReviews tourId={id as string} currentUser={userData?.data} />
               </TabsContent>
             </Tabs>
           </div>
 
-          {/* Right Column - Booking Card */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-6 bg-white rounded-2xl shadow-lg border p-6">
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-3xl font-bold text-gray-900">${tour.costFrom}</span>
-                  <span className="text-gray-500">per person</span>
+          {/* Right Column: Sticky Booking Card */}
+          <div className="lg:col-span-1 lg:sticky lg:top-32">
+            <div className="rounded-3xl border border-border/70 bg-card p-6 shadow-xl space-y-6">
+              {/* Price Banner */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-4xl font-extrabold text-foreground">
+                      ${tour.costFrom}
+                    </span>
+                    <span className="text-sm font-medium text-muted-foreground">
+                      / person
+                    </span>
+                  </div>
+                  <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 font-semibold text-xs px-2.5 py-1">
+                    Best Price
+                  </Badge>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">Taxes and fees included</p>
+                <p className="text-xs text-muted-foreground">
+                  All taxes & local fees included
+                </p>
+              </div>
 
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between items-center py-2 border-b">
-                    <span className="text-gray-600">Start Date</span>
-                    <span className="font-semibold flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(tour.startDate)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b">
-                    <span className="text-gray-600">End Date</span>
-                    <span className="font-semibold flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(tour.endDate)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600">Duration</span>
-                    <span className="font-semibold">
-                      {Math.ceil((new Date(tour.endDate).getTime() - new Date(tour.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
-                    </span>
-                  </div>
+              <Separator />
+
+              {/* Schedule Info Box */}
+              <div className="space-y-3 bg-muted/40 p-4 rounded-2xl border border-border/50 text-sm">
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-primary" /> Start Date
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {formatDate(tour.startDate)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-1 border-t border-border/40">
+                  <span className="text-muted-foreground flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-primary" /> End Date
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {formatDate(tour.endDate)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-1 border-t border-border/40">
+                  <span className="text-muted-foreground flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-primary" /> Total Duration
+                  </span>
+                  <span className="font-bold text-foreground">
+                    {durationDays} {durationDays === 1 ? "Day" : "Days"}
+                  </span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                
-                  <Button
-                    className="w-full py-6 text-lg font-semibold"
-                    size="lg"
-                    onClick={handleBookNow}
-                  >
-                    <DollarSign className="w-5 h-5 mr-2" />
-                    Book Now
-                  </Button>
-
-                <div className="pt-4 border-t">
-                  <p className="text-sm text-gray-500 text-center">
-                    Free cancellation up to 24 hours before tour starts
-                  </p>
-                </div>
-              </div>
-
-              <Separator className="my-6" />
-
+              {/* Call to Action */}
               <div className="space-y-3">
-                <h4 className="font-semibold text-gray-900">Need help?</h4>
-                <Button variant="ghost" className="w-full justify-start">
-                  Frequently Asked Questions
+                <Button
+                  className="w-full h-12 text-base font-bold shadow-lg hover:shadow-primary/20 transition-all rounded-xl"
+                  onClick={handleBookNow}
+                >
+                  <DollarSign className="w-5 h-5 mr-1" /> Book This Tour Now
                 </Button>
-                <Button variant="ghost" className="w-full justify-start">
-                  Contact Support
-                </Button>
-                <Button variant="ghost" className="w-full justify-start">
-                  Terms & Conditions
-                </Button>
+
+                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground text-center">
+                  <Zap className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                  <span>Instant confirmation upon booking</span>
+                </div>
               </div>
 
+              <Separator />
+
+              {/* Guarantees & Features */}
+              <div className="space-y-3 text-xs text-muted-foreground">
+                <div className="flex items-start gap-2.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <span>Free cancellation up to 24 hours prior</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                  <span>Verified professional English-speaking guide</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <HelpCircle className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                  <span>24/7 Traveler assistance and concierge support</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Additional Info */}
-        <div className="mt-12 pt-8 border-t">
-          <h3 className="text-2xl font-bold mb-6">Important Information</h3>
+        {/* Important Information Cards Section */}
+        <div className="mt-16 pt-10 border-t">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-foreground">
+              Essential Tour Policies
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Everything you need to know before joining the tour
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-blue-50 p-6 rounded-xl">
-              <h4 className="font-bold text-blue-900 mb-2">Cancellation Policy</h4>
-              <p className="text-blue-800">
-                Free cancellation 24 hours before the tour. 50% refund for cancellations made 12 hours before.
+            <div className="p-6 rounded-2xl bg-blue-500/5 dark:bg-blue-950/20 border border-blue-500/20 space-y-2">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-bold">
+                <Info className="w-5 h-5" />
+                <h4>Cancellation Policy</h4>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Enjoy 100% full refund when cancelled 24 hours prior to departure. 50% refund applies if cancelled 12 hours before start.
               </p>
             </div>
-            <div className="bg-green-50 p-6 rounded-xl">
-              <h4 className="font-bold text-green-900 mb-2">Safety Measures</h4>
-              <p className="text-green-800">
-                All guides are certified and follow strict safety protocols. Emergency contact available 24/7.
+
+            <div className="p-6 rounded-2xl bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/20 space-y-2">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-bold">
+                <ShieldCheck className="w-5 h-5" />
+                <h4>Safety & Health Protocols</h4>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                All licensed tour guides adhere to national safety guidelines. Emergency first-aid kits and 24/7 hotline support included.
               </p>
             </div>
-            <div className="bg-purple-50 p-6 rounded-xl">
-              <h4 className="font-bold text-purple-900 mb-2">Meeting Point</h4>
-              <p className="text-purple-800">
-                {tour.departureLocation}. Please arrive 15 minutes before the scheduled start time.
+
+            <div className="p-6 rounded-2xl bg-purple-500/5 dark:bg-purple-950/20 border border-purple-500/20 space-y-2">
+              <div className="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-bold">
+                <MapPin className="w-5 h-5" />
+                <h4>Meeting Point & Arrival</h4>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {tour.departureLocation || "Designated departure hub"}. Please arrive at least 15 minutes before scheduled departure.
               </p>
             </div>
           </div>

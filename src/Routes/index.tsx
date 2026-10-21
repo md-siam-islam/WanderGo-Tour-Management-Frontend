@@ -4,6 +4,8 @@ import About from "@/components/pages/About";
 import LoginPage from "@/components/pages/Login";
 import SignupPage from "@/components/pages/singup";
 import Verify from "@/components/pages/Verify";
+import ForgotPasswordPage from "@/components/pages/ForgotPassword";
+import ResetPasswordPage from "@/components/pages/ResetPassword";
 import Dashboardlayout from "@/components/layout/Dashboardlayout";
 import { genarateSidebar } from "@/components/utlis/genarateSidebar";
 import adminSidebarItem from "./adminSidebarItem";
@@ -78,6 +80,14 @@ export const router = createBrowserRouter([
   {
     Component: Verify,
     path: "/verify"
+  },
+  {
+    Component: ForgotPasswordPage,
+    path: "/forgot-password"
+  },
+  {
+    Component: ResetPasswordPage,
+    path: "/reset-password"
   },
   {
     Component: Unauth,

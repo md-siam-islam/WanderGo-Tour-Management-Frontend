@@ -39,7 +39,6 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["USER"],
     }),
 
     sendotp: builder.mutation<IOtpResult, Iotp>({
@@ -100,6 +99,33 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
     }),
+
+    forgotPassword: builder.mutation({
+      query: (userInfo: { email: string }) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        data: userInfo,
+      }),
+    }),
+
+    resetPassword: builder.mutation({
+      query: ({
+        id,
+        token,
+        newPassword,
+      }: {
+        id: string;
+        token: string;
+        newPassword: string;
+      }) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        data: { id, newPassword },
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -114,4 +140,6 @@ export const {
   useGetAllUsersQuery,
   useGetTourGuidesQuery,
   useUpdateUserRoleStatusMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;

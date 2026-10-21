@@ -72,10 +72,16 @@ const Booking = () => {
   const handlePay = async (bookingId: string) => {
     try {
       const res = await initPayment(bookingId).unwrap();
-      if (res?.data?.paymentUrl) {
-        window.location.href = res.data.paymentUrl;
+      const paymentUrl = res?.data?.paymentUrl;
+      if (paymentUrl && (paymentUrl.startsWith("http://") || paymentUrl.startsWith("https://"))) {
+        toast.success("Redirecting to payment gateway...");
+        window.location.href = paymentUrl;
       } else {
-        toast.error("Payment initialization failed");
+        toast.error(
+          paymentUrl && paymentUrl !== "Payment URL not found"
+            ? `Payment error: ${paymentUrl}`
+            : "Payment initialization failed: Valid payment URL not generated. Please check SSLCommerz credentials."
+        );
       }
     } catch (err: any) {
       toast.error(err?.data?.message || "Payment initiation failed");

@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router";
+import { useState, useMemo, useEffect } from "react";
+import { Link, useLocation } from "react-router";
 import {
   Calendar,
   Users,
@@ -87,6 +87,19 @@ const Booking = () => {
   const { data: userData } = useUserInfoQuery(undefined);
   const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
   const [initPayment, { isLoading: isPaying }] = useInitPaymentMutation();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("payment") === "success") {
+      toast.success("Payment confirmed! Your tour booking is now marked as complete.", {
+        duration: 5000,
+      });
+      refetch();
+    } else if (params.get("payment") === "fail") {
+      toast.error("Payment could not be completed. You can try again using the Pay Now button.");
+    }
+  }, [location.search, refetch]);
 
   const user = userData?.data;
   const bookings: IBookingItem[] = data?.data || [];

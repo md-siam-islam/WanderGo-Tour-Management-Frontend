@@ -1,215 +1,264 @@
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import {
+  CheckCircle2,
+  Copy,
+  Check,
+  Printer,
+  ArrowRight,
+  Home,
+  ShieldCheck,
+  Calendar,
+  CreditCard,
+  Sparkles,
+  RotateCcw,
+} from 'lucide-react';
 import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
-import { Check, Download, Mail, Printer, Home, ArrowRight } from 'lucide-react';
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 const PaymentSuccess = () => {
-  const [copySuccess, setCopySuccess] = useState('');
-  const [isAnimating, setIsAnimating] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [countdown, setCountdown] = useState<number>(5);
+  const [isAutoRedirecting, setIsAutoRedirecting] = useState<boolean>(true);
 
-  const {data} = useUserInfoQuery(undefined)
-
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { data: userData } = useUserInfoQuery(undefined);
 
   const searchParams = new URLSearchParams(location.search);
-    const transactionId = searchParams.get('transactionId');
-    const amount = searchParams.get('amount');
-    const status = searchParams.get('status');
-  
-  // Sample transaction data
-  const transactionData = {
-    id: transactionId || 'TXN123456789',
-    amount: amount || '$149.99',
-    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-    method: 'SSLCommerz',
-    customer: data?.data?.name || 'John Smith',
-    email: data?.data?.email || 'john.smith@example.com',
-    
+  const transactionId = searchParams.get('transactionId') || 'TXN-' + Date.now().toString().slice(-8);
+  const amount = searchParams.get('amount') || '0';
+
+  // Format amount cleanly
+  const formattedAmount = Number(amount) ? `৳${Number(amount).toLocaleString()}` : `৳${amount}`;
+
+  // Countdown timer for automatic redirection to /user/booking
+  useEffect(() => {
+    if (!isAutoRedirecting) return;
+
+    if (countdown <= 0) {
+      navigate('/user/booking?payment=success');
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown, isAutoRedirecting, navigate]);
+
+  const handleCopyTransaction = () => {
+    navigator.clipboard.writeText(transactionId);
+    setCopied(true);
+    toast.success('Transaction ID copied to clipboard!');
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  // Calculate total
-  const subtotal = parseFloat(amount?.replace('$', '') || '149.99');
-  const tax = subtotal * 0.0825; // Assuming 8.25% tax rate
-  const total = subtotal + tax;
-
-  const handleCopyTransactionId = () => {
-    navigator.clipboard.writeText(transactionData.id);
-    setCopySuccess('Copied!');
-    setTimeout(() => setCopySuccess(''), 2000);
-  };
-
-  const handlePrintReceipt = () => {
+  const handlePrint = () => {
     window.print();
   };
 
-  const handleEmailReceipt = () => {
-    alert(`Receipt sent to ${transactionData.email}`);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-50 flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full">
-        {/* Success Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
-          {/* Header Section */}
-          <div className="bg-gradient-to-r from-pink-500 to-pink-600 p-8 text-center text-white">
-            <div className={`relative inline-block mb-4 ${isAnimating ? 'animate-bounce' : ''}`}>
-              <div className="absolute inset-0 bg-pink-400 rounded-full animate-ping opacity-75"></div>
-              <div className="relative bg-white rounded-full p-4">
-                <Check size={48} className="text-pink-600" />
+    <div className="min-h-screen bg-muted/20 py-12 px-4 flex items-center justify-center font-sans">
+      <div className="max-w-2xl w-full space-y-6">
+        {/* Main Success Card */}
+        <div className="bg-card rounded-3xl border border-border/80 shadow-xl overflow-hidden">
+          {/* Celebratory Emerald Header */}
+          <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-8 sm:p-10 text-center text-white relative overflow-hidden">
+            {/* Ambient background circles */}
+            <div className="absolute -top-12 -right-12 size-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 size-48 bg-teal-400/20 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative z-10 space-y-3">
+              <div className="inline-flex size-20 rounded-full bg-white/20 backdrop-blur-md items-center justify-center border-2 border-white/30 shadow-lg animate-bounce">
+                <CheckCircle2 className="size-10 text-white" />
+              </div>
+
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider mb-2">
+                  <Sparkles className="size-3 text-amber-300" />
+                  <span>Verified by SSLCommerz</span>
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-extrabold font-nunito tracking-tight text-white">
+                  Payment Successful!
+                </h1>
+                <p className="text-emerald-100 text-sm sm:text-base max-w-md mx-auto">
+                  Your tour booking has been confirmed and updated in your traveler dashboard.
+                </p>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Payment Successful!</h1>
-            <p className="text-pink-100 text-lg opacity-90">Your transaction has been completed successfully.</p>
           </div>
 
-          <div className="p-6 md:p-8">
-            {/* Transaction Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-4 bg-pink-50 rounded-xl border border-pink-100">
-                <p className="text-sm text-gray-600 mb-1">Amount Paid</p>
-                <p className="text-3xl font-bold text-gray-800">{transactionData.amount}</p>
+          {/* Card Body */}
+          <div className="p-6 sm:p-8 space-y-6">
+            {/* Auto Redirect Countdown Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-foreground">
+              <div className="flex items-center gap-2 font-medium">
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>
+                  {isAutoRedirecting ? (
+                    <>
+                      Redirecting to your booking dashboard in{' '}
+                      <strong className="text-emerald-600 dark:text-emerald-400 text-sm">
+                        {countdown}
+                      </strong>{' '}
+                      seconds...
+                    </>
+                  ) : (
+                    'Auto-redirect paused.'
+                  )}
+                </span>
               </div>
-              
-              <div className="text-center p-4 bg-pink-50 rounded-xl border border-pink-100">
-                <p className="text-sm text-gray-600 mb-1">Transaction ID</p>
-                <div className="flex items-center justify-center">
-                  <p className="text-sm font-mono text-gray-800 mr-2">{transactionData.id}</p>
-                  <button 
-                    onClick={handleCopyTransactionId}
-                    className="text-blue-500 hover:text-blue-700 transition"
-                    title="Copy to clipboard"
+              <div className="flex items-center gap-2">
+                {isAutoRedirecting ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsAutoRedirecting(false)}
+                    className="h-7 text-xs font-semibold text-muted-foreground hover:text-foreground"
                   >
-                    {copySuccess || 'Copy'}
+                    Pause
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setCountdown(5);
+                      setIsAutoRedirecting(true);
+                    }}
+                    className="h-7 text-xs font-semibold text-emerald-600"
+                  >
+                    Resume
+                  </Button>
+                )}
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-[#EF1A53] hover:bg-[#d81548] text-white h-8 px-4 rounded-xl font-bold text-xs shadow-xs"
+                >
+                  <Link to="/user/booking?payment=success">
+                    <span>Go Now</span>
+                    <ArrowRight className="size-3.5 ml-1" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Key Payment Metrics Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-1">
+                <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider flex items-center gap-1">
+                  <CreditCard className="size-3 text-emerald-600" /> Amount Paid
+                </p>
+                <p className="text-2xl font-black text-foreground font-nunito">{formattedAmount}</p>
+                <p className="text-[11px] text-muted-foreground">All taxes & fees included</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-1">
+                <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider flex items-center justify-between">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="size-3 text-blue-600" /> Transaction ID
+                  </span>
+                  <button
+                    onClick={handleCopyTransaction}
+                    className="text-[#EF1A53] hover:underline flex items-center gap-1 text-[10px] font-bold"
+                  >
+                    {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+                    {copied ? 'Copied' : 'Copy'}
                   </button>
-                </div>
-              </div>
-              
-              <div className="text-center p-4 bg-pink-50 rounded-xl border border-pink-100">
-                <p className="text-sm text-gray-600 mb-1">Date & Time</p>
-                <p className="text-lg font-semibold text-gray-800">{transactionData.date}</p>
-                <p className="text-gray-600">{transactionData.time}</p>
+                </p>
+                <p className="text-xs font-mono font-bold text-foreground break-all pt-1">
+                  {transactionId}
+                </p>
+                <p className="text-[11px] text-muted-foreground">Gateway: SSLCommerz Secure</p>
               </div>
             </div>
 
-            {/* Receipt Details */}
-            <div className="border border-gray-200 rounded-xl p-6 mb-8">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 pb-3 border-b">Receipt Details</h2>
-              
-              <div className="pt-4 border-t border-gray-200">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+            {/* Transaction Receipt Details */}
+            <div className="rounded-2xl border border-border/60 p-5 space-y-3 bg-card/60">
+              <h3 className="text-sm font-bold text-foreground font-nunito pb-2 border-b border-border/50 flex items-center justify-between">
+                <span>Receipt Summary</span>
+                <span className="text-xs text-muted-foreground font-normal flex items-center gap-1">
+                  <Calendar className="size-3" />
+                  {new Date().toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </span>
+              </h3>
+
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="text-muted-foreground">Payer Name:</span>
+                  <span className="font-semibold text-foreground">
+                    {userData?.data?.name || 'Valued Traveler'}
+                  </span>
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Tax</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="text-muted-foreground">Payer Email:</span>
+                  <span className="font-semibold text-foreground">
+                    {userData?.data?.email || 'customer@wandergo.com'}
+                  </span>
                 </div>
-                <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-300">
-                  <span>Total</span>
-                  <span className="text-pink-600">${total.toFixed(2)}</span>
+                <div className="flex justify-between py-1 border-b border-border/40">
+                  <span className="text-muted-foreground">Payment Status:</span>
+                  <span className="font-bold text-emerald-600 uppercase">Paid / Complete</span>
                 </div>
-              </div>
-              
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-medium text-gray-700 mb-1">Payment Method</h4>
-                    <p className="text-gray-800">{transactionData.method}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-700 mb-1">Customer</h4>
-                    <p className="text-gray-800">{transactionData.customer}</p>
-                    <p className="text-gray-600 text-sm">{transactionData.email}</p>
-                  </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-muted-foreground">Instant Booking Confirmation:</span>
+                  <span className="font-semibold text-foreground">Active in Dashboard</span>
                 </div>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center gap-4 mb-6">
-              <button 
-                onClick={handlePrintReceipt}
-                className="flex items-center justify-center px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium transition duration-300"
+            {/* Actions Bar */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <Button
+                asChild
+                className="w-full sm:flex-1 h-11 rounded-2xl bg-[#EF1A53] hover:bg-[#d81548] text-white font-bold text-sm shadow-md"
               >
-                <Printer size={18} className="mr-2" />
+                <Link to="/user/booking?payment=success" className="flex items-center justify-center gap-2">
+                  <span>Go to My Bookings</span>
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={handlePrint}
+                className="w-full sm:w-auto h-11 rounded-2xl font-semibold text-xs border-border/80 text-foreground"
+              >
+                <Printer className="size-4 mr-1.5" />
                 Print Receipt
-              </button>
-              
-              <button 
-                onClick={handleEmailReceipt}
-                className="flex items-center justify-center px-5 py-3 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-lg font-medium transition duration-300"
+              </Button>
+
+              <Button
+                asChild
+                variant="ghost"
+                className="w-full sm:w-auto h-11 rounded-2xl font-semibold text-xs text-muted-foreground hover:text-foreground"
               >
-                <Mail size={18} className="mr-2" />
-                Email Receipt
-              </button>
-              
-              <button 
-                onClick={() => alert('Downloading receipt...')}
-                className="flex items-center justify-center px-5 py-3 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-lg font-medium transition duration-300"
-              >
-                <Download size={18} className="mr-2" />
-                Download PDF
-              </button>
+                <Link to="/" className="flex items-center justify-center gap-1.5">
+                  <Home className="size-4" />
+                  <span>Home</span>
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Next Steps */}
-        <div className="bg-white rounded-2xl shadow-md p-6 mb-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">What's Next?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 border border-gray-200 rounded-lg hover:border-pink-300 transition">
-              <div className="text-pink-500 mb-2">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <span className="font-bold">1</span>
-                </div>
-              </div>
-              <h4 className="font-semibold text-gray-800 mb-1">Check your email</h4>
-              <p className="text-gray-600 text-sm">We've sent a confirmation email with your receipt and order details.</p>
-            </div>
-            
-            <div className="p-4 border border-gray-200 rounded-lg hover:border-pink-300 transition">
-              <div className="text-pink-500 mb-2">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <span className="font-bold">2</span>
-                </div>
-              </div>
-              <h4 className="font-semibold text-gray-800 mb-1">Access your account</h4>
-              <p className="text-gray-600 text-sm">Your account has been upgraded. You can now access all premium features.</p>
-            </div>
-            
-            <div className="p-4 border border-gray-200 rounded-lg hover:border-pink-300 transition">
-              <div className="text-pink-500 mb-2">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <span className="font-bold">3</span>
-                </div>
-              </div>
-              <h4 className="font-semibold text-gray-800 mb-1">Need help?</h4>
-              <p className="text-gray-600 text-sm">Our support team is available 24/7 to assist with any questions.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Final CTA */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Link to="/" className="flex items-center justify-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
-            <Home size={18} className="mr-2" />
-            Return to Homepage
+        {/* Footer Support Note */}
+        <p className="text-center text-xs text-muted-foreground leading-relaxed">
+          Need assistance with your booking? Contact our 24/7 concierge at{' '}
+          <Link to="/about" className="text-[#EF1A53] hover:underline font-semibold">
+            Support Center
           </Link>
-          
-          <Link to="/" className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white rounded-lg font-medium transition duration-300 w-full sm:w-auto">
-            Go to Dashboard
-            <ArrowRight size={18} className="ml-2" />
-          </Link>
-        </div>
-        
-        {/* Help Text */}
-        <div className="text-center mt-8 text-gray-500 text-sm">
-          <p>If you have any questions about your purchase, please contact our <a href="#" className="text-pink-600 hover:underline">support team</a>.</p>
-          <p className="mt-1">Transaction ID: {transactionData.id} • This page is your receipt</p>
-        </div>
+          .
+        </p>
       </div>
     </div>
   );

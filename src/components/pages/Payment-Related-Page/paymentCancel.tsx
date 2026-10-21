@@ -54,9 +54,7 @@ const PaymentCancel = () => {
 
   // Handle retry payment
   const handleRetryPayment = () => {
-    // In a real app, this would redirect to payment gateway
-    alert(`Retrying payment for Transaction: ${transactionData.transactionId}`);
-    // navigate('/checkout'); // Redirect to checkout page
+    navigate('/user/booking');
   };
 
   // Handle contact support

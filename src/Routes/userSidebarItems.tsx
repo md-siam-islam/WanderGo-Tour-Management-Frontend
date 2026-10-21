@@ -1,8 +1,10 @@
+import { lazy } from "react";
 import type { ISidebaritema } from "@/Alltypes/Type";
-import Booking from "@/components/pages/User/Booking";
-import MyWishlist from "@/components/pages/User/MyWishlist";
-import MyReviews from "@/components/pages/User/MyReviews";
 import { CalendarCheck, Heart, Star } from "lucide-react";
+
+const Booking = lazy(() => import("@/components/pages/User/Booking"));
+const MyWishlist = lazy(() => import("@/components/pages/User/MyWishlist"));
+const MyReviews = lazy(() => import("@/components/pages/User/MyReviews"));
 
 export const userSidebarItem: ISidebaritema[] = [
   {

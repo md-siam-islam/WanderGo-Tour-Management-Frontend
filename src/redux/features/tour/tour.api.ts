@@ -38,6 +38,7 @@ export const TourApi = baseApi.injectEndpoints({
                 params
             }),
             providesTags : ["TOUR"],
+            keepUnusedDataFor: 300,
         }),
         getsingleTour : builder.mutation ({
             query : (id) => ({

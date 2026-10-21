@@ -1,10 +1,5 @@
+import { lazy } from "react";
 import type { ISidebaritema } from "@/Alltypes/Type";
-import Addtour from "@/components/pages/Admin/Addtour";
-import AddtourType from "@/components/pages/Admin/AddtourType";
-import AllTour from "@/components/pages/Admin/AllTour";
-import analytics from "@/components/pages/Admin/analytics";
-import Division from "@/components/pages/Admin/Division";
-import AdminCoupons from "@/components/pages/Admin/Coupons";
 import {
   BarChart3,
   PlusCircle,
@@ -14,6 +9,13 @@ import {
   TicketPercent,
 } from "lucide-react";
 
+const Analytics = lazy(() => import("@/components/pages/Admin/analytics"));
+const Addtour = lazy(() => import("@/components/pages/Admin/Addtour"));
+const AllTour = lazy(() => import("@/components/pages/Admin/AllTour"));
+const AddtourType = lazy(() => import("@/components/pages/Admin/AddtourType"));
+const Division = lazy(() => import("@/components/pages/Admin/Division"));
+const AdminCoupons = lazy(() => import("@/components/pages/Admin/Coupons"));
+
 export const adminSidebarItem: ISidebaritema[] = [
   {
     title: "Dashboard",
@@ -21,7 +23,7 @@ export const adminSidebarItem: ISidebaritema[] = [
       {
         title: "Analytics",
         url: "/admin/analytics",
-        Component: analytics,
+        Component: Analytics,
         icon: BarChart3,
       },
       {

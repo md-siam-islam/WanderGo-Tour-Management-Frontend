@@ -4,6 +4,8 @@ import type { ComponentType } from "react";
 import { Navigate, useLocation } from "react-router";
 import { toast } from "sonner";
 
+import WanderGoLoader from "../ui/WanderGoLoader";
+
 export const withAuth = (Component: ComponentType, requerdRole?: Role[]) => {
 
     return function WrapWithAuth() {
@@ -11,7 +13,7 @@ export const withAuth = (Component: ComponentType, requerdRole?: Role[]) => {
         const { data, isLoading } = useUserInfoQuery(undefined)
         const location = useLocation()
 
-        if (isLoading) return <p>Loading...</p>
+        if (isLoading) return <WanderGoLoader message="Verifying authentication..." subMessage="Checking your travel credentials..." fullScreen={true} />
 
         if (!data?.data?.email) {
             toast.error("You need to login to access this page.")

@@ -1,28 +1,43 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router";
 import App from "@/App";
-import About from "@/components/pages/About";
-import LoginPage from "@/components/pages/Login";
-import SignupPage from "@/components/pages/singup";
-import Verify from "@/components/pages/Verify";
-import ForgotPasswordPage from "@/components/pages/ForgotPassword";
-import ResetPasswordPage from "@/components/pages/ResetPassword";
-import Dashboardlayout from "@/components/layout/Dashboardlayout";
+import WanderGoLoader from "@/components/ui/WanderGoLoader";
 import { genarateSidebar } from "@/components/utlis/genarateSidebar";
 import adminSidebarItem from "./adminSidebarItem";
 import { userSidebarItem } from "./userSidebarItems";
 import { withAuth } from "@/components/utlis/withAuth";
-import Unauth from "@/components/pages/Unauth";
 import { All_Role } from "@/components/utlis/getSidebaritems";
 import type { Role } from "@/Alltypes/Type";
-import Home from "@/components/pages/Home";
-import Tours from "@/components/pages/Tours";
-import SingleTourDetails from "@/components/pages/SingleTourDetails";
-import TourBooking from "@/components/pages/TourBooking";
-import Meprofile from "@/components/User-Profile/Meprofile";
-import Userupdate from "@/components/User-Profile/Userupdate";
-import PaymentSuccess from "@/components/pages/Payment-Related-Page/paymentSuccess";
-import PaymentCancel from "@/components/pages/Payment-Related-Page/paymentCancel";
-import PaymentFail from "@/components/pages/Payment-Related-Page/paymentFail";
+
+// Route-based Code Splitting: Lazy load pages on-demand for maximum performance
+const Home = lazy(() => import("@/components/pages/Home"));
+const Tours = lazy(() => import("@/components/pages/Tours"));
+const About = lazy(() => import("@/components/pages/About"));
+const SingleTourDetails = lazy(() => import("@/components/pages/SingleTourDetails"));
+const TourBooking = lazy(() => import("@/components/pages/TourBooking"));
+const Dashboardlayout = lazy(() => import("@/components/layout/Dashboardlayout"));
+const LoginPage = lazy(() => import("@/components/pages/Login"));
+const SignupPage = lazy(() => import("@/components/pages/singup"));
+const Verify = lazy(() => import("@/components/pages/Verify"));
+const ForgotPasswordPage = lazy(() => import("@/components/pages/ForgotPassword"));
+const ResetPasswordPage = lazy(() => import("@/components/pages/ResetPassword"));
+const Unauth = lazy(() => import("@/components/pages/Unauth"));
+const Meprofile = lazy(() => import("@/components/User-Profile/Meprofile"));
+const Userupdate = lazy(() => import("@/components/User-Profile/Userupdate"));
+const PaymentSuccess = lazy(() => import("@/components/pages/Payment-Related-Page/paymentSuccess"));
+const PaymentCancel = lazy(() => import("@/components/pages/Payment-Related-Page/paymentCancel"));
+const PaymentFail = lazy(() => import("@/components/pages/Payment-Related-Page/paymentFail"));
+
+// Helper HOC to render branded WanderGo loader during chunk download
+const withSuspense = (Component: React.ComponentType<any>, message = "Loading...") => {
+  return function SuspendedRoute(props: any) {
+    return (
+      <Suspense fallback={<WanderGoLoader message={message} fullScreen={true} />}>
+        <Component {...props} />
+      </Suspense>
+    );
+  };
+};
 
 export const router = createBrowserRouter([
   {
@@ -30,86 +45,85 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        Component: Home,
-        index: true
+        Component: withSuspense(Home, "Loading WanderGo..."),
+        index: true,
       },
       {
-        Component: Tours,
-        path: '/tour'
+        Component: withSuspense(Tours, "Discovering incredible tours..."),
+        path: "/tour",
       },
       {
-        Component: About,
-        path: "/about"
-      },
-      // {
-      //   Component: withAuth(About, All_Role.admin as Role),
-      //   path: "/about"
-      // },
-      {
-        Component: SingleTourDetails,
-        path: "/tour-details/:id"
+        Component: withSuspense(About, "Loading our story & milestones..."),
+        path: "/about",
       },
       {
-        Component: withAuth(TourBooking),
-        path: "/tour-booking/:id"
-      }
-    ]
+        Component: withSuspense(SingleTourDetails, "Preparing tour itinerary..."),
+        path: "/tour-details/:id",
+      },
+      {
+        Component: withAuth(withSuspense(TourBooking, "Setting up secure booking...")),
+        path: "/tour-booking/:id",
+      },
+    ],
   },
   {
-    Component: withAuth(Dashboardlayout, [All_Role.admin, All_Role.superAdmin] as Role[]),
+    Component: withAuth(withSuspense(Dashboardlayout, "Loading admin center..."), [All_Role.admin, All_Role.superAdmin] as Role[]),
     path: "/admin",
-    children: [{ index: true, element: <Navigate to={"/admin/analytics"}></Navigate> }, ...genarateSidebar(adminSidebarItem)]
+    children: [
+      { index: true, element: <Navigate to="/admin/analytics" /> },
+      ...genarateSidebar(adminSidebarItem),
+    ],
   },
   {
-    Component: withAuth(Dashboardlayout, [All_Role.user] as Role[]),
+    Component: withAuth(withSuspense(Dashboardlayout, "Loading traveler portal..."), [All_Role.user] as Role[]),
     path: "/user",
     children: [
-      { index: true, element: <Navigate to={'/user/booking'}></Navigate> },
-      ...genarateSidebar(userSidebarItem)
-    ]
-  },
-
-  {
-    Component: LoginPage,
-    path: "/login"
+      { index: true, element: <Navigate to="/user/booking" /> },
+      ...genarateSidebar(userSidebarItem),
+    ],
   },
   {
-    Component: SignupPage,
-    path: "/signup"
+    Component: withSuspense(LoginPage, "Opening secure login..."),
+    path: "/login",
   },
   {
-    Component: Verify,
-    path: "/verify"
+    Component: withSuspense(SignupPage, "Creating your traveler account..."),
+    path: "/signup",
   },
   {
-    Component: ForgotPasswordPage,
-    path: "/forgot-password"
+    Component: withSuspense(Verify, "Verifying your account..."),
+    path: "/verify",
   },
   {
-    Component: ResetPasswordPage,
-    path: "/reset-password"
+    Component: withSuspense(ForgotPasswordPage, "Resetting access..."),
+    path: "/forgot-password",
   },
   {
-    Component: Unauth,
-    path: "/unauth"
+    Component: withSuspense(ResetPasswordPage, "Setting new password..."),
+    path: "/reset-password",
   },
   {
-    Component: withAuth(Meprofile),
-    path: "/profile"
-},{
-    Component: withAuth(Userupdate),
-    path:"/update-profile"
+    Component: withSuspense(Unauth, "Checking authorization..."),
+    path: "/unauth",
   },
   {
-    Component : PaymentSuccess,
-    path : "/payment/success"
+    Component: withAuth(withSuspense(Meprofile, "Loading profile details...")),
+    path: "/profile",
   },
   {
-    Component : PaymentCancel,
-    path : "/payment/cancel"
+    Component: withAuth(withSuspense(Userupdate, "Loading profile editor...")),
+    path: "/update-profile",
   },
   {
-    Component : PaymentFail,
-    path : "/payment/fail"
-  }
+    Component: withSuspense(PaymentSuccess, "Verifying payment confirmation..."),
+    path: "/payment/success",
+  },
+  {
+    Component: withSuspense(PaymentCancel, "Processing cancellation..."),
+    path: "/payment/cancel",
+  },
+  {
+    Component: withSuspense(PaymentFail, "Checking payment status..."),
+    path: "/payment/fail",
+  },
 ]);

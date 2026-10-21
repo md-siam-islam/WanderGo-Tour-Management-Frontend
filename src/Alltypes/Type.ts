@@ -5,9 +5,10 @@ export interface ISidebaritema  {
         items : {
             title : string,
             url : string,
-            Component : ComponentType
+            Component : ComponentType,
+            icon?: ComponentType<{ className?: string }>,
+            badge?: string | number,
         }[]
 }
-
 
 export type Role = "USER" | "ADMIN" | "SUPER_ADMIN" | "GUIDE" | "user" | "admin" | "super_admin";

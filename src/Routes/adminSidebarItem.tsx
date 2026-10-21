@@ -5,40 +5,54 @@ import AllTour from "@/components/pages/Admin/AllTour";
 import analytics from "@/components/pages/Admin/analytics";
 import Division from "@/components/pages/Admin/Division";
 import AdminCoupons from "@/components/pages/Admin/Coupons";
+import {
+  BarChart3,
+  PlusCircle,
+  Compass,
+  Layers,
+  MapPin,
+  TicketPercent,
+} from "lucide-react";
 
 export const adminSidebarItem: ISidebaritema[] = [
   {
     title: "Dashboard",
     items: [
       {
-        title: "📊 Analytics",
+        title: "Analytics",
         url: "/admin/analytics",
         Component: analytics,
+        icon: BarChart3,
       },
       {
-        title: "➕ Add Tour",
+        title: "Add Tour",
         url: "/admin/add-tour",
         Component: Addtour,
+        icon: PlusCircle,
       },
       {
-        title: "🗺️ All Tour",
+        title: "All Tours",
         url: "/admin/all-tour",
         Component: AllTour,
+        icon: Compass,
       },
       {
-        title: "➕ Add Tour Type",
+        title: "Add Tour Type",
         url: "/admin/add-tour-type",
         Component: AddtourType,
+        icon: Layers,
       },
       {
-        title: "🗺️ Add Division",
+        title: "Add Division",
         url: "/admin/division",
         Component: Division,
+        icon: MapPin,
       },
       {
-        title: "🎟️ Promo Coupons",
+        title: "Promo Coupons",
         url: "/admin/coupons",
         Component: AdminCoupons,
+        icon: TicketPercent,
       },
     ],
   },

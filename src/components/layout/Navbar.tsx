@@ -26,7 +26,7 @@ import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/a
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
 import { All_Role } from "../utlis/getSidebaritems";
-import { LayoutDashboard, User, Calendar, LogOut } from "lucide-react";
+import { LayoutDashboard, User, Calendar, LogOut, Compass, ShieldCheck } from "lucide-react";
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
@@ -38,7 +38,8 @@ export default function Navbar() {
   const role = user?.role;
 
   const isAdmin = role === All_Role.admin || role === All_Role.superAdmin;
-  const isUser = role === All_Role.user;
+  const isUser = role === All_Role.user || role === All_Role.guide;
+  const isGuide = role === All_Role.guide;
 
   const handleUserLogout = async () => {
     try {
@@ -200,6 +201,21 @@ export default function Navbar() {
                     <span>My Bookings</span>
                   </Link>
                 </DropdownMenuItem>
+                {isGuide ? (
+                  <DropdownMenuItem asChild>
+                    <Link to="/user/apply-guide" className="cursor-pointer flex items-center gap-2 text-emerald-600 font-semibold">
+                      <ShieldCheck className="h-4 w-4" />
+                      <span>Guide Status & Guild</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ) : !isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/user/apply-guide" className="cursor-pointer flex items-center gap-2 text-primary font-medium">
+                      <Compass className="h-4 w-4" />
+                      <span>Become a Tour Guide</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 {isAdmin && (
                   <DropdownMenuItem asChild>
                     <Link to="/admin" className="cursor-pointer flex items-center gap-2">

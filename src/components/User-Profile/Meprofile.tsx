@@ -3,7 +3,7 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendarAlt, FaCheckCirc
 import { MdVerified } from "react-icons/md";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have shadcn/ui
 import { Link } from "react-router";
-import { Backpack, MoveLeftIcon, KeyRound } from "lucide-react";
+import { Backpack, MoveLeftIcon, KeyRound, Compass } from "lucide-react";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const Meprofile = () => {
@@ -112,11 +112,15 @@ const Meprofile = () => {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">{user.name}</h2>
-                {user.role && (
+                {user.role === "GUIDE" ? (
+                  <span className="px-3 py-1 bg-emerald-100 text-emerald-700 font-bold rounded-full text-sm flex items-center gap-1.5 border border-emerald-300 shadow-xs">
+                    <Compass className="w-4 h-4 text-emerald-600" /> Official Tour Guide
+                  </span>
+                ) : user.role ? (
                   <span className="px-3 py-1 bg-blue-100 text-[#E80341] rounded-full text-sm font-medium">
                     {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                   </span>
-                )}
+                ) : null}
               </div>
               
               {user.status && (
@@ -279,6 +283,21 @@ const Meprofile = () => {
               >
                 Saved Wishlist
               </Link>
+              {user.role === "GUIDE" ? (
+                <Link
+                  to="/user/apply-guide"
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-colors flex items-center gap-1.5"
+                >
+                  <Compass className="w-3.5 h-3.5" /> Guide Status
+                </Link>
+              ) : (
+                <Link
+                  to="/user/apply-guide"
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-colors flex items-center gap-1.5"
+                >
+                  <Compass className="w-3.5 h-3.5" /> Become a Tour Guide
+                </Link>
+              )}
               {!user.isVerified && (
                 <Link
                   to="/verify"

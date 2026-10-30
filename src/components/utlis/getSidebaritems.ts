@@ -17,6 +17,7 @@ export const getSidebaritem = (userRole : Role) => {
        case All_Role.superAdmin:
             return [...adminSidebarItem]
        case All_Role.user:
+       case All_Role.guide:
             return [...userSidebarItem]
 
         default:

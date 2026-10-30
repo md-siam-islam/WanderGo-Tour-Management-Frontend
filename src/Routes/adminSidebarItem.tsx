@@ -23,6 +23,7 @@ const AllTour = lazy(() => import("@/components/pages/Admin/AllTour"));
 const AddtourType = lazy(() => import("@/components/pages/Admin/AddtourType"));
 const Division = lazy(() => import("@/components/pages/Admin/Division"));
 const AdminCoupons = lazy(() => import("@/components/pages/Admin/Coupons"));
+const AdminGuides = lazy(() => import("@/components/pages/Admin/Guides"));
 
 export const adminSidebarItem: ISidebaritema[] = [
   {
@@ -51,6 +52,12 @@ export const adminSidebarItem: ISidebaritema[] = [
         url: "/admin/users",
         Component: AdminUsers,
         icon: Users,
+      },
+      {
+        title: "Tour Guides",
+        url: "/admin/guides",
+        Component: AdminGuides,
+        icon: Compass,
       },
       {
         title: "Reviews",

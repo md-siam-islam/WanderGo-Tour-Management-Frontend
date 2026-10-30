@@ -27,6 +27,7 @@ const Userupdate = lazy(() => import("@/components/User-Profile/Userupdate"));
 const PaymentSuccess = lazy(() => import("@/components/pages/Payment-Related-Page/paymentSuccess"));
 const PaymentCancel = lazy(() => import("@/components/pages/Payment-Related-Page/paymentCancel"));
 const PaymentFail = lazy(() => import("@/components/pages/Payment-Related-Page/paymentFail"));
+const ApplyGuide = lazy(() => import("@/components/pages/User/ApplyGuide"));
 
 // Helper HOC to render branded WanderGo loader during chunk download
 const withSuspense = (Component: React.ComponentType<any>, message = "Loading...") => {
@@ -75,12 +76,16 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: withAuth(withSuspense(Dashboardlayout, "Loading traveler portal..."), [All_Role.user] as Role[]),
+    Component: withAuth(withSuspense(Dashboardlayout, "Loading traveler portal..."), [All_Role.user, All_Role.guide] as Role[]),
     path: "/user",
     children: [
       { index: true, element: <Navigate to="/user/booking" /> },
       ...genarateSidebar(userSidebarItem),
     ],
+  },
+  {
+    Component: withAuth(withSuspense(ApplyGuide, "Loading guide application...")),
+    path: "/apply-guide",
   },
   {
     Component: withSuspense(LoginPage, "Opening secure login..."),

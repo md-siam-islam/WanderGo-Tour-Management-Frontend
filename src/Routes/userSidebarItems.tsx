@@ -1,10 +1,11 @@
 import { lazy } from "react";
 import type { ISidebaritema } from "@/Alltypes/Type";
-import { CalendarCheck, Heart, Star } from "lucide-react";
+import { CalendarCheck, Heart, Star, Compass } from "lucide-react";
 
 const Booking = lazy(() => import("@/components/pages/User/Booking"));
 const MyWishlist = lazy(() => import("@/components/pages/User/MyWishlist"));
 const MyReviews = lazy(() => import("@/components/pages/User/MyReviews"));
+const ApplyGuide = lazy(() => import("@/components/pages/User/ApplyGuide"));
 
 export const userSidebarItem: ISidebaritema[] = [
   {
@@ -27,6 +28,12 @@ export const userSidebarItem: ISidebaritema[] = [
         url: "/user/my-reviews",
         Component: MyReviews,
         icon: Star,
+      },
+      {
+        title: "Become a Guide",
+        url: "/user/apply-guide",
+        Component: ApplyGuide,
+        icon: Compass,
       },
     ],
   },

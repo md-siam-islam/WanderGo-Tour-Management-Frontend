@@ -237,85 +237,77 @@ export default function About() {
       {/* =========================================================================
           1. HERO BANNER (TOURVIA STYLE: "ABOUT US")
          ========================================================================= */}
-      <section className="relative w-full min-h-[640px] sm:min-h-[720px] md:min-h-[800px] flex items-end overflow-hidden bg-zinc-950 select-none pb-14 sm:pb-18 md:pb-22">
-        {/* Background Travel Image */}
+      <section className="relative w-full min-h-[580px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex items-end overflow-hidden select-none pb-12 sm:pb-16 md:pb-20">
+        {/* Bright & Scenic Travel Backdrop (Reduced Darkness) */}
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=2600&q=85"
             alt="WanderGo Tour Adventure Banner"
-            className="w-full h-full object-cover object-center scale-105 filter brightness-90 transition-transform duration-[10000ms] ease-out"
+            className="w-full h-full object-cover object-center filter brightness-95"
           />
-          {/* Multi-layered Cinematic Dark Gradient Overlays */}
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[0.5px]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/40 to-black/75" />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-transparent to-zinc-950/40" />
+          {/* Gentle, light bottom vignette - keeps mountains and sky bright and clear */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
         </div>
 
-        {/* Giant Depth Typography (Tourvia Style: "ABOUT US") */}
-        <div className="absolute top-20 sm:top-24 md:top-28 lg:top-32 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 overflow-hidden px-4">
-          <span className="text-white/[0.18] dark:text-white/[0.14] font-black tracking-[0.18em] sm:tracking-[0.24em] text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] xl:text-[15rem] uppercase font-nunito block leading-none drop-shadow-sm">
+        {/* Refined Depth Typography ("ABOUT US" - Proportional & Clean) */}
+        <div className="absolute top-20 sm:top-24 md:top-28 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 px-4">
+          <span className="text-white/25 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
             ABOUT US
           </span>
         </div>
 
         {/* Content Container (Bottom-Left & Bottom-Right) */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 sm:gap-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 sm:gap-8">
             {/* Bottom-Left Area */}
-            <div className="max-w-2xl space-y-4 sm:space-y-6">
+            <div className="max-w-xl space-y-3 sm:space-y-4">
               {/* Eyebrow Tag */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium shadow-xl">
+              <div className="inline-flex items-center px-3.5 py-1 rounded-full border border-white/25 bg-black/20 backdrop-blur-md text-white/95 text-xs sm:text-sm font-medium">
                 <span>— The WanderGo Story</span>
               </div>
 
-              {/* Modern Massive Heading */}
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] font-nunito drop-shadow-2xl">
+              {/* Clean, Refined Heading (Proportional size, not huge) */}
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.12] font-nunito drop-shadow-md">
                 Crafting Meaningful <br />
-                <span className="text-white">Journeys Across Bangladesh</span>
+                <span>Journeys Across Nature</span>
               </h1>
 
-              {/* Action Button: Pill with Circular Arrow Badge (Tourvia Style) */}
-              <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-4">
+              {/* Clean Action Button */}
+              <div className="pt-2">
                 <a
                   href="#our-story"
-                  className="inline-flex items-center gap-3 bg-white hover:bg-white/95 text-zinc-950 font-bold pl-6 pr-2 py-2 rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base group"
+                  className="inline-flex items-center gap-3 bg-white hover:bg-white/90 text-zinc-950 font-bold pl-5 pr-1.5 py-1.5 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-xs sm:text-sm group"
                 >
                   <span>Discover Our Story</span>
-                  <span className="size-8 sm:size-9 rounded-full bg-[#EF1A53] group-hover:bg-[#d81548] text-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
-                    <ArrowUpRight className="size-4 sm:size-5" />
+                  <span className="size-7 sm:size-8 rounded-full bg-[#EF1A53] group-hover:bg-[#d81548] text-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
+                    <ArrowUpRight className="size-3.5 sm:size-4" />
                   </span>
                 </a>
               </div>
             </div>
 
-            {/* Bottom-Right Floating Video/Story Card */}
-            <div className="w-full sm:w-auto self-end">
+            {/* Bottom-Right Compact Video Card */}
+            <div className="self-end">
               <div
                 onClick={() => setIsVideoOpen(true)}
-                className="group cursor-pointer rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 bg-zinc-900/60 hover:bg-zinc-900/80 backdrop-blur-xl border border-white/25 shadow-2xl transition-all duration-300 hover:scale-105 w-full sm:w-[280px] md:w-[320px]"
+                className="group cursor-pointer rounded-2xl p-2 sm:p-2.5 bg-black/35 hover:bg-black/50 backdrop-blur-md border border-white/20 shadow-xl transition-all duration-300 hover:scale-105 w-[220px] sm:w-[260px]"
               >
-                <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-video">
+                <div className="relative rounded-xl overflow-hidden aspect-video">
                   <img
-                    src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"
+                    src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=500&q=80"
                     alt="Watch Our Story"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/20 transition-colors" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="size-10 sm:size-12 rounded-full bg-white text-[#EF1A53] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                      <Play className="size-5 fill-current ml-0.5" />
+                    <div className="size-9 rounded-full bg-white text-[#EF1A53] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Play className="size-4 fill-current ml-0.5" />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2.5 px-1 text-white text-xs sm:text-sm font-semibold">
-                  <div className="flex items-center gap-2">
-                    <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>• Watch Our Journey</span>
-                  </div>
-                  <span className="text-[11px] text-white/70 font-normal">
-                    12+ Years Story
-                  </span>
+                <div className="flex items-center gap-1.5 pt-2 px-1 text-white text-xs font-semibold">
+                  <span>• Watch Our Story</span>
                 </div>
               </div>
             </div>

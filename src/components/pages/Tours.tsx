@@ -202,61 +202,59 @@ const Tours = () => {
       {/* =========================================================================
           HERO BANNER SECTION (TOURVIA STYLE: "EXPLORE")
          ========================================================================= */}
-      <section className="relative w-full min-h-[600px] sm:min-h-[680px] md:min-h-[740px] flex items-end overflow-hidden bg-zinc-950 select-none pb-12 sm:pb-16 mb-8">
-        {/* Background Image with Cinematic Backdrop */}
+      <section className="relative w-full min-h-[580px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex items-end overflow-hidden select-none pb-12 sm:pb-16 mb-8">
+        {/* Bright & Scenic Backdrop (Reduced Darkness) */}
         <div className="absolute inset-0 z-0">
           <img
             src={toursBanner}
             alt="Explore Tours with WanderGo"
-            className="w-full h-full object-cover scale-105 filter brightness-90 transition-transform duration-[10000ms] ease-out"
+            className="w-full h-full object-cover object-center filter brightness-95"
             onError={(e) => {
               e.currentTarget.src =
                 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2600&q=80';
             }}
           />
-          {/* Multi-layered Cinematic Dark Gradient Overlays */}
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[0.5px]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/40 to-black/75" />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-transparent to-zinc-950/40" />
+          {/* Gentle, light bottom vignette - keeps mountains and sky bright and natural */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
         </div>
 
-        {/* Giant Depth Typography (Tourvia Style: "EXPLORE") */}
-        <div className="absolute top-20 sm:top-24 md:top-28 lg:top-32 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 overflow-hidden px-4">
-          <span className="text-white/[0.18] dark:text-white/[0.14] font-black tracking-[0.18em] sm:tracking-[0.24em] text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] xl:text-[15rem] uppercase font-nunito block leading-none drop-shadow-sm">
+        {/* Refined Depth Typography ("EXPLORE" - Proportional & Clean) */}
+        <div className="absolute top-20 sm:top-24 md:top-28 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 px-4">
+          <span className="text-white/25 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
             EXPLORE
           </span>
         </div>
 
         {/* Content Container (Bottom-Left & Bottom-Right) */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 sm:gap-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 sm:gap-8">
             {/* Bottom-Left Area */}
-            <div className="max-w-3xl space-y-4 sm:space-y-6">
+            <div className="max-w-xl space-y-3 sm:space-y-4">
               {/* Eyebrow Tag */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium shadow-xl">
+              <div className="inline-flex items-center px-3.5 py-1 rounded-full border border-white/25 bg-black/20 backdrop-blur-md text-white/95 text-xs sm:text-sm font-medium">
                 <span>— Curated Travel Packages</span>
               </div>
 
-              {/* Modern Massive Heading */}
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] font-nunito drop-shadow-2xl">
+              {/* Clean, Refined Heading (Proportional size, not huge) */}
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.12] font-nunito drop-shadow-md">
                 Discover Extraordinary <br />
-                <span className="text-white">Adventures In Bangladesh</span>
+                <span>Adventures In Bangladesh</span>
               </h1>
 
-              {/* Interactive Frosted Pill Search Bar */}
-              <div className="pt-2 w-full max-w-2xl">
+              {/* Clean Pill Search Bar (No Clutter) */}
+              <div className="pt-2">
                 <form
                   onSubmit={handleSearchSubmit}
-                  className="bg-white/95 dark:bg-card/95 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl sm:rounded-full shadow-2xl border border-white/40 dark:border-border/60 flex flex-col sm:flex-row items-center gap-2"
+                  className="bg-white/95 dark:bg-card/95 backdrop-blur-xl p-1.5 rounded-full shadow-xl border border-white/40 flex items-center gap-2 max-w-md"
                 >
-                  <div className="relative flex-1 w-full flex items-center pl-3">
-                    <Search className="size-5 text-[#EF1A53] shrink-0 mr-2.5" />
+                  <div className="relative flex-1 flex items-center pl-3">
+                    <Search className="size-4 text-[#EF1A53] shrink-0 mr-2" />
                     <Input
                       type="text"
-                      placeholder="Search destination, hills, islands..."
+                      placeholder="Search destination, hills, tours..."
                       value={tempSearchInput}
                       onChange={(e) => setTempSearchInput(e.target.value)}
-                      className="border-0 bg-transparent shadow-none focus-visible:ring-0 text-foreground placeholder:text-muted-foreground text-xs sm:text-sm h-10 px-0"
+                      className="border-0 bg-transparent shadow-none focus-visible:ring-0 text-foreground placeholder:text-muted-foreground text-xs sm:text-sm h-9 px-0"
                     />
                     {tempSearchInput && (
                       <button
@@ -265,98 +263,41 @@ const Tours = () => {
                           setTempSearchInput('');
                           setSearchTerm('');
                         }}
-                        className="p-1.5 text-muted-foreground hover:text-foreground transition-colors mr-2"
+                        className="p-1 text-muted-foreground hover:text-foreground transition-colors mr-1"
                       >
-                        <X className="size-4" />
+                        <X className="size-3.5" />
                       </button>
                     )}
                   </div>
-
-                  {/* Division Quick Selector in Searchbar */}
-                  <div className="w-full sm:w-44 sm:border-l border-border/60 sm:pl-2">
-                    <Select
-                      value={selectedDivision}
-                      onValueChange={(val) => {
-                        setSelectedDivision(val === 'all' ? '' : val);
-                        setCurrentPage(1);
-                      }}
-                    >
-                      <SelectTrigger className="border-0 bg-transparent shadow-none focus:ring-0 text-xs sm:text-sm h-10 text-foreground font-medium">
-                        <MapPin className="size-4 text-[#EF1A53] mr-1.5 shrink-0" />
-                        <SelectValue placeholder="All Regions" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-60 rounded-2xl">
-                        <SelectItem value="all">All Regions</SelectItem>
-                        {divisions.map((d: { _id: string; name: string }) => (
-                          <SelectItem key={d._id} value={d._id}>
-                            {d.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Submit CTA */}
                   <Button
                     type="submit"
-                    className="w-full sm:w-auto px-6 h-10 rounded-xl sm:rounded-full bg-[#EF1A53] hover:bg-[#d81548] text-white font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 shrink-0 flex items-center justify-center gap-1.5"
+                    className="px-5 h-8 sm:h-9 rounded-full bg-[#EF1A53] hover:bg-[#d81548] text-white font-bold text-xs shadow-md shrink-0 flex items-center gap-1.5"
                   >
                     <span>Search</span>
-                    <ArrowUpRight className="size-4" />
+                    <ArrowUpRight className="size-3.5" />
                   </Button>
                 </form>
-
-                {/* Popular Tags */}
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="text-white/70 font-medium">Trending:</span>
-                  {['Adventure', 'Relaxation', 'Heritage', 'Nature'].map((type) => {
-                    const match = tourTypes.find(
-                      (t: { _id: string; name: string }) =>
-                        t.name.toLowerCase() === type.toLowerCase()
-                    );
-                    return (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => {
-                          if (match) {
-                            setSelectedTourType(selectedTourType === match._id ? '' : match._id);
-                            setCurrentPage(1);
-                          }
-                        }}
-                        className={`px-3 py-1 rounded-full backdrop-blur-md transition-all text-xs font-semibold ${
-                          match && selectedTourType === match._id
-                            ? 'bg-[#EF1A53] text-white shadow-md'
-                            : 'bg-white/20 hover:bg-white/30 text-white border border-white/20'
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
             </div>
 
-            {/* Bottom-Right Floating Trust Card (Tourvia Style) */}
-            <div className="w-full sm:w-auto self-end">
-              <div className="rounded-2xl sm:rounded-3xl p-3 sm:p-4 bg-zinc-900/60 backdrop-blur-xl border border-white/25 shadow-2xl w-full sm:w-[280px] md:w-[320px] space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400">
-                    <ShieldCheck className="w-5 h-5" />
+            {/* Bottom-Right Compact Trust Card */}
+            <div className="self-end">
+              <div className="rounded-2xl p-2.5 sm:p-3 bg-black/35 backdrop-blur-md border border-white/20 shadow-xl w-[220px] sm:w-[260px] space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+                    <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-white text-xs sm:text-sm font-bold">100% Certified Guides</h4>
-                    <p className="text-white/70 text-[11px]">Vetted routes & emergency safety</p>
+                    <h4 className="text-white text-xs font-bold">100% Certified Tours</h4>
+                    <p className="text-white/70 text-[10px]">Verified guides & safety</p>
                   </div>
                 </div>
-
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-white">
+                <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-xs text-white">
                   <div className="flex items-center gap-1 text-amber-400">
-                    <Star className="size-3.5 fill-current" />
-                    <span className="font-bold text-white">4.9 / 5.0</span>
+                    <Star className="size-3 fill-current" />
+                    <span className="font-bold text-white text-[11px]">4.9 / 5.0</span>
                   </div>
-                  <span className="text-white/70 text-[11px]">from 15,000+ travelers</span>
+                  <span className="text-white/70 text-[10px]">15,000+ reviews</span>
                 </div>
               </div>
             </div>

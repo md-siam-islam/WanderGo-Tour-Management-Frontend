@@ -6,6 +6,7 @@ import HowItWorks from "../Homepage/HowItWorks";
 import PromoBanner from "../Homepage/PromoBanner";
 import HomeReviews from "../Homepage/HomeReviews";
 import Support from "../Homepage/Support";
+import TourGuidesSection from "../modules/Home/TourGuides";
 
 const Home = () => {
   return (
@@ -28,10 +29,13 @@ const Home = () => {
       {/* 6. Active Promo Coupons & Deals */}
       <PromoBanner />
 
-      {/* 7. Verified Traveler Reviews & Testimonials */}
+      {/* 7. Certified Tour Guides */}
+      <TourGuidesSection />
+
+      {/* 8. Verified Traveler Reviews & Testimonials */}
       <HomeReviews />
 
-      {/* 8. 24/7 Support & Traveler Care */}
+      {/* 9. 24/7 Support & Traveler Care */}
       <Support />
     </div>
   );

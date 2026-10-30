@@ -43,6 +43,23 @@ export const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ["BOOKING"],
     }),
 
+    updateBookingStatus: builder.mutation({
+      query: ({ bookingId, status }: { bookingId: string; status: string }) => ({
+        url: `/booking/status/${bookingId}`,
+        method: "PATCH",
+        data: { status },
+      }),
+      invalidatesTags: ["BOOKING"],
+    }),
+
+    deleteBooking: builder.mutation({
+      query: (bookingId: string) => ({
+        url: `/booking/${bookingId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["BOOKING"],
+    }),
+
     initPayment: builder.mutation({
       query: (bookingId: string) => ({
         url: `/payment/init-payment/${bookingId}`,
@@ -60,5 +77,7 @@ export const {
   useGetAllBookingsQuery,
   useGetSingleBookingQuery,
   useCancelBookingMutation,
+  useUpdateBookingStatusMutation,
+  useDeleteBookingMutation,
   useInitPaymentMutation,
 } = bookingApi;

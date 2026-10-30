@@ -27,6 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import TourGuidesSection from "../modules/Home/TourGuides";
 
 export default function About() {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
@@ -709,6 +710,9 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* Meet Our Tour Guides */}
+      <TourGuidesSection />
 
       {/* =========================================================================
           7. REDESIGNED SECTION: CALL TO ACTION BOX (WITH CRISP BACKGROUND IMAGE)

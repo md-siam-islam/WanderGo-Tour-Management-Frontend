@@ -3,7 +3,8 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendarAlt, FaCheckCirc
 import { MdVerified } from "react-icons/md";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have shadcn/ui
 import { Link } from "react-router";
-import { Backpack, MoveLeftIcon } from "lucide-react";
+import { Backpack, MoveLeftIcon, KeyRound } from "lucide-react";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const Meprofile = () => {
     
@@ -69,12 +70,15 @@ const Meprofile = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <Link to="/">
-        <h3 className="text-xl md:text-3xl font-bold text-gray-800"><MoveLeftIcon className="inline mr-2" />Home</h3>
+          <h3 className="text-xl md:text-3xl font-bold text-gray-800"><MoveLeftIcon className="inline mr-2" />Home</h3>
         </Link>
-        <Link to="/update-profile" className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-pink-600 transition-colors">
-          <FaEdit />
-          Edit Profile
-        </Link>
+        <div className="flex items-center gap-2">
+          <ChangePasswordDialog />
+          <Link to="/update-profile" className="flex items-center gap-2 px-4 py-2 bg-[#E80341] text-white rounded-lg hover:bg-pink-600 transition-colors text-sm font-semibold">
+            <FaEdit />
+            Edit Profile
+          </Link>
+        </div>
       </div>
 
       {/* Profile Card */}
@@ -259,25 +263,33 @@ const Meprofile = () => {
           </div>
 
           {/* Quick Actions */}
-          {/* <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Quick Actions</h3>
-            <div className="flex flex-wrap gap-3">
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                Update Password
-              </button>
-              <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                View Bookings
-              </button>
-              <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                Manage Guides
-              </button>
+          <div className="border-t border-gray-200 pt-6">
+            <h3 className="text-base font-bold text-gray-800 mb-3">Quick Account Shortcuts</h3>
+            <div className="flex flex-wrap items-center gap-3">
+              <ChangePasswordDialog />
+              <Link
+                to="/user/booking"
+                className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-colors"
+              >
+                View My Bookings
+              </Link>
+              <Link
+                to="/user/wishlist"
+                className="px-4 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold hover:bg-purple-700 transition-colors"
+              >
+                Saved Wishlist
+              </Link>
               {!user.isVerified && (
-                <button className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
-                  Verify Email
-                </button>
+                <Link
+                  to="/verify"
+                  state={{ email: user.email }}
+                  className="px-4 py-2 bg-[#EF1A53] text-white rounded-xl text-xs font-bold hover:bg-[#d81548] transition-colors"
+                >
+                  Verify Email Address
+                </Link>
               )}
             </div>
-          </div> */}
+          </div>
 
         </div>
       </div>

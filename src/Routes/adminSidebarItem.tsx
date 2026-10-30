@@ -2,6 +2,10 @@ import { lazy } from "react";
 import type { ISidebaritema } from "@/Alltypes/Type";
 import {
   BarChart3,
+  CalendarCheck2,
+  CreditCard,
+  Users,
+  Star,
   PlusCircle,
   Compass,
   Layers,
@@ -10,6 +14,10 @@ import {
 } from "lucide-react";
 
 const Analytics = lazy(() => import("@/components/pages/Admin/analytics"));
+const AdminBookings = lazy(() => import("@/components/pages/Admin/Bookings"));
+const AdminPayments = lazy(() => import("@/components/pages/Admin/Payments"));
+const AdminUsers = lazy(() => import("@/components/pages/Admin/Users"));
+const AdminReviews = lazy(() => import("@/components/pages/Admin/Reviews"));
 const Addtour = lazy(() => import("@/components/pages/Admin/Addtour"));
 const AllTour = lazy(() => import("@/components/pages/Admin/AllTour"));
 const AddtourType = lazy(() => import("@/components/pages/Admin/AddtourType"));
@@ -18,7 +26,7 @@ const AdminCoupons = lazy(() => import("@/components/pages/Admin/Coupons"));
 
 export const adminSidebarItem: ISidebaritema[] = [
   {
-    title: "Dashboard",
+    title: "Overview",
     items: [
       {
         title: "Analytics",
@@ -26,6 +34,35 @@ export const adminSidebarItem: ISidebaritema[] = [
         Component: Analytics,
         icon: BarChart3,
       },
+      {
+        title: "All Bookings",
+        url: "/admin/bookings",
+        Component: AdminBookings,
+        icon: CalendarCheck2,
+      },
+      {
+        title: "Payments",
+        url: "/admin/payments",
+        Component: AdminPayments,
+        icon: CreditCard,
+      },
+      {
+        title: "User Management",
+        url: "/admin/users",
+        Component: AdminUsers,
+        icon: Users,
+      },
+      {
+        title: "Reviews",
+        url: "/admin/reviews",
+        Component: AdminReviews,
+        icon: Star,
+      },
+    ],
+  },
+  {
+    title: "Tour Management",
+    items: [
       {
         title: "Add Tour",
         url: "/admin/add-tour",

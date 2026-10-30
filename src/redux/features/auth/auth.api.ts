@@ -93,9 +93,17 @@ export const authApi = baseApi.injectEndpoints({
 
     updateUserRoleStatus: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/user/role-status-update/${id}`,
+        url: `/user/${id}`,
         method: "PATCH",
         data,
+      }),
+      invalidatesTags: ["USER"],
+    }),
+
+    deleteUser: builder.mutation({
+      query: (id: string) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["USER"],
     }),
@@ -148,6 +156,7 @@ export const {
   useGetAllUsersQuery,
   useGetTourGuidesQuery,
   useUpdateUserRoleStatusMutation,
+  useDeleteUserMutation,
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,

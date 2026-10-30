@@ -1,21 +1,26 @@
 import type { ReactNode } from "react";
+import { useLocation } from "react-router";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 interface CommonLayoutProps {
-
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export default function CommonLayout({ children }: CommonLayoutProps) {
+  const location = useLocation();
+  const isHeroPage =
+    location.pathname === "/" ||
+    location.pathname === "/tour" ||
+    location.pathname === "/about";
 
   return (
     <div className="min-h-screen flex flex-col">
-    <Navbar />
-    <div className="grow-1">
+      <Navbar />
+      <main className={`grow ${isHeroPage ? "" : "pt-16 sm:pt-20"}`}>
         {children}
-    </div>
-    <Footer />
+      </main>
+      <Footer />
     </div>
   );
 }

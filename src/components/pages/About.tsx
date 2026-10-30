@@ -23,14 +23,18 @@ import {
   Mail,
   Calendar,
   Mountain,
+  ArrowUpRight,
+  Play,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import TourGuidesSection from "../modules/Home/TourGuides";
 
 export default function About() {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   const stats = [
     {
@@ -231,56 +235,90 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       {/* =========================================================================
-          1. HERO BANNER
+          1. HERO BANNER (TOURVIA STYLE: "ABOUT US")
          ========================================================================= */}
-      <section className="relative min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden border-b">
+      <section className="relative w-full min-h-[640px] sm:min-h-[720px] md:min-h-[800px] flex items-end overflow-hidden bg-zinc-950 select-none pb-14 sm:pb-18 md:pb-22">
         {/* Background Travel Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=85"
+            src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=2600&q=85"
             alt="WanderGo Tour Adventure Banner"
-            className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
+            className="w-full h-full object-cover object-center scale-105 filter brightness-90 transition-transform duration-[10000ms] ease-out"
           />
-          {/* Deep Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-black/70 to-black/50" />
+          {/* Multi-layered Cinematic Dark Gradient Overlays */}
+          <div className="absolute inset-0 bg-black/45 backdrop-blur-[0.5px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/40 to-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-transparent to-zinc-950/40" />
         </div>
 
-        {/* Hero Content */}
-        <div className="container mx-auto px-4 max-w-5xl text-center space-y-6 relative z-10 py-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
-            <Compass className="w-4 h-4 text-[#EF1A53]" />
-            <span>Discover The WanderGo Spirit</span>
-          </div>
+        {/* Giant Depth Typography (Tourvia Style: "ABOUT US") */}
+        <div className="absolute top-20 sm:top-24 md:top-28 lg:top-32 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 overflow-hidden px-4">
+          <span className="text-white/[0.18] dark:text-white/[0.14] font-black tracking-[0.18em] sm:tracking-[0.24em] text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] xl:text-[15rem] uppercase font-nunito block leading-none drop-shadow-sm">
+            ABOUT US
+          </span>
+        </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-md font-nunito">
-            Crafting Unforgettable Journeys Across{" "}
-            <span className="text-[#EF1A53]">Bangladesh</span> & Beyond
-          </h1>
+        {/* Content Container (Bottom-Left & Bottom-Right) */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 sm:gap-10">
+            {/* Bottom-Left Area */}
+            <div className="max-w-2xl space-y-4 sm:space-y-6">
+              {/* Eyebrow Tag */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium shadow-xl">
+                <span>— The WanderGo Story</span>
+              </div>
 
-          <p className="text-white/85 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed drop-shadow">
-            WanderGo was founded with a singular purpose: to make authentic, safe, and exhilarating
-            travel accessible to everyone. From misty mountain ridges to untouched coastlines, we
-            connect curious souls with pure wonder.
-          </p>
+              {/* Modern Massive Heading */}
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] font-nunito drop-shadow-2xl">
+                Crafting Meaningful <br />
+                <span className="text-white">Journeys Across Bangladesh</span>
+              </h1>
 
-          <div className="pt-4 flex flex-wrap justify-center gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-[#EF1A53] hover:bg-[#d81548] text-white px-8 rounded-full shadow-lg hover:shadow-pink-500/25 transition-all text-base font-semibold"
-            >
-              <Link to="/tour" className="flex items-center gap-2">
-                Explore Our Tours <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-white/40 text-white bg-white/10 backdrop-blur-md hover:bg-white/20 hover:text-white px-8 rounded-full transition-all text-base font-semibold"
-            >
-              <a href="#our-story">Our Story & Mission</a>
-            </Button>
+              {/* Action Button: Pill with Circular Arrow Badge (Tourvia Style) */}
+              <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-4">
+                <a
+                  href="#our-story"
+                  className="inline-flex items-center gap-3 bg-white hover:bg-white/95 text-zinc-950 font-bold pl-6 pr-2 py-2 rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base group"
+                >
+                  <span>Discover Our Story</span>
+                  <span className="size-8 sm:size-9 rounded-full bg-[#EF1A53] group-hover:bg-[#d81548] text-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
+                    <ArrowUpRight className="size-4 sm:size-5" />
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom-Right Floating Video/Story Card */}
+            <div className="w-full sm:w-auto self-end">
+              <div
+                onClick={() => setIsVideoOpen(true)}
+                className="group cursor-pointer rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 bg-zinc-900/60 hover:bg-zinc-900/80 backdrop-blur-xl border border-white/25 shadow-2xl transition-all duration-300 hover:scale-105 w-full sm:w-[280px] md:w-[320px]"
+              >
+                <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-video">
+                  <img
+                    src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"
+                    alt="Watch Our Story"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/20 transition-colors" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="size-10 sm:size-12 rounded-full bg-white text-[#EF1A53] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <Play className="size-5 fill-current ml-0.5" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2.5 px-1 text-white text-xs sm:text-sm font-semibold">
+                  <div className="flex items-center gap-2">
+                    <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>• Watch Our Journey</span>
+                  </div>
+                  <span className="text-[11px] text-white/70 font-normal">
+                    12+ Years Story
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -785,6 +823,24 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* 4K Cinematic Modal */}
+      <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black border-white/20 rounded-3xl shadow-2xl">
+          <DialogTitle className="sr-only">WanderGo Story Video Showcase</DialogTitle>
+          <div className="relative aspect-video w-full">
+            {isVideoOpen && (
+              <iframe
+                src="https://www.youtube.com/embed/6m6YlXoXUq8?autoplay=1&mute=0&rel=0&modestbranding=1"
+                title="WanderGo Story"
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

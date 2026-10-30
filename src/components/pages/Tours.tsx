@@ -19,6 +19,8 @@ import {
   Sparkles,
   ArrowUpDown,
   Filter,
+  Play,
+  ArrowUpRight,
 } from 'lucide-react';
 import type { ITourresponse } from '@/Alltypes/tour.type';
 import { useGetAlltourQuery } from '@/redux/features/tour/tour.api';
@@ -198,147 +200,165 @@ const Tours = () => {
   return (
     <div className="min-h-screen bg-background pb-16 font-sans">
       {/* =========================================================================
-          HERO BANNER SECTION
+          HERO BANNER SECTION (TOURVIA STYLE: "EXPLORE")
          ========================================================================= */}
-      <section className="relative px-3 sm:px-6 lg:px-8 pt-4 pb-8 max-w-7xl mx-auto">
-        <div className="relative rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 min-h-[380px] sm:min-h-[440px] md:min-h-[480px] flex flex-col justify-between p-6 sm:p-10 md:p-14 text-white">
-          {/* Background Image with Cinematic Backdrop */}
-          <div className="absolute inset-0 z-0">
-            <img
-              src={toursBanner}
-              alt="Explore Tours with WanderGo"
-              className="w-full h-full object-cover scale-105 filter brightness-90 animate-fade-in"
-              onError={(e) => {
-                e.currentTarget.src =
-                  'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1800&q=80';
-              }}
-            />
-            {/* Multi-stage ambient gradients for maximum depth & readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/35" />
-            <div className="absolute inset-0 bg-radial-at-c from-transparent via-black/20 to-black/80" />
-          </div>
+      <section className="relative w-full min-h-[600px] sm:min-h-[680px] md:min-h-[740px] flex items-end overflow-hidden bg-zinc-950 select-none pb-12 sm:pb-16 mb-8">
+        {/* Background Image with Cinematic Backdrop */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={toursBanner}
+            alt="Explore Tours with WanderGo"
+            className="w-full h-full object-cover scale-105 filter brightness-90 transition-transform duration-[10000ms] ease-out"
+            onError={(e) => {
+              e.currentTarget.src =
+                'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2600&q=80';
+            }}
+          />
+          {/* Multi-layered Cinematic Dark Gradient Overlays */}
+          <div className="absolute inset-0 bg-black/45 backdrop-blur-[0.5px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/40 to-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-transparent to-zinc-950/40" />
+        </div>
 
-          {/* Top Breadcrumb & Trust Pill */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-xs font-semibold text-white/95">
-              <Sparkles className="size-3.5 text-[#EF1A53]" />
-              <span>Curated Travel Experiences</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-4 text-xs font-medium text-white/80">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="size-4 text-emerald-400" /> 100% Verified Tours
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Star className="size-4 text-amber-400 fill-amber-400" /> 4.9/5 Rating
-              </span>
-            </div>
-          </div>
+        {/* Giant Depth Typography (Tourvia Style: "EXPLORE") */}
+        <div className="absolute top-20 sm:top-24 md:top-28 lg:top-32 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 overflow-hidden px-4">
+          <span className="text-white/[0.18] dark:text-white/[0.14] font-black tracking-[0.18em] sm:tracking-[0.24em] text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] xl:text-[15rem] uppercase font-nunito block leading-none drop-shadow-sm">
+            EXPLORE
+          </span>
+        </div>
 
-          {/* Hero Content */}
-          <div className="relative z-10 my-auto py-6 max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight font-nunito leading-tight text-white drop-shadow-md">
-              Discover Extraordinary <br />
-              <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-amber-300 bg-clip-text text-transparent">
-                Adventures in Bangladesh
-              </span>
-            </h1>
-            <p className="mt-3 text-sm sm:text-base md:text-lg text-white/90 leading-relaxed max-w-2xl font-normal drop-shadow-sm">
-              From majestic cloud-kissed hills in Sajek to serene tea gardens in Sylhet and pristine
-              coastal shores—find handpicked tours crafted for unforgettable memories.
-            </p>
-          </div>
-
-          {/* Interactive Hero Search Bar */}
-          <div className="relative z-10 w-full max-w-4xl mx-auto">
-            <form
-              onSubmit={handleSearchSubmit}
-              className="bg-white/95 dark:bg-card/95 backdrop-blur-xl p-2 sm:p-2.5 rounded-2xl sm:rounded-full shadow-2xl border border-white/40 dark:border-border/60 flex flex-col sm:flex-row items-center gap-2"
-            >
-              <div className="relative flex-1 w-full flex items-center pl-3">
-                <Search className="size-5 text-[#EF1A53] shrink-0 mr-2.5" />
-                <Input
-                  type="text"
-                  placeholder="Search destination, tour title, or adventure..."
-                  value={tempSearchInput}
-                  onChange={(e) => setTempSearchInput(e.target.value)}
-                  className="border-0 bg-transparent shadow-none focus-visible:ring-0 text-foreground placeholder:text-muted-foreground text-sm h-11 px-0"
-                />
-                {tempSearchInput && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTempSearchInput('');
-                      setSearchTerm('');
-                    }}
-                    className="p-1.5 text-muted-foreground hover:text-foreground transition-colors mr-2"
-                  >
-                    <X className="size-4" />
-                  </button>
-                )}
+        {/* Content Container (Bottom-Left & Bottom-Right) */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 sm:gap-10">
+            {/* Bottom-Left Area */}
+            <div className="max-w-3xl space-y-4 sm:space-y-6">
+              {/* Eyebrow Tag */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/90 text-xs sm:text-sm font-medium shadow-xl">
+                <span>— Curated Travel Packages</span>
               </div>
 
-              {/* Division Quick Selector in Searchbar */}
-              <div className="w-full sm:w-52 sm:border-l border-border/60 sm:pl-2">
-                <Select
-                  value={selectedDivision}
-                  onValueChange={(val) => {
-                    setSelectedDivision(val === 'all' ? '' : val);
-                    setCurrentPage(1);
-                  }}
+              {/* Modern Massive Heading */}
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] font-nunito drop-shadow-2xl">
+                Discover Extraordinary <br />
+                <span className="text-white">Adventures In Bangladesh</span>
+              </h1>
+
+              {/* Interactive Frosted Pill Search Bar */}
+              <div className="pt-2 w-full max-w-2xl">
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className="bg-white/95 dark:bg-card/95 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl sm:rounded-full shadow-2xl border border-white/40 dark:border-border/60 flex flex-col sm:flex-row items-center gap-2"
                 >
-                  <SelectTrigger className="border-0 bg-transparent shadow-none focus:ring-0 text-xs sm:text-sm h-11 text-foreground font-medium">
-                    <MapPin className="size-4 text-[#EF1A53] mr-1.5 shrink-0" />
-                    <SelectValue placeholder="All Divisions" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60 rounded-2xl">
-                    <SelectItem value="all">All Divisions</SelectItem>
-                    {divisions.map((d: { _id: string; name: string }) => (
-                      <SelectItem key={d._id} value={d._id}>
-                        {d.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  <div className="relative flex-1 w-full flex items-center pl-3">
+                    <Search className="size-5 text-[#EF1A53] shrink-0 mr-2.5" />
+                    <Input
+                      type="text"
+                      placeholder="Search destination, hills, islands..."
+                      value={tempSearchInput}
+                      onChange={(e) => setTempSearchInput(e.target.value)}
+                      className="border-0 bg-transparent shadow-none focus-visible:ring-0 text-foreground placeholder:text-muted-foreground text-xs sm:text-sm h-10 px-0"
+                    />
+                    {tempSearchInput && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setTempSearchInput('');
+                          setSearchTerm('');
+                        }}
+                        className="p-1.5 text-muted-foreground hover:text-foreground transition-colors mr-2"
+                      >
+                        <X className="size-4" />
+                      </button>
+                    )}
+                  </div>
 
-              {/* Submit CTA */}
-              <Button
-                type="submit"
-                className="w-full sm:w-auto px-7 h-11 rounded-xl sm:rounded-full bg-[#EF1A53] hover:bg-[#d81548] text-white font-bold text-sm shadow-md transition-transform active:scale-95 shrink-0 flex items-center justify-center gap-2"
-              >
-                <Search className="size-4" />
-                <span>Search Tours</span>
-              </Button>
-            </form>
-
-            {/* Quick Filter Tags below search */}
-            <div className="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs">
-              <span className="text-white/70 font-medium">Popular:</span>
-              {['Adventure', 'Relaxation', 'Heritage', 'Nature'].map((type) => {
-                const match = tourTypes.find(
-                  (t: { _id: string; name: string }) =>
-                    t.name.toLowerCase() === type.toLowerCase()
-                );
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => {
-                      if (match) {
-                        setSelectedTourType(selectedTourType === match._id ? '' : match._id);
+                  {/* Division Quick Selector in Searchbar */}
+                  <div className="w-full sm:w-44 sm:border-l border-border/60 sm:pl-2">
+                    <Select
+                      value={selectedDivision}
+                      onValueChange={(val) => {
+                        setSelectedDivision(val === 'all' ? '' : val);
                         setCurrentPage(1);
-                      }
-                    }}
-                    className={`px-3 py-1 rounded-full backdrop-blur-md transition-all text-xs font-semibold ${
-                      match && selectedTourType === match._id
-                        ? 'bg-[#EF1A53] text-white shadow-md'
-                        : 'bg-white/20 hover:bg-white/30 text-white border border-white/20'
-                    }`}
+                      }}
+                    >
+                      <SelectTrigger className="border-0 bg-transparent shadow-none focus:ring-0 text-xs sm:text-sm h-10 text-foreground font-medium">
+                        <MapPin className="size-4 text-[#EF1A53] mr-1.5 shrink-0" />
+                        <SelectValue placeholder="All Regions" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-60 rounded-2xl">
+                        <SelectItem value="all">All Regions</SelectItem>
+                        {divisions.map((d: { _id: string; name: string }) => (
+                          <SelectItem key={d._id} value={d._id}>
+                            {d.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Submit CTA */}
+                  <Button
+                    type="submit"
+                    className="w-full sm:w-auto px-6 h-10 rounded-xl sm:rounded-full bg-[#EF1A53] hover:bg-[#d81548] text-white font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 shrink-0 flex items-center justify-center gap-1.5"
                   >
-                    {type}
-                  </button>
-                );
-              })}
+                    <span>Search</span>
+                    <ArrowUpRight className="size-4" />
+                  </Button>
+                </form>
+
+                {/* Popular Tags */}
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-white/70 font-medium">Trending:</span>
+                  {['Adventure', 'Relaxation', 'Heritage', 'Nature'].map((type) => {
+                    const match = tourTypes.find(
+                      (t: { _id: string; name: string }) =>
+                        t.name.toLowerCase() === type.toLowerCase()
+                    );
+                    return (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => {
+                          if (match) {
+                            setSelectedTourType(selectedTourType === match._id ? '' : match._id);
+                            setCurrentPage(1);
+                          }
+                        }}
+                        className={`px-3 py-1 rounded-full backdrop-blur-md transition-all text-xs font-semibold ${
+                          match && selectedTourType === match._id
+                            ? 'bg-[#EF1A53] text-white shadow-md'
+                            : 'bg-white/20 hover:bg-white/30 text-white border border-white/20'
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom-Right Floating Trust Card (Tourvia Style) */}
+            <div className="w-full sm:w-auto self-end">
+              <div className="rounded-2xl sm:rounded-3xl p-3 sm:p-4 bg-zinc-900/60 backdrop-blur-xl border border-white/25 shadow-2xl w-full sm:w-[280px] md:w-[320px] space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-white text-xs sm:text-sm font-bold">100% Certified Guides</h4>
+                    <p className="text-white/70 text-[11px]">Vetted routes & emergency safety</p>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-white">
+                  <div className="flex items-center gap-1 text-amber-400">
+                    <Star className="size-3.5 fill-current" />
+                    <span className="font-bold text-white">4.9 / 5.0</span>
+                  </div>
+                  <span className="text-white/70 text-[11px]">from 15,000+ travelers</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -83,24 +83,19 @@ const Meprofile = () => {
         <div className="bg-[url(https://i.ibb.co.com/JFc44XcJ/c58fe54f-1fa4-4dde-a0d9-2700ba8d7ac3-profile-banner-480.png)] md:h-50 relative bg-bg-center bg-cover bg-repeat-0">
           <div className="absolute -bottom-16 left-6 md:left-8">
             <div className="relative">
-              {user.picture ? (
-                <img
-                  src="https://i.ibb.co.com/vCCn6jRj/mr-bean-900-x-900-picture-d5u9ys0cjecowzri.jpg"
-                  alt={user.name}
-                  className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg object-cover"
-                />
-              ) : (
-               <img
-                  src="https://i.ibb.co.com/vCCn6jRj/mr-bean-900-x-900-picture-d5u9ys0cjecowzri.jpg"
-                  alt={user.name}
-                  className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg object-cover"
-                />
-                // <div className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white bg-blue-100 flex items-center justify-center shadow-lg">
-                //   <FaUser className="text-blue-600 text-5xl" />
-                // </div>
-              )}
+              <img
+                src={
+                  user.picture ||
+                  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300"
+                }
+                alt={user.name}
+                className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg object-cover bg-muted"
+              />
               {user.isVerified && (
-                <div className="absolute bottom-2 right-2 bg-[#E80341] text-white p-1 rounded-full">
+                <div
+                  className="absolute bottom-2 right-2 bg-[#EF1A53] text-white p-1.5 rounded-full shadow-md"
+                  title="Verified Account"
+                >
                   <MdVerified className="text-xl" />
                 </div>
               )}
@@ -188,11 +183,27 @@ const Meprofile = () => {
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Email Verified</span>
-                  <span className={`px-3 py-1 rounded-full text-sm ${user.isVerified ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
-                    {user.isVerified ? "Verified" : "Pending"}
-                  </span>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-gray-600 font-medium text-sm">Email Verified</span>
+                  {user.isVerified ? (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                      <FaCheckCircle className="text-emerald-600 text-xs" />
+                      Verified
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                        Unverified
+                      </span>
+                      <Link
+                        to="/verify"
+                        state={{ email: user.email }}
+                        className="text-xs font-bold text-[#EF1A53] hover:underline flex items-center gap-0.5"
+                      >
+                        Verify Now →
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
                 {user.createdAt && (

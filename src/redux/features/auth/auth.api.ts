@@ -77,7 +77,7 @@ export const authApi = baseApi.injectEndpoints({
 
     getAllUsers: builder.query({
       query: () => ({
-        url: "/user/all-user",
+        url: "/user/all-users",
         method: "GET",
       }),
       providesTags: ["USER"],
@@ -98,6 +98,14 @@ export const authApi = baseApi.injectEndpoints({
         data,
       }),
       invalidatesTags: ["USER"],
+    }),
+
+    changePassword: builder.mutation({
+      query: (passwords: { oldPassword: string; newPassword: string }) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        data: passwords,
+      }),
     }),
 
     forgotPassword: builder.mutation({
@@ -140,6 +148,7 @@ export const {
   useGetAllUsersQuery,
   useGetTourGuidesQuery,
   useUpdateUserRoleStatusMutation,
+  useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
 } = authApi;

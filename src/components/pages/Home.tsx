@@ -1,13 +1,17 @@
 import { Hero } from "../Homepage/Banner";
 import TravelPartner from "../Homepage/TravelPartner";
 import VideoSection from "../Homepage/VideoSection";
+import TrendingActivities from "../Homepage/TrendingActivities";
 import FeaturedTours from "../Homepage/FeaturedTours";
+import TopPlaces from "../Homepage/TopPlaces";
 import Explore from "../Homepage/Explore";
 import HowItWorks from "../Homepage/HowItWorks";
+import AgencyMilestones from "../Homepage/AgencyMilestones";
 import PromoBanner from "../Homepage/PromoBanner";
 import HomeReviews from "../Homepage/HomeReviews";
 import Support from "../Homepage/Support";
 import TourGuidesSection from "../modules/Home/TourGuides";
+import ReadyToExploreCTA from "../Homepage/ReadyToExploreCTA";
 
 const Home = () => {
   return (
@@ -21,8 +25,14 @@ const Home = () => {
       {/* 3. Cinematic Tour Video Showcase */}
       <VideoSection />
 
-      {/* 4. Featured Tour Packages */}
+      {/* 4. Trending Activities & Tour Styles */}
+      <TrendingActivities />
+
+      {/* 5. Featured Tour Packages */}
       <FeaturedTours />
+
+      {/* 6. Top Places To Travel in Bangladesh (Bento Grid) */}
+      <TopPlaces />
 
       {/* 4. Explore Destinations Visual Highlight */}
       <Explore />
@@ -30,8 +40,11 @@ const Home = () => {
       {/* 5. 3-Step Booking Journey */}
       <HowItWorks />
 
+      {/* 6. Agency Milestones & Flight Path Stats */}
+      <AgencyMilestones />
+
       {/* 6. Active Promo Coupons & Deals */}
-      <PromoBanner />
+      {/* <PromoBanner /> */}
 
       {/* 7. Certified Tour Guides */}
       <TourGuidesSection />
@@ -39,8 +52,11 @@ const Home = () => {
       {/* 8. Verified Traveler Reviews & Testimonials */}
       <HomeReviews />
 
-      {/* 9. 24/7 Support & Traveler Care */}
-      <Support />
+      {/* 9. Final Call-To-Action (Before Footer) */}
+      <ReadyToExploreCTA />
+
+      {/* 10. 24/7 Support & Traveler Care */}
+      {/* <Support /> */}
     </div>
   );
 };

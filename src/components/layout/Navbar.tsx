@@ -115,15 +115,15 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
         {/* Left: Minimalist Typography Logo (Tourvia Style) */}
-        <Link to="/" className="flex items-center gap-2 group">
+        <Link
+          to="/"
+          className="flex items-center px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
+        >
           <img
             src="/src/assets/images/WanderGoLOgo2.png"
             alt="WanderGo"
-            className="h-8 sm:h-9 w-auto object-contain brightness-200 transition-transform duration-300 group-hover:scale-105"
+            className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-transform duration-300"
           />
-          <span className="text-xl sm:text-2xl font-black tracking-tight text-white font-nunito flex items-center">
-            WanderGo<span className="text-[#EF1A53] text-2xl sm:text-3xl">.</span>
-          </span>
         </Link>
 
         {/* Center: Floating Pill Capsule Navigation (Tourvia Style) */}
@@ -256,7 +256,7 @@ export default function Navbar() {
           )}
 
           {/* Theme Toggle in Sleek Glass Button */}
-          <div className="text-white">
+          <div className="text-black">
             <ModeToggle />
           </div>
 

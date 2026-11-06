@@ -215,12 +215,12 @@ const Tours = () => {
             }}
           />
           {/* Gentle, light bottom vignette - keeps mountains and sky bright and natural */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/50 to-black/25" />
         </div>
 
         {/* Refined Depth Typography ("EXPLORE" - Proportional & Clean) */}
         <div className="absolute top-20 sm:top-24 md:top-28 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 px-4">
-          <span className="text-white/25 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
+          <span className="text-white/35 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
             EXPLORE
           </span>
         </div>
@@ -285,19 +285,19 @@ const Tours = () => {
               <div className="rounded-2xl p-2.5 sm:p-3 bg-black/35 backdrop-blur-md border border-white/20 shadow-xl w-[220px] sm:w-[260px] space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
-                    <ShieldCheck className="w-4 h-4" />
+                    <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
                     <h4 className="text-white text-xs font-bold">100% Certified Tours</h4>
-                    <p className="text-white/70 text-[10px]">Verified guides & safety</p>
+                    <p className="text-white/70 text-[13px]">Verified guides & safety</p>
                   </div>
                 </div>
-                <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-xs text-white">
+                <div className="pt-1.5 border-t border-white/40 flex items-center justify-between text-xs text-white">
                   <div className="flex items-center gap-1 text-amber-400">
                     <Star className="size-3 fill-current" />
-                    <span className="font-bold text-white text-[11px]">4.9 / 5.0</span>
+                    <span className="font-bold text-white text-[14px]">4.9 / 5.0</span>
                   </div>
-                  <span className="text-white/70 text-[10px]">15,000+ reviews</span>
+                  <span className="text-white/70 text-[16px]">15,000+ reviews</span>
                 </div>
               </div>
             </div>

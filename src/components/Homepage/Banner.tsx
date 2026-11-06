@@ -26,7 +26,7 @@ export const Hero = () => {
             2. REFINED DEPTH TYPOGRAPHY ("WANDERGO" - PROPORTIONAL & CLEAN)
            ========================================================================= */}
         <div className="absolute top-20 sm:top-24 md:top-28 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 px-4">
-          <span className="text-white/25 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
+          <span className="text-white/55 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
             WANDERGO
           </span>
         </div>

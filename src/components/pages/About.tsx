@@ -246,12 +246,12 @@ export default function About() {
             className="w-full h-full object-cover object-center filter brightness-95"
           />
           {/* Gentle, light bottom vignette - keeps mountains and sky bright and clear */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/55 to-black/30" />
         </div>
 
         {/* Refined Depth Typography ("ABOUT US" - Proportional & Clean) */}
         <div className="absolute top-20 sm:top-24 md:top-28 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-10 px-4">
-          <span className="text-white/25 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
+          <span className="text-white/55 font-extrabold tracking-[0.2em] sm:tracking-[0.25em] text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase font-nunito block leading-none">
             ABOUT US
           </span>
         </div>

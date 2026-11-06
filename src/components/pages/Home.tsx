@@ -1,6 +1,7 @@
 import { Hero } from "../Homepage/Banner";
+import TravelPartner from "../Homepage/TravelPartner";
+import VideoSection from "../Homepage/VideoSection";
 import FeaturedTours from "../Homepage/FeaturedTours";
-import WhyChooseUs from "../Homepage/WhyChooseUs";
 import Explore from "../Homepage/Explore";
 import HowItWorks from "../Homepage/HowItWorks";
 import PromoBanner from "../Homepage/PromoBanner";
@@ -14,11 +15,14 @@ const Home = () => {
       {/* 1. Hero Banner */}
       <Hero />
 
-      {/* 2. Featured Tour Packages */}
-      <FeaturedTours />
+      {/* 2. Why We're Your Perfect Travel Partner (Get To Know Us) */}
+      <TravelPartner />
 
-      {/* 3. Why Travel With WanderGo */}
-      <WhyChooseUs />
+      {/* 3. Cinematic Tour Video Showcase */}
+      <VideoSection />
+
+      {/* 4. Featured Tour Packages */}
+      <FeaturedTours />
 
       {/* 4. Explore Destinations Visual Highlight */}
       <Explore />

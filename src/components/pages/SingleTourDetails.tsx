@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import SEO from "@/components/shared/SEO";
 import {
@@ -25,9 +25,26 @@ import {
   PlaneLanding,
   ShieldAlert,
   Zap,
+  Trash2,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useGetsingleTourMutation } from "@/redux/features/tour/tour.api";
+import {
+  useGetsingleTourMutation,
+  useDeleteTourMutation,
+} from "@/redux/features/tour/tour.api";
+import { All_Role } from "@/components/utlis/getSidebaritems";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +66,31 @@ const SingleTourDetails = () => {
   const navigate = useNavigate();
 
   const { data: userData } = useUserInfoQuery(undefined);
+  const userRole = userData?.data?.role;
+  const canDelete = userRole === All_Role.admin || userRole === All_Role.superAdmin;
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteTour, { isLoading: isDeletingTour }] = useDeleteTourMutation();
+
+  const handleDeleteTour = async () => {
+    if (!id) return;
+    const toastId = toast.loading("Deleting tour package...");
+    try {
+      const res = await deleteTour(id).unwrap();
+      if (res?.success) {
+        toast.success(res?.message || "Tour deleted successfully!", { id: toastId });
+      } else {
+        toast.success("Tour deleted successfully!", { id: toastId });
+      }
+      setIsDeleteDialogOpen(false);
+      navigate("/admin/all-tour");
+    } catch (err: any) {
+      toast.error(
+        err?.data?.message || err?.message || "Failed to delete tour package",
+        { id: toastId }
+      );
+    }
+  };
 
   const { data: wishlistData, refetch: refetchWishlist } =
     useCheckWishlistStatusQuery(id as string, {
@@ -258,6 +300,20 @@ const SingleTourDetails = () => {
               >
                 <Share2 className="w-4 h-4 text-muted-foreground" />
               </Button>
+
+              {/* Admin & Super Admin Tour Deletion */}
+              {canDelete && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsDeleteDialogOpen(true)}
+                  className="rounded-full h-9 px-3.5 gap-1.5 border-destructive/40 text-destructive hover:bg-destructive/10 hover:border-destructive text-xs font-semibold shadow-xs transition-colors"
+                  title="Delete Tour (Admin/Super Admin)"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Delete Tour</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -767,6 +823,48 @@ const SingleTourDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Tour Confirmation Dialog for Admin & Super Admin */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent className="rounded-3xl max-w-md">
+          <AlertDialogHeader className="space-y-3">
+            <div className="size-12 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mx-auto sm:mx-0">
+              <AlertTriangle className="size-6" />
+            </div>
+            <AlertDialogTitle className="font-nunito text-xl font-bold">
+              Delete "{tour?.title}"?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-xs text-muted-foreground leading-relaxed">
+              Are you sure you want to permanently delete this tour package? This action cannot be undone and will remove all itinerary data and related bookings from the platform database.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:gap-0 pt-2">
+            <AlertDialogCancel
+              disabled={isDeletingTour}
+              className="rounded-xl text-xs font-semibold"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteTour}
+              disabled={isDeletingTour}
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl text-xs font-bold gap-1.5 shadow-sm"
+            >
+              {isDeletingTour ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Deleting...</span>
+                </>
+              ) : (
+                <>
+                  <Trash2 className="size-3.5" />
+                  <span>Yes, Delete Tour</span>
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/shared/SEO";
 import {
@@ -22,8 +23,25 @@ import {
   Castle,
   UmbrellaOff,
   PlusCircle,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
-import { useGetAlltourQuery } from "@/redux/features/tour/tour.api";
+import {
+  useGetAlltourQuery,
+  useDeleteTourMutation,
+} from "@/redux/features/tour/tour.api";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { All_Role } from "@/components/utlis/getSidebaritems";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -33,10 +51,18 @@ import { useGetDivisionsQuery } from "@/redux/features/Division/division.api";
 import { useGetTourtypeQuery } from "@/redux/features/tour/tourType.api";
 import type { ITourresponse } from "@/Alltypes/tour.type";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 const AllTour = () => {
   const { data: toursData, isLoading: tourLoading } = useGetAlltourQuery(undefined);
   const tours = toursData?.data?.data;
+
+  const { data: userData } = useUserInfoQuery(undefined);
+  const userRole = userData?.data?.role;
+  const canDelete = userRole === All_Role.admin || userRole === All_Role.superAdmin;
+
+  const [tourToDelete, setTourToDelete] = useState<any | null>(null);
+  const [deleteTour, { isLoading: isDeleting }] = useDeleteTourMutation();
 
   const { data: DivisionData } = useGetDivisionsQuery(undefined);
   const { data: tourTypeData } = useGetTourtypeQuery(undefined);
@@ -112,7 +138,6 @@ const AllTour = () => {
           (item.name && item.name.toLowerCase() === rawTourType.toLowerCase())
       );
       if (matched?.name) return matched.name;
-      // If it's a 24-character hex ID that wasn't found, fallback
       if (/^[0-9a-fA-F]{24}$/.test(rawTourType)) return "General";
       return rawTourType;
     }
@@ -168,6 +193,26 @@ const AllTour = () => {
     };
   };
 
+  // Delete tour handler (Admin and Super Admin only)
+  const handleDeleteTour = async () => {
+    if (!tourToDelete) return;
+    const toastId = toast.loading(`Deleting "${tourToDelete.title}"...`);
+    try {
+      const res = await deleteTour(tourToDelete._id).unwrap();
+      if (res?.success) {
+        toast.success(res?.message || "Tour package deleted successfully!", { id: toastId });
+      } else {
+        toast.success("Tour package deleted successfully!", { id: toastId });
+      }
+      setTourToDelete(null);
+    } catch (err: any) {
+      toast.error(
+        err?.data?.message || err?.message || "Failed to delete tour package. Please try again.",
+        { id: toastId }
+      );
+    }
+  };
+
   if (tourLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -219,7 +264,7 @@ const AllTour = () => {
     <div className="container mx-auto px-4 py-8">
       <SEO
         title="Manage All Tours | WanderGo Admin"
-        description="Inspect and manage all tour packages, availability, and itineraries on WanderGo."
+        description="Inspect, manage, and delete tour packages, availability, and itineraries on WanderGo."
       />
 
       {/* Header */}
@@ -227,7 +272,7 @@ const AllTour = () => {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Tour Management</h1>
           <p className="text-muted-foreground mt-2">
-            Discover and manage all tour packages across Bangladesh.
+            Discover, edit, and manage all tour packages across Bangladesh.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -385,34 +430,80 @@ const AllTour = () => {
                 </CardContent>
               </div>
 
-              <CardFooter className="p-5 pt-0 flex gap-2">
+              {/* Action Buttons */}
+              <CardFooter className="p-5 pt-0 flex items-center gap-2">
                 <Button
                   asChild
                   variant="outline"
                   size="sm"
-                  className="flex-1 rounded-xl text-xs font-semibold gap-1.5"
+                  className="flex-1 rounded-xl text-xs font-semibold gap-1.5 hover:bg-muted"
                 >
                   <Link to={`/tour-details/${tour._id}`}>
                     <Eye className="h-3.5 w-3.5 text-primary" />
                     <span>View Itinerary</span>
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 rounded-xl text-xs font-semibold gap-1.5"
-                >
-                  <Link to={`/tour-details/${tour._id}`}>
-                    <Edit className="h-3.5 w-3.5 text-emerald-600" />
-                    <span>Details</span>
-                  </Link>
-                </Button>
+
+                {/* Delete Tour Button for Admin & Super Admin */}
+                {canDelete && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setTourToDelete(tour)}
+                    className="rounded-xl text-xs font-semibold gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive hover:border-destructive/60 transition-colors"
+                    title="Delete tour package"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    <span>Delete</span>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           );
         })}
       </div>
+
+      {/* Delete Confirmation Alert Dialog */}
+      <AlertDialog open={!!tourToDelete} onOpenChange={(open) => !open && setTourToDelete(null)}>
+        <AlertDialogContent className="rounded-3xl max-w-md">
+          <AlertDialogHeader className="space-y-3">
+            <div className="size-12 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mx-auto sm:mx-0">
+              <AlertTriangle className="size-6" />
+            </div>
+            <AlertDialogTitle className="font-nunito text-xl font-bold">
+              Delete "{tourToDelete?.title}"?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-xs text-muted-foreground leading-relaxed">
+              Are you sure you want to delete this tour package? This action cannot be undone. This will permanently remove the tour package, its itineraries, and all related booking associations from the database.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:gap-0 pt-2">
+            <AlertDialogCancel
+              disabled={isDeleting}
+              className="rounded-xl text-xs font-semibold"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteTour}
+              disabled={isDeleting}
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl text-xs font-bold gap-1.5 shadow-sm"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Deleting...</span>
+                </>
+              ) : (
+                <>
+                  <Trash2 className="size-3.5" />
+                  <span>Yes, Delete Tour</span>
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

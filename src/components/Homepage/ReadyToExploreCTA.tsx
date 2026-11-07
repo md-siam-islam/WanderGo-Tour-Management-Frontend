@@ -27,6 +27,8 @@ export const ReadyToExploreCTA = () => {
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-serif font-medium text-white tracking-tight leading-[1.2] drop-shadow-xs">
           Ready to Explore? Let's Chat <br className="hidden sm:inline" />
           About Your Dream Trip
+
+          
         </h2>
 
         {/* Subtitle */}

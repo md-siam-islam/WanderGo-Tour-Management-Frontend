@@ -1,4 +1,5 @@
 import React, { use } from 'react';
+import SEO from "@/components/shared/SEO";
 import { Form } from "@/components/ui/form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
@@ -105,6 +106,10 @@ const Userupdate = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-amber-50 p-4 md:p-8">
+            <SEO
+                title="Edit Travel Profile | WanderGo"
+                description="Update your WanderGo traveler contact details, phone number, and home address."
+            />
             {/* Background decorative elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-amber-100 rounded-full opacity-20 blur-3xl"></div>

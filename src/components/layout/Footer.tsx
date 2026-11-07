@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import wanderGoLogo from "@/assets/images/WanderGoLOgo2.png";
 import {
   Facebook,
   Instagram,
@@ -99,7 +100,7 @@ export default function Footer() {
               className="inline-flex items-center bg-white px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-transform hover:scale-105"
             >
               <img
-                src="/src/assets/images/WanderGoLOgo2.png"
+                src={wanderGoLogo}
                 alt="WanderGo"
                 className="h-10 sm:h-11 w-auto object-contain"
               />

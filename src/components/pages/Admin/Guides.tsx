@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/shared/SEO";
 import {
   useGetTourGuidesQuery,
   useUpdateUserRoleStatusMutation,
@@ -210,6 +211,10 @@ export default function AdminGuides() {
 
   return (
     <div className="space-y-8 p-4 md:p-8 max-w-7xl mx-auto font-sans">
+      <SEO
+        title="Tour Guides & Applications | WanderGo Admin"
+        description="Review guide applications, verify credentials, and manage certified tour guides."
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/60 pb-6">
         <div>

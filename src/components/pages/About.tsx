@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import SEO from "@/components/shared/SEO";
 import {
   Compass,
   Heart,
@@ -234,6 +235,12 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="About WanderGo — Our Story & Sustainable Tourism Journey"
+        description="Learn about WanderGo's mission to redefine tourism across Bangladesh. Discover our certified local guides, sustainable travel initiatives, and 15,000+ satisfied travelers."
+        keywords="About WanderGo, Bangladesh travel agency, eco-tourism Bangladesh, certified tour guides, tour operator Bangladesh"
+      />
+
       {/* =========================================================================
           1. HERO BANNER (TOURVIA STYLE: "ABOUT US")
          ========================================================================= */}

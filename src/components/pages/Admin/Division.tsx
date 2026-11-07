@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/shared/SEO";
 import { Adddivision } from "./All-Modal/AdddivisionModal";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -46,6 +47,10 @@ const Division = () => {
 
   return (
     <div className="">
+      <SEO
+        title="Manage Divisions | WanderGo Admin"
+        description="Manage Bangladesh divisions and travel regional zones on WanderGo."
+      />
 
       <div className="bg-white rounded-xl shadow-sm border p-6">
         <div className="flex justify-between items-center mb-4">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/shared/SEO";
 import {
   Ticket,
   Plus,
@@ -89,6 +90,10 @@ const AdminCoupons = () => {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
+      <SEO
+        title="Promo Coupons Management | WanderGo Admin"
+        description="Create and manage promotional discount coupons for WanderGo travelers."
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

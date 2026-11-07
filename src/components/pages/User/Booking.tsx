@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useLocation } from "react-router";
+import SEO from "@/components/shared/SEO";
 import {
   Calendar,
   Users,
@@ -298,6 +299,10 @@ const Booking = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
+      <SEO
+        title="My Bookings & Trips | WanderGo"
+        description="Manage your tour bookings, view payment invoices, download tickets, and track trip schedules with WanderGo."
+      />
       {/* 1. Hero Personalized Welcome Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-card via-card to-primary/5 border border-border/70 p-6 sm:p-8 shadow-xs">
         <div className="absolute top-0 right-0 -mt-6 -mr-6 size-48 rounded-full bg-primary/10 blur-3xl pointer-events-none" />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
+import wanderGoLogo from "@/assets/images/WanderGoLOgo2.png";
 import {
   authApi,
   useLogoutMutation,
@@ -120,7 +121,7 @@ export default function Navbar() {
           className="flex items-center px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
         >
           <img
-            src="/src/assets/images/WanderGoLOgo2.png"
+            src={wanderGoLogo}
             alt="WanderGo"
             className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-transform duration-300"
           />

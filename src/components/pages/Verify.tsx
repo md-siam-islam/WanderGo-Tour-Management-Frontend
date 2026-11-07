@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router";
+import SEO from "@/components/shared/SEO";
+import wanderGoLogo from "@/assets/images/WanderGoLOgo2.png";
 import {
   ShieldCheck,
   Mail,
@@ -145,6 +147,10 @@ export default function Verify() {
 
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col justify-between py-10 px-4 sm:px-6 relative overflow-hidden font-sans">
+      <SEO
+        title="Verify Your Account | WanderGo"
+        description="Verify your WanderGo account with a secure one-time passcode (OTP)."
+      />
       {/* Decorative ambient background blur */}
       <div className="absolute -top-32 -left-32 size-96 bg-[#EF1A53]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 -right-32 size-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -153,7 +159,7 @@ export default function Verify() {
       <header className="max-w-md w-full mx-auto flex items-center justify-between pb-6 relative z-10">
         <Link to="/" className="inline-flex items-center gap-2 group">
           <img
-            src="/src/assets/images/WanderGoLOgo2.png"
+            src={wanderGoLogo}
             alt="WanderGo"
             className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
           />

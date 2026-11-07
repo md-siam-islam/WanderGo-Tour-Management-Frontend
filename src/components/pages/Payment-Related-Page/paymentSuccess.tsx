@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import SEO from '@/components/shared/SEO';
 import {
   CheckCircle2,
   Copy,
@@ -63,6 +64,10 @@ const PaymentSuccess = () => {
 
   return (
     <div className="min-h-screen bg-muted/20 py-12 px-4 flex items-center justify-center font-sans">
+      <SEO
+        title="Payment Successful! | WanderGo"
+        description="Your tour booking payment has been successfully confirmed. Welcome aboard your next Bangladesh travel adventure with WanderGo!"
+      />
       <div className="max-w-2xl w-full space-y-6">
         {/* Main Success Card */}
         <div className="bg-card rounded-3xl border border-border/80 shadow-xl overflow-hidden">

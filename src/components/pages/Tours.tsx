@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router';
+import SEO from '@/components/shared/SEO';
 import {
   MapPin,
   Users,
@@ -199,6 +200,12 @@ const Tours = () => {
 
   return (
     <div className="min-h-screen bg-background pb-16 font-sans">
+      <SEO
+        title="Explore All Tours & Travel Packages | WanderGo"
+        description="Browse handcrafted tour packages in Bangladesh. Filter by division, budget, and travel style. Instant booking, transparent pricing, and certified local guides."
+        keywords="Bangladesh tour packages, Cox's Bazar tour, Sajek tour package, Sundarbans mangrove tour, Sreemangal tea tour, holiday trip Bangladesh"
+      />
+
       {/* =========================================================================
           HERO BANNER SECTION (TOURVIA STYLE: "EXPLORE")
          ========================================================================= */}

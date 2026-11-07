@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
+import SEO from "@/components/shared/SEO";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import {
@@ -266,6 +267,16 @@ const TourBooking = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={tour?.title ? `Book ${tour.title} | WanderGo` : "Book Tour Itinerary | WanderGo"}
+        description={
+          tour?.title
+            ? `Reserve your travel spot for ${tour.title}. Instant confirmation, flexible payment, and 100% verified tour itineraries.`
+            : "Complete your tour booking securely with WanderGo. Instant confirmation and best price guarantee."
+        }
+        image={tour?.images?.[0]}
+      />
+
       {/* Top Header / Actions Bar */}
       <div className="border-b bg-card/60 backdrop-blur-md sticky top-16 z-30">
         <div className="container mx-auto px-4 py-3 max-w-7xl">

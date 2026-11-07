@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /user/
+Disallow: /profile
+Disallow: /update-profile
+Disallow: /verify
+
+Sitemap: https://wandergo.com/sitemap.xml
+

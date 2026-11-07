@@ -1,4 +1,5 @@
 import * as React from "react"
+import wanderGoLogo from "@/assets/images/WanderGoLOgo2.png"
 import {
   Sidebar,
   SidebarContent,
@@ -69,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
             <img
-              src="/src/assets/images/WanderGoLOgo2.png"
+              src={wanderGoLogo}
               alt="WanderGo Logo"
               className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
             />

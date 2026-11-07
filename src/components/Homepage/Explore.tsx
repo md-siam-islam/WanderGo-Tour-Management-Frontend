@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { ArrowRight, MapPin } from "lucide-react";
+import bannerImg from "@/assets/BannerImage/bannerimage.jpg";
 
 const Explore = () => {
   return (
@@ -43,7 +44,7 @@ const Explore = () => {
         <div className="w-full h-48 rounded-2xl overflow-hidden mt-2">
           <img
             className="w-full h-full object-cover"
-            src="/src/assets/BannerImage/bannerimage.jpg"
+            src={bannerImg}
             alt="Adventure"
           />
         </div>

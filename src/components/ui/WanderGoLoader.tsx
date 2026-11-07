@@ -1,4 +1,5 @@
 import React from "react";
+import wanderGoLogo from "@/assets/images/WanderGoLOgo2.png";
 
 interface WanderGoLoaderProps {
   message?: string;
@@ -27,7 +28,7 @@ export const WanderGoLoader: React.FC<WanderGoLoaderProps> = ({
         {/* Center Brand Logo Icon Container */}
         <div className="absolute inset-0 m-auto size-16 rounded-2xl bg-card border border-border/60 shadow-lg flex items-center justify-center p-2.5 overflow-hidden">
           <img
-            src="/src/assets/images/WanderGoLOgo2.png"
+            src={wanderGoLogo}
             alt="WanderGo"
             className="w-full h-auto object-contain animate-pulse"
           />

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/shared/SEO";
 import { Trash2, Edit, MapPin, Calendar, Users, DollarSign, Eye, UserMinus, Navigation, Building, FileText, CheckCircle, XCircle, Mountain, Umbrella, Tent, Car, Ship, Castle, UmbrellaOff } from "lucide-react";
 import { useGetAlltourQuery } from "@/redux/features/tour/tour.api";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -129,6 +130,10 @@ const AllTour = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO
+        title="Manage All Tours | WanderGo Admin"
+        description="Inspect and manage all tour packages, availability, and itineraries on WanderGo."
+      />
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
         <div>

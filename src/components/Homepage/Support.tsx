@@ -1,4 +1,5 @@
 import { Headphones, Bus, CalendarCheck, TicketCheckIcon } from "lucide-react";
+import tentSvg from "@/assets/BannerImage/tent-3.svg";
 
 const features = [
   {
@@ -29,7 +30,7 @@ const Support = () => {
       className="mb-20 mx-5 rounded-3xl overflow-hidden relative"
       style={{
         backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)), url('/src/assets/BannerImage/tent-3.svg')",
+          `linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)), url('${tentSvg}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

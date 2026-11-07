@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
+import SEO from '@/components/shared/SEO';
 import {
   AlertCircle,
   RotateCcw,
@@ -43,6 +44,10 @@ const PaymentFail = () => {
 
   return (
     <div className="min-h-screen bg-muted/20 py-12 px-4 flex items-center justify-center font-sans">
+      <SEO
+        title="Payment Failed | WanderGo"
+        description="The payment transaction could not be processed. Review troubleshooting steps or try again."
+      />
       <div className="max-w-2xl w-full space-y-6">
         {/* Main Error Card */}
         <div className="bg-card rounded-3xl border border-red-500/30 shadow-xl overflow-hidden">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/shared/SEO";
 import {
   useGetAllBookingsQuery,
   useUpdateBookingStatusMutation,
@@ -156,6 +157,10 @@ export default function AdminBookings() {
 
   return (
     <div className="space-y-8 p-4 md:p-8 max-w-7xl mx-auto font-sans">
+      <SEO
+        title="Manage All Bookings | WanderGo Admin"
+        description="Review all traveler bookings, manage reservation statuses, and view payment details."
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/60 pb-6">
         <div>

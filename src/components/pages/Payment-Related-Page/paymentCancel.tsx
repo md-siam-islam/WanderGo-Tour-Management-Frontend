@@ -1,6 +1,7 @@
 import { XCircle, RotateCcw, CreditCard, AlertTriangle, ExternalLink, Home } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import SEO from '@/components/shared/SEO';
 
 const PaymentCancel = () => {
   const location = useLocation();
@@ -65,6 +66,10 @@ const PaymentCancel = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <SEO
+        title="Payment Cancelled | WanderGo"
+        description="Your tour payment was cancelled. You can retry your booking or choose another payment method."
+      />
       <div className="max-w-2xl w-full">
         {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">

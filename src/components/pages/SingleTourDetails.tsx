@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router";
+import SEO from "@/components/shared/SEO";
 import {
   MapPin,
   Calendar,
@@ -194,6 +195,18 @@ const SingleTourDetails = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={tour?.title ? `${tour.title} — Tour Itinerary | WanderGo` : "Tour Itinerary Details | WanderGo"}
+        description={
+          tour?.description
+            ? `${tour.description.slice(0, 155)}...`
+            : "Explore complete tour itinerary, schedule, inclusions, verified guides, and book your spot with WanderGo."
+        }
+        image={tour?.images?.[0]}
+        keywords={`${tour?.title || 'Tour'}, ${matchedDivision?.name || 'Bangladesh'}, tour booking, WanderGo tours`}
+        type="product"
+      />
+
       {/* Top Header / Actions Bar */}
       <div className="border-b bg-card/60 backdrop-blur-md sticky top-16 z-30">
         <div className="container mx-auto px-4 py-3 max-w-7xl">

@@ -1,3 +1,4 @@
+import SEO from "../shared/SEO";
 import { Hero } from "../Homepage/Banner";
 import TravelPartner from "../Homepage/TravelPartner";
 import VideoSection from "../Homepage/VideoSection";
@@ -7,15 +8,19 @@ import TopPlaces from "../Homepage/TopPlaces";
 import Explore from "../Homepage/Explore";
 import HowItWorks from "../Homepage/HowItWorks";
 import AgencyMilestones from "../Homepage/AgencyMilestones";
-import PromoBanner from "../Homepage/PromoBanner";
 import HomeReviews from "../Homepage/HomeReviews";
-import Support from "../Homepage/Support";
 import TourGuidesSection from "../modules/Home/TourGuides";
 import ReadyToExploreCTA from "../Homepage/ReadyToExploreCTA";
 
 const Home = () => {
   return (
     <div className="space-y-4">
+      <SEO
+        title="WanderGo — Explore Beyond The Map | Tour Management & Travel Packages"
+        description="Book incredible tour packages across Bangladesh with WanderGo. Explore Cox's Bazar, Sajek Valley, Sundarbans & Sreemangal with certified tour guides and best price guarantee."
+        keywords="WanderGo, Bangladesh tours, travel packages, Cox's Bazar tour, Sajek Valley resort, Sundarbans cruise, holiday packages, guided tours Bangladesh"
+      />
+
       {/* 1. Hero Banner */}
       <Hero />
 
@@ -43,9 +48,6 @@ const Home = () => {
       {/* 6. Agency Milestones & Flight Path Stats */}
       <AgencyMilestones />
 
-      {/* 6. Active Promo Coupons & Deals */}
-      {/* <PromoBanner /> */}
-
       {/* 7. Certified Tour Guides */}
       <TourGuidesSection />
 
@@ -54,9 +56,6 @@ const Home = () => {
 
       {/* 9. Final Call-To-Action (Before Footer) */}
       <ReadyToExploreCTA />
-
-      {/* 10. 24/7 Support & Traveler Care */}
-      {/* <Support /> */}
     </div>
   );
 };

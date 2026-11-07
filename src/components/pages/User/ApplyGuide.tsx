@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SEO from "@/components/shared/SEO";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import {
   useApplyForGuideMutation,
@@ -155,6 +156,10 @@ export default function ApplyGuide() {
   if (isAlreadyGuide) {
     return (
       <div className="max-w-4xl mx-auto space-y-6 py-6">
+        <SEO
+          title="Certified Tour Guide Guild | WanderGo"
+          description="WanderGo verified Tour Guide Guild dashboard and credentials."
+        />
         <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-background to-background overflow-hidden relative shadow-lg">
           <div className="absolute top-0 right-0 p-8 opacity-10">
             <Award className="w-64 h-64 text-emerald-500" />
@@ -226,6 +231,10 @@ export default function ApplyGuide() {
   if (application && application.status === "PENDING" && !isEditingAfterReject) {
     return (
       <div className="max-w-4xl mx-auto space-y-6 py-6">
+        <SEO
+          title="Guide Application Status | WanderGo"
+          description="Your WanderGo tour guide application status and review progress."
+        />
         <Card className="border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-background to-background shadow-lg overflow-hidden">
           <CardHeader>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -298,6 +307,10 @@ export default function ApplyGuide() {
   if (application && application.status === "REJECTED" && !isEditingAfterReject) {
     return (
       <div className="max-w-4xl mx-auto space-y-6 py-6">
+        <SEO
+          title="Guide Application Decision | WanderGo"
+          description="WanderGo tour guide application review feedback and resubmission."
+        />
         <Card className="border-destructive/30 bg-gradient-to-br from-destructive/10 via-background to-background shadow-lg">
           <CardHeader>
             <div className="flex items-center gap-3">
@@ -354,6 +367,11 @@ export default function ApplyGuide() {
   // 4. Application Form (New or Resubmission)
   return (
     <div className="max-w-4xl mx-auto space-y-8 py-6">
+      <SEO
+        title="Become a Certified Tour Guide | WanderGo"
+        description="Apply to join WanderGo as a certified tour guide. Lead travelers across Bangladesh, earn competitive income, and share local heritage."
+        keywords="become a tour guide, Bangladesh tour guide jobs, WanderGo guide application, tourism career Bangladesh"
+      />
       {/* Hero Header */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/95 via-primary/85 to-rose-600 text-white p-8 md:p-10 shadow-xl">
         <div className="relative z-10 max-w-2xl space-y-3">

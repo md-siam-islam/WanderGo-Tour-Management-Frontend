@@ -1,4 +1,5 @@
 import MultupulImageUpload from "@/components/MultupulImageUpload";
+import SEO from "@/components/shared/SEO";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -136,6 +137,10 @@ const Addtour = () => {
 
   return (
     <div className=" flex justify-center items-center border border-accent-foregroundrounded rounded-2xl mt-5">
+      <SEO
+        title="Create New Tour Package | WanderGo Admin"
+        description="Add a new tour package with customizable itinerary, photos, pricing, and division."
+      />
 
       <div className="max-w-7xl w-full mx-auto p-10">
         <Form {...form}>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/shared/SEO";
 import {
   Table,
   TableBody,
@@ -57,6 +58,10 @@ const AddtourType = () => {
 
   return (
     <div className="flex  flex-col">
+      <SEO
+        title="Manage Tour Types | WanderGo Admin"
+        description="Create and manage tour categories and activity types."
+      />
       <div className="flex justify-between my-4">
         <h1 className="text-xl font-semibold">Tour Types</h1>
         <AddtourtypeModal />

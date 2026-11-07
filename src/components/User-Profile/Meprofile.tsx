@@ -1,4 +1,5 @@
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import SEO from "@/components/shared/SEO";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaEdit } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have shadcn/ui
@@ -67,6 +68,10 @@ const Meprofile = () => {
 
   return (
     <div className="p-4 md:p-6 max-w-4xl mx-auto">
+      <SEO
+        title="My Profile | WanderGo"
+        description="View and manage your WanderGo traveler profile, personal contact details, and account security settings."
+      />
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <Link to="/">

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router";
+import SEO from "@/components/shared/SEO";
 import {
   DollarSign,
   Users,
@@ -71,6 +72,10 @@ const Analytics = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
+      <SEO
+        title="Admin Analytics & Performance Dashboard | WanderGo"
+        description="WanderGo executive admin dashboard. Real-time booking statistics, revenue performance, and visitor growth."
+      />
       {/* Page Title & Quick Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
